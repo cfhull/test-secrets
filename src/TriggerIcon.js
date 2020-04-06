@@ -3,7 +3,9 @@ import React from 'react';
 const ICON_TYPE = {
   REMOVE: 'remove',
   EXPAND: 'expand',
-  COLLAPSE: 'collapse'
+  COLLAPSE: 'collapse',
+  D_ARROW: 'down-arrow',
+  R_ARROW: 'right-arrow'
 };
 
 class TriggerIcon extends React.Component {
@@ -40,13 +42,22 @@ class TriggerIcon extends React.Component {
       </>
     )    
   }
+
+  getDownArrow() {
+    return (
+      <>
+        <polyline points='50,0 50,100' />
+        <polyline points='10,55 50,100 90,55' />
+      </>
+    )
+  }
   
   getBracketWrap(icon) {
     return (
       <>
-        <polyline points='15,0 0,0 0,100 15,100'   />
+        <polyline points='15,0 0,0 0,100 15,100' />
           {icon}
-        <polyline points='85,0 100,0 100,100 85,100'   />
+        <polyline points='85,0 100,0 100,100 85,100' />
       </>
     )    
   }
@@ -54,6 +65,7 @@ class TriggerIcon extends React.Component {
   render() {
     let icon;
     let classes = 'trigger-icon ';
+    let transform = '';
     switch (this.props.iconType) {
       case ICON_TYPE.REMOVE:
         icon = this.getRemove();
@@ -67,16 +79,31 @@ class TriggerIcon extends React.Component {
         icon = this.getCollapse();
         classes += 'collapse-icon';
         break;
+      case ICON_TYPE.D_ARROW:
+        icon = this.getDownArrow();
+        classes += 'down-arrow';
+        break;
+      case ICON_TYPE.R_ARROW:
+        icon = this.getDownArrow();
+        classes += 'right-arrow';
+        transform += 'rotate(270)';
+        break;
       default:
         console.error('incorrect type');
     }
 
     if (this.props.inBrackets) {
+      classes += ' bracketed';
       icon = this.getBracketWrap(icon);
     }
 
     return (
-      <svg onClick={this.props.onClick} viewBox='0 0 100 100' className={classes}>
+      <svg
+        onClick={this.props.onClick}
+        viewBox='0 0 100 100'
+        transform={transform}
+        className={classes}
+      >
         {icon}
       </svg>
     )

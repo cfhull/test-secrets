@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import TriggerIcon, { ICON_TYPE } from './TriggerIcon';
 import { SHEET_FIELDS, ORDERED_CARD_FIELDS, COMPOSITE_FIELDS, LINK_FIELD_PAIRS } from './fields';
-import ScrollHint from './ScrollHint';
+import UserHint from './UserHint';
 
 const { LOCATION, NAME, EID, TYPE, WEBSITE } = SHEET_FIELDS;
 
@@ -11,7 +11,11 @@ class CardDock extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = { minimized: true, expandedProperties: {}, scrollHintDismissed: false };
+    this.state = {
+      minimized: true,
+      expandedProperties: {},
+      scrollHintDismissed: false    
+    };
 
     this.removeCard = this.removeCard.bind(this);
     this.slideDock = this.slideDock.bind(this);
@@ -26,7 +30,7 @@ class CardDock extends React.PureComponent {
 
   slideDock(e) {
     if (e.deltaY && e.deltaY > 0) {
-      this.setState({ minimized: false });
+      this.setState({ minimized: false, scrollHintDismissed: true });
     }
   }
 
@@ -90,14 +94,14 @@ class CardDock extends React.PureComponent {
       if (isFeatureHeader) {
         cellClass += ' feature-header';
       }
-  
+
       let valueClass = 'property-value';
       if (expanded) {
         valueClass += ' expanded';
       }
 
       const propertyCells = this.props.cardData.map(experimentCardSet => {
-        
+
         const cellContent = this.getCellContent(experimentCardSet, field);
         const { [EID.sheetId]: eid } = experimentCardSet[0];
         return (
@@ -132,7 +136,7 @@ class CardDock extends React.PureComponent {
     const [locationOneData, ...otherLocationsData] = experimentCardSet;
     const firstValue = locationOneData[sheetId];
     const uniformValue = field.forceUniformValue || _.every(otherLocationsData, l => l[sheetId] === firstValue);
-    
+
     let cellContent;
     if (field === WEBSITE && firstValue.includes('.')) {
       cellContent = <a href={firstValue} target="_blank">{firstValue}</a>;
@@ -147,7 +151,7 @@ class CardDock extends React.PureComponent {
         } = locationData;
         return (
           <div key={`cell-content-${sheetId}-${eid}-${location}`}>
-            <div 
+            <div
               title={location}
               className='property-location-title'
             >
@@ -169,7 +173,7 @@ class CardDock extends React.PureComponent {
         [LOCATION.sheetId]: location,
       } = locationData;
       return (
-        <div 
+        <div
           title={location}
           className='location-cell-content'
           key={`cell-content-location-${eid}-${location}`}
@@ -193,9 +197,9 @@ class CardDock extends React.PureComponent {
         }
       })
     });
-    
+
     return (
-      <div 
+      <div
         key={`cell-content-links-${experimentCardSet[0][EID.sheetId]}`}
       >
         {orderedLinks.map(({ urlValue, titleValue }) => (
@@ -204,8 +208,47 @@ class CardDock extends React.PureComponent {
       </div>
     );
   }
-    
+
+  getScrollHint() {
+    const content = (
+    <>scroll for more {<TriggerIcon iconType={ICON_TYPE.D_ARROW} />}</>
+    );
+    return (
+      <UserHint
+        content={content}
+        classes={'scroll-hint'}
+        dismissed={this.state.scrollHintDismissed}
+      />
+    );
+  }
+
+  getSelectionHint() {
+    const content = (
+    <>
+      click more map points to compare experiments<p className='maximum'>(max. 3)</p>
+      <TriggerIcon iconType={ICON_TYPE.R_ARROW} />
+    </>
+    );
+
+    let classes = 'selection-hint ';
+
+    if (this.state.scrollHintDismissed) {
+      classes += 'sole-hint';
+    }
+    return (
+      <UserHint
+        content={content}
+        classes={classes}
+        dismissed={this.props.selectionHintDismissed}
+      />
+    );
+  }
+
   render() {
+    if (!this.props.cardData.length) {
+      return null;
+    }
+
     let classes = 'card-dock-container ';
     classes += `card-count-${this.props.cardData.length}`;
     if (!this.state.minimized) {
@@ -220,7 +263,8 @@ class CardDock extends React.PureComponent {
         className={'card-dock-wrapper'}
       >
         <div className={classes}>
-          {<ScrollHint dismissed={this.state.scrollHintDismissed} />}
+          {this.getScrollHint()}
+          {this.getSelectionHint()}
           <table className="card-dock">
             <thead>
               <tr>{this.getNames()}</tr>

@@ -1,23 +1,26 @@
 import React from 'react';
 import TriggerIcon, { ICON_TYPE } from './TriggerIcon';
 
-class ScrollHint extends React.Component {
+class UserHint extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    let classes = 'scroll-hint';
+    let classes = 'user-hint';
+    if (this.props.classes) {
+      classes += ` ${this.props.classes}`;
+    }
     if (this.props.dismissed) {
       classes += ' dismissed';
     }
-
+    
     return (
       <div className={classes}>
-        <p className='content'>SCROLL FOR MORE ⬇️</p>
+        <div className='content'>{this.props.content}</div>
       </div>
     )
   }
 }
 
-export default ScrollHint;
+export default UserHint;

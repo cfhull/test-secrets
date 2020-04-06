@@ -2,7 +2,7 @@
   "name": "ubi-map",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://hoshmn.github.io/ubi-map/",
+  "homepage": "https://hyperobjekt.github.io/bil-map/",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",

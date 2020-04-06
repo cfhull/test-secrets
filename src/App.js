@@ -22,7 +22,8 @@ class App extends React.Component {
       zoom: 3,
       hovered: {},
       selectedIds: [],
-      isTouchScreen: false
+      isTouchScreen: false,
+      selectionHintDismissed: false
     };
 
     this.map = null;
@@ -85,7 +86,9 @@ class App extends React.Component {
       selectedIds.splice(idx, 1);
     }
 
-    this.setState({ selectedIds });
+    // dismiss selection hint once multiple points have been selected
+    const selectionHintDismissed = (selectedIds.length > 1) || this.state.selectionHintDismissed;
+    this.setState({ selectedIds, selectionHintDismissed });
     this.map.setFeatureState({
         source: 'experiments',
         id: expId
@@ -159,12 +162,20 @@ class App extends React.Component {
   }
 
   getCardDock() {
-    if (!this.map || !this.state.selectedIds.length) {
+    if (!this.map) {
       return null;
     }
 
-    const cardData = this.state.selectedIds.map(this.getFeaturesByExperimentId);
-    return <CardDock removeCard={this.removeCard} cardData={cardData} />
+    const { selectedIds, isTouchScreen, selectionHintDismissed } = this.state;
+    const cardData = selectedIds.map(this.getFeaturesByExperimentId);
+    return (
+      <CardDock
+        removeCard={this.removeCard}
+        cardData={cardData}
+        isTouchScreen={isTouchScreen}
+        selectionHintDismissed={selectionHintDismissed}
+      />
+    );
   }
   
   render() {
@@ -175,11 +186,11 @@ class App extends React.Component {
         <div ref={el => this.mapContainer = el} className='map-container' />
         <Legend />
       </div>
-    )
+    );
   }
 }
 
-let nextEidNumber = 0;
+let nextEidNumber = 1;
 const eidMap = {};
 
 function load () {
