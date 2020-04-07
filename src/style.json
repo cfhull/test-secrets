@@ -1984,7 +1984,7 @@
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    3,
+                    3.5,
                     3.5,
                     10,
                     8
@@ -2002,7 +2002,7 @@
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    3,
+                    3.5,
                     0,
                     4,
                     0.5
@@ -2024,7 +2024,7 @@
                 "all",
                 ["==", ["get", "admin_level"], 1],
                 ["==", ["get", "maritime"], "false"],
-                ["match", ["get", "worldview"], ["all", "US"], true, false]
+                ["match", ["get", "worldview"], ["US"], true, false]
             ],
             "layout": {"line-join": "round", "line-cap": "round"},
             "paint": {
@@ -2048,9 +2048,9 @@
                     "interpolate",
                     ["linear"],
                     ["zoom"],
-                    2,
+                    3.5,
                     0,
-                    3,
+                    4,
                     1
                 ],
                 "line-color": [
@@ -2073,7 +2073,7 @@
             },
             "source": "composite",
             "source-layer": "admin",
-            "minzoom": 1,
+            "minzoom": 3,
             "filter": [
                 "all",
                 ["==", ["get", "admin_level"], 0],
@@ -2093,6 +2093,15 @@
                     10,
                     2
                 ],
+                "line-opacity": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    3,
+                    0,
+                    3.5,
+                    1
+                ],
                 "line-dasharray": [10, 0]
             }
         },
@@ -2105,7 +2114,7 @@
             },
             "source": "composite",
             "source-layer": "admin",
-            "minzoom": 1,
+            "minzoom": 3,
             "filter": [
                 "all",
                 ["==", ["get", "disputed"], "true"],

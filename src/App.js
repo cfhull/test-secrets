@@ -19,7 +19,7 @@ class App extends React.Component {
     this.state = {
       lat: 40.66995747013945,
       lng: -103.59179687498357,
-      zoom: 2.3,
+      zoom: 3,
       hovered: {},
       selectedIds: [],
       isTouchScreen: false,
@@ -43,6 +43,9 @@ class App extends React.Component {
     
     this.map.on('move', () => {
       this.featuresOnUnhover();
+      console.log('lat: ', this.map.getCenter().lat.toFixed(4));
+      console.log('lng: ', this.map.getCenter().lng.toFixed(4));
+      console.log('zoom: ', this.map.getZoom().toFixed(2));
       this.setState({
         lng: this.map.getCenter().lng.toFixed(4),
         lat: this.map.getCenter().lat.toFixed(4),
