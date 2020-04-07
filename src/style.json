@@ -1924,9 +1924,9 @@
             "source-layer": "admin",
             "filter": [
                 "all",
+                ["==", ["get", "iso_3166_1"], "US"],
                 ["==", ["get", "admin_level"], 1],
-                ["==", ["get", "maritime"], "false"],
-                ["match", ["get", "worldview"], ["all", "US"], true, false]
+                ["==", ["get", "maritime"], "false"]
             ],
             "layout": {"line-join": "bevel"},
             "paint": {
@@ -2022,9 +2022,9 @@
             "source-layer": "admin",
             "filter": [
                 "all",
+                ["==", ["get", "iso_3166_1"], "US"],
                 ["==", ["get", "admin_level"], 1],
-                ["==", ["get", "maritime"], "false"],
-                ["match", ["get", "worldview"], ["US"], true, false]
+                ["==", ["get", "maritime"], "false"]
             ],
             "layout": {"line-join": "round", "line-cap": "round"},
             "paint": {
