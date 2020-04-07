@@ -19,7 +19,7 @@ class App extends React.Component {
     this.state = {
       lat: 40.66995747013945,
       lng: -103.59179687498357,
-      zoom: 3,
+      zoom: 2.3,
       hovered: {},
       selectedIds: [],
       isTouchScreen: false,
