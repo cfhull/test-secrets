@@ -2969,7 +2969,7 @@
             },
             "source": "composite",
             "source-layer": "place_label",
-            "minzoom": 1,
+            "minzoom": 3.2,
             "maxzoom": 10,
             "filter": ["==", ["get", "class"], "country"],
             "layout": {
@@ -3003,7 +3003,6 @@
                     7,
                     "center"
                 ],
-                "visibility": "none",
                 "text-offset": ["literal", [0, 0]],
                 "text-field": ["coalesce", ["get", "name_en"], ["get", "name"]],
                 "text-max-width": 6
@@ -3017,15 +3016,7 @@
                     0
                 ],
                 "text-color": "hsl(53, 17%, 29%)",
-                "text-halo-color": [
-                    "interpolate",
-                    ["linear"],
-                    ["zoom"],
-                    2,
-                    "rgba(255, 255, 255, 0.75)",
-                    3,
-                    "rgb(255, 255, 255)"
-                ],
+                "text-halo-color": "rgb(255, 255, 255)",
                 "text-halo-width": 1.25
             }
         },
