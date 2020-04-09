@@ -139,12 +139,12 @@ html, body, #root, .app, .map-container {
 /* CARD DOCK */
 .card-dock-wrapper .user-hint {
   text-transform: uppercase;
-  background: rgba(244, 253, 255);
-  color: rgba(59, 123, 138);
+  background: rgb(244, 253, 255);
+  color: rgb(59, 123, 138);
   font-size: 16px;
 }
 .card-dock-wrapper .user-hint .trigger-icon {
-  stroke: rgba(59, 123, 138);
+  stroke: rgb(59, 123, 138);
   stroke-width: 8;
   width: 16px;
 }

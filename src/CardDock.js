@@ -116,6 +116,7 @@ class CardDock extends React.PureComponent {
   }
 
   // whether a given row should be expandible (succinct cells don't need expand triggers)
+  // TODO: use ref, and after rerender check height, add classname accordingly?
   getIsExpandible(field) {
     if (field === LOCATION) {
       // if any experimint in the card dock has multiple locations, the location cell should be expandible

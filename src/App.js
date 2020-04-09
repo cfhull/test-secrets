@@ -5,7 +5,7 @@ import Tooltip from './Tooltip';
 import mapboxgl from 'mapbox-gl';
 import _ from 'lodash';
 import styleData from './style.json';
-import './App.css';
+import './App.scss';
 import { SHEET_FIELDS } from './fields';
 
 const { LONGITUDE, LATITUDE, NAME, LOCATION, TYPE, EID } = SHEET_FIELDS;
@@ -17,8 +17,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      lat: 40.66995747013945,
-      lng: -103.59179687498357,
+      lat: 40,
+      lng: -98,
       zoom: 3,
       hovered: {},
       selectedIds: [],
