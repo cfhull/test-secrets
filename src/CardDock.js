@@ -52,22 +52,26 @@ class CardDock extends React.PureComponent {
 
   getNames() {
     // TODO: don't bind in render (perf)
-    return this.props.cardData.map(experimentCardSet => {
+    return this.props.cardData.map((experimentCardSet, idx) => {
       const {
         [EID.sheetId]: eid,
         [NAME.sheetId]: name,
         [TYPE.sheetId]: type
       } = experimentCardSet[0];
-      const classes = 'name ' + type;
+      // add type to class so we can color-code
+      const classes = `card card-${idx} ${type}`;
       return (
-        <td key={'name'+eid} className={classes}>
-          {name||'(none)'}
-          <TriggerIcon iconType={ICON_TYPE.REMOVE} onClick={this.removeCard.bind(this, eid)} />
-        </td>
+        <div className={classes} key={'header'+eid} >
+          <div className='cell'>
+            {name||'(none)'}
+            <TriggerIcon iconType={ICON_TYPE.REMOVE} onClick={this.removeCard.bind(this, eid)} />
+          </div>
+        </div>
     )});
   }
 
   getRows() {
+    // form a row for each field
     return ORDERED_CARD_FIELDS.map(field => {
       const { displayName, sheetId, isFeatureHeader } = field;
 
@@ -87,7 +91,7 @@ class CardDock extends React.PureComponent {
         );
       }
 
-      let cellClass = 'property-cell';
+      let cellClass = 'cell';
       if (expandible) {
         cellClass += ' expandible';
       }
@@ -95,23 +99,25 @@ class CardDock extends React.PureComponent {
         cellClass += ' feature-header';
       }
 
-      let valueClass = 'property-value';
+      let valueClass = 'value';
       if (expanded) {
         valueClass += ' expanded';
       }
 
-      const propertyCells = this.props.cardData.map(experimentCardSet => {
+      // form a cell for each experiment for that field
+      const cells = this.props.cardData.map((experimentCardSet, idx) => {
 
-        const cellContent = this.getCellContent(experimentCardSet, field);
         const { [EID.sheetId]: eid } = experimentCardSet[0];
         return (
-          <td className={cellClass} key={displayName+'-td-'+eid}>
-            <div className='property-name'>{displayName}{expandIcon}</div>
-            <div className={valueClass}>{cellContent}</div>
-          </td>
+          <div className={`card card-${idx}`}>
+            <div className={cellClass} key={displayName+eid}>
+              <div className='property-name'>{displayName}{expandIcon}</div>
+              <div className={valueClass}>{this.getCellContent(experimentCardSet, field)}</div>
+            </div>
+          </div>
       )});
       
-      return <tr className='property-row' key={displayName}>{propertyCells}</tr>;
+      return <div className='row' key={displayName}>{cells}</div>;
     });
   }
 
@@ -131,12 +137,10 @@ class CardDock extends React.PureComponent {
       return true;
     }
 
+    // if any experiment's value for the cell is longer than 100 characters
     return _.some(this.props.cardData, expCardSet => {
-      console.log(field.sheetId);
-      return _.some(expCardSet, locationData => {
-        console.log(locationData[LOCATION.sheetId])
-        console.log(locationData[field.sheetId]);
-        return locationData[field.sheetId].length > 100});
+      // only need to check first location since we only hit this case if cell is undifferentiated
+      return expCardSet[0][field.sheetId].length > 100;
     });
   }
 
@@ -166,37 +170,37 @@ class CardDock extends React.PureComponent {
     const { sheetId } = field;
     const firstValue = experimentCardSet[0][sheetId];
 
-    let cellContent;
     if (field === WEBSITE && firstValue.includes('.')) {
       // make sure website is linkified if it's a link. otherwise it'll be caught
       // by the next condition, for all undifferentiated fields
-      cellContent = <a href={firstValue} target="_blank">{firstValue}</a>;
+      return <a href={firstValue} target="_blank">{firstValue}</a>;
     } else if (!this.getIsDifferentiated(experimentCardSet, field)) {
       // for undifferentiated fields, the cell content is the field value
       // for the first (and perhaps only) location
-      cellContent = firstValue;
-    } else {
-      // break cell into block for each location, as they have different values
-      cellContent = experimentCardSet.map(locationData => {
-        const {
-          [EID.sheetId]: eid,
-          [LOCATION.sheetId]: location,
-        } = locationData;
-        return (
-          <div key={`cell-content-${sheetId}-${eid}-${location}`}>
-            <div
-              title={location}
-              className='property-location-title'
-            >
-              {location}
-            </div>
-            {locationData[sheetId]}
-          </div>
-        )
-      })
+      return firstValue;
     }
-
-    return <>{cellContent}</>;
+    // break cell into block for each location, as they have different values
+    return (
+      <>
+        {experimentCardSet.map(locationData => {
+          const {
+            [EID.sheetId]: eid,
+            [LOCATION.sheetId]: location,
+          } = locationData;
+          return (
+            <div key={`cell-content-${sheetId}-${eid}-${location}`}>
+              <div
+                title={location}
+                className='location-title'
+              >
+                {location}
+              </div>
+              {locationData[sheetId]}
+            </div>
+          )
+        })}
+      </>
+    );
   }
 
   getLocationCellContent(experimentCardSet) {
@@ -263,10 +267,10 @@ class CardDock extends React.PureComponent {
     </>
     );
 
-    let classes = 'selection-hint ';
+    let classes = 'selection-hint';
 
     if (this.state.scrollHintDismissed) {
-      classes += 'sole-hint';
+      classes += ' sole-hint';
     }
     return (
       <UserHint
@@ -282,8 +286,7 @@ class CardDock extends React.PureComponent {
       return null;
     }
 
-    let classes = 'card-dock-container ';
-    classes += `card-count-${this.props.cardData.length}`;
+    let classes = `card-dock card-count-${this.props.cardData.length}`;
     if (!this.state.minimized) {
       classes += ' maximized';
     }
@@ -293,19 +296,13 @@ class CardDock extends React.PureComponent {
         onWheel={this.slideDock}
         onDoubleClick={this.toggleDock}
         onTouchStart={this.maximizeDock}
-        className={'card-dock-wrapper'}
+        className={'card-dock-container'}
       >
         <div className={classes}>
-          {this.getScrollHint()}
-          {this.getSelectionHint()}
-          <table className="card-dock">
-            <thead>
-              <tr>{this.getNames()}</tr>
-            </thead>
-            <tbody>
-              {this.getRows()}
-            </tbody>
-          </table>
+          <div className="card-table">
+            <div className='row header'>{this.getNames()}</div>
+            {this.getRows()}
+          </div>
         </div>
       </div>
     )
