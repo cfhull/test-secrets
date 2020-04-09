@@ -157,7 +157,7 @@ const COMPOSITE_FIELDS = {
     displayName: 'Links to Related Resources',
     sheetId: null,
     isExpandible: true,
-    // composite: true
+    isComposite: true
   }
 };
 

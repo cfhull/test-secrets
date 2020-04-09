@@ -110,17 +110,47 @@ class CardDock extends React.PureComponent {
             <div className={valueClass}>{cellContent}</div>
           </td>
       )});
+      
       return <tr className='property-row' key={displayName}>{propertyCells}</tr>;
     });
   }
 
+  // whether a given row should be expandible (succinct cells don't need expand triggers)
   getIsExpandible(field) {
-    // 1) not expandible => F 2) has multiple locations w/diff values => T 3) sole value > 40Ms
     if (field === LOCATION) {
-      // if any experimint in the card dock has multiple locations, the cell should be expandible
+      // if any experimint in the card dock has multiple locations, the location cell should be expandible
       return _.some(this.props.cardData, expCardSet => expCardSet.length > 1);
     }
-    return field.isExpandible;
+    if (!field.isExpandible || field.isComposite) {
+      // TODO: should composite rows (Related Resources be expandible? how to measure?)
+      return false;
+    }
+    if (_.some(this.props.cardData, expCardSet => this.getIsDifferentiated(expCardSet, field))) {
+      // if any selected experiment has differentiated data for the field, cell should be expandible
+      return true;
+    }
+
+    return _.some(this.props.cardData, expCardSet => {
+      console.log(field.sheetId);
+      return _.some(expCardSet, locationData => {
+        console.log(locationData[LOCATION.sheetId])
+        console.log(locationData[field.sheetId]);
+        return locationData[field.sheetId].length > 100});
+    });
+  }
+
+  // returns true if the data for a given field of a given experiment
+  // has differing values across experiment locations
+  getIsDifferentiated(experimentCardSet, field) {
+    if (field.forceUniformValue || experimentCardSet.length === 1) {
+      // certain fields we never let be differentiated
+      // and data can't be differentiated if there's only one location
+      return false;
+    }
+    const { sheetId } = field;
+    const [locationOneData, ...otherLocationsData] = experimentCardSet;
+    const firstValue = locationOneData[sheetId];
+    return _.some(otherLocationsData, l => l[sheetId] !== firstValue);
   }
 
   getCellContent(experimentCardSet, field) {
@@ -133,14 +163,16 @@ class CardDock extends React.PureComponent {
     }
 
     const { sheetId } = field;
-    const [locationOneData, ...otherLocationsData] = experimentCardSet;
-    const firstValue = locationOneData[sheetId];
-    const uniformValue = field.forceUniformValue || _.every(otherLocationsData, l => l[sheetId] === firstValue);
+    const firstValue = experimentCardSet[0][sheetId];
 
     let cellContent;
     if (field === WEBSITE && firstValue.includes('.')) {
+      // make sure website is linkified if it's a link. otherwise it'll be caught
+      // by the next condition, for all undifferentiated fields
       cellContent = <a href={firstValue} target="_blank">{firstValue}</a>;
-    } else if (uniformValue) {
+    } else if (!this.getIsDifferentiated(experimentCardSet, field)) {
+      // for undifferentiated fields, the cell content is the field value
+      // for the first (and perhaps only) location
       cellContent = firstValue;
     } else {
       // break cell into block for each location, as they have different values
