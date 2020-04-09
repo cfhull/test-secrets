@@ -146,16 +146,15 @@ $color-proposed: rgba(223,70,73,.8);
 
 /*{ CARD DOCK */
 .card-dock-container { //card-dock-wrapper
-  .trigger-icon { width: 4px }
+  // .trigger-icon { width: 4px }
   
   background-color: lightseagreen;
 
   z-index: 5;
-  position: relative;
+  position: absolute;
   /* dock background initially just off-screen, appears when user scrolls up */
   top: 100vh;
   width: 100%;
-  height: 100%;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px 3px;
   // background: white;
 
@@ -214,6 +213,7 @@ $color-proposed: rgba(223,70,73,.8);
   
   .card-dock { //card-dock-container
     height: 100%;
+    // FIX
     margin-left: calc((100vw - 900px)/2); //FS
     &.card-count-1 {
       width: $FS-card-width * 1;
@@ -241,8 +241,8 @@ $color-proposed: rgba(223,70,73,.8);
       }
       
       .card {
-        // width: $FS-card-width; //FS
-        flex: 1;
+        max-width: $FS-card-width; //FS
+        flex: 1 0 0;
         // height: 100%;
         display: inline-block;
         vertical-align: top;
@@ -255,7 +255,13 @@ $color-proposed: rgba(223,70,73,.8);
         // display: inline-block;
         // box-sizing: border-box;
         height: 100%; //?
-
+        position: relative;
+        .property-name .trigger-icon {
+          position: absolute;
+          width: 14px;
+          right: 5px;
+          top: 9px;
+        }
         .property-name,
         .location-title {
           font-weight: 300;
@@ -269,8 +275,23 @@ $color-proposed: rgba(223,70,73,.8);
           text-overflow: ellipsis;
           overflow: hidden;
         }
+        .location-cell-content:not(:last-child) {
+          padding-bottom: 5px;
+        }
+
+        .value {
+          overflow: hidden;
+          padding-top: 4px;
+          font-size: 14px; //FS
+          
+        }
+        &.expandible .value:not(.expanded)  {
+          max-height: 38px;
+        }
+        
       }
 
+      // HEADER (NAME) STYLES
       .row.header {
         border-top-left-radius: 12px;
         border-top-right-radius: 12px;
@@ -331,8 +352,8 @@ $color-proposed: rgba(223,70,73,.8);
     .row:not(:first-child) .card:not(:first-child) .cell {
       /* for a subtle division between cards 
          compensate headers with added 1px */
-      border-left: solid black 1px; // #f2f2f2 1px;
-  }
+      border-left: solid #f2f2f2 1px; // #f2f2f2 1px;
+    }
   }
 }
 
@@ -484,17 +505,17 @@ $color-proposed: rgba(223,70,73,.8);
       right: 6px;
     }
 
-  /* TODO: mixin? (dry) */
-  .card-dock .property-name,
-  .card-dock .property-location-title {
-    font-weight: 300;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .card-dock .property-location-title {
-    padding-top: 3px;
-  }
+    /* TODO: mixin? (dry) */
+    .card-dock .property-name,
+    .card-dock .property-location-title {
+      font-weight: 300;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .card-dock .property-location-title {
+      padding-top: 3px;
+    }
 
   .property-cell.expandible .property-name {
     /* make room for trigger-icon */
@@ -511,22 +532,22 @@ $color-proposed: rgba(223,70,73,.8);
 
   /* location titles should only be given a single line */
   .card-dock .property-location-title {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
   }
 
-  .location-cell-content:not(:last-child) {
-    padding-bottom: 5px;
-  }
+    .location-cell-content:not(:last-child) {
+      padding-bottom: 5px;
+    }
 
   /* TODO: mixin? (dry) */
-  .property-value {
-    font-size: 14px;
-    padding-top: 5px;
-    overflow: hidden;
-    height: 100%;
-  }
+      .property-value {
+        font-size: 14px;
+        padding-top: 5px;
+        overflow: hidden;
+        height: 100%;
+      }
   .property-cell.expandible .property-value:not(.expanded) {
     /* transition: max-height .1s cubic-bezier(.23,1,.32,1); */
     transition: max-height .2s ease-out;
