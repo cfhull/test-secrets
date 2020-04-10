@@ -244,7 +244,7 @@ $color-proposed: rgba(223,70,73,.8);
       top: -100px; //FS
       box-shadow: rgba(0, 0, 0, 0.1) -2px -4px 10px 2px;
 
-      background: lightsalmon;
+      // background: lightsalmon;
 
       .row {
         height: 100%; //?
@@ -256,7 +256,7 @@ $color-proposed: rgba(223,70,73,.8);
         flex: 1 0 0;
         // height: 100%;
         display: inline-block;
-        vertical-align: top;
+        // vertical-align: top;
       }
 
       .cell {
@@ -291,13 +291,22 @@ $color-proposed: rgba(223,70,73,.8);
         }
 
         .value {
-          overflow: hidden;
+          // overflow: hidden;
           padding-top: 4px;
           font-size: 14px; //FS
           
         }
-        &.expandible .value:not(.expanded)  {
-          max-height: 38px;
+
+        &.expandible {
+          max-height: 400px;
+          // height: auto;
+          transition: max-height ease-in .5s;
+          overflow: hidden;
+          
+          &:not(.expanded) {
+            transition: max-height ease-out .5s;
+            max-height: 50px;
+          }
         }
         
       }

@@ -95,13 +95,11 @@ class CardDock extends React.PureComponent {
       if (expandible) {
         cellClass += ' expandible';
       }
+      if (expanded) {
+        cellClass += ' expanded';
+      }
       if (isFeatureHeader) {
         cellClass += ' feature-header';
-      }
-
-      let valueClass = 'value';
-      if (expanded) {
-        valueClass += ' expanded';
       }
 
       // form a cell for each experiment for that field
@@ -112,7 +110,7 @@ class CardDock extends React.PureComponent {
           <div className={`card card-${idx}`}>
             <div className={cellClass} key={displayName+eid}>
               <div className='property-name'>{displayName}{expandIcon}</div>
-              <div className={valueClass}>{this.getCellContent(experimentCardSet, field)}</div>
+              <div className={'value'}>{this.getCellContent(experimentCardSet, field)}</div>
             </div>
           </div>
       )});
