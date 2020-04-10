@@ -140,6 +140,7 @@ html, body, #root, .app, .map-container {
 }
 
 $FS-card-width: 300px;
+$FS-dock-width: $FS-card-width * 3;
 $color-past: rgba(0,80,92,.8);
 $color-ongoing: rgba(175,105,12,.8);
 $color-proposed: rgba(223,70,73,.8);
@@ -213,18 +214,28 @@ $color-proposed: rgba(223,70,73,.8);
   
   .card-dock { //card-dock-container
     height: 100%;
-    // FIX
-    margin-left: calc((100vw - 900px)/2); //FS
-    &.card-count-1 {
+
+    // dock always takes up 3-card width (when screen ample size)
+    width: $FS-dock-width;
+    // card-table takes up the actual width of the cards
+    &.card-count-1 .card-table {
       width: $FS-card-width * 1;
     }
-    &.card-count-2 {
+    &.card-count-2 .card-table {
       width: $FS-card-width * 2;
     }
-    &.card-count-3 {
+    &.card-count-3 .card-table {
       width: $FS-card-width * 3;
     }
-
+    
+    // the card-dock is centered (unmoved by card-count)
+    margin-left: calc((100vw - #{$FS-dock-width}) / 2);
+    @media screen and (max-width: $FS-dock-width) {
+      // but don't allow it to overflow left side of screen
+      margin-left: 0;
+      // nor the empty portion of the dock to overflow the right
+      width: 100%;
+    }
     background-color: lightskyblue;
 
     .card-table { //table.card-dock
