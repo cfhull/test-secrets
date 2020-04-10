@@ -125,8 +125,8 @@ class CardDock extends React.PureComponent {
 
         const { [EID.sheetId]: eid } = experimentCardSet[0];
         return (
-          <div className={`card card-${idx}`}>
-            <div className={cellClass} key={displayName+eid}>
+          <div className={`card card-${idx}`} key={displayName+eid}>
+            <div className={cellClass}>
               <div className='property-name'>{displayName}{expandIcon}</div>
               <div className={'value'}>{this.getCellContent(experimentCardSet, field)}</div>
             </div>
