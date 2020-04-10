@@ -298,14 +298,13 @@ $color-proposed: rgba(223,70,73,.8);
         }
 
         &.expandible {
-          max-height: 400px;
-          // height: auto;
-          transition: max-height ease-in .5s;
+          max-height: 3000px;
+          transition: max-height ease-in .2s;
           overflow: hidden;
           
           &:not(.expanded) {
-            transition: max-height ease-out .5s;
-            max-height: 50px;
+            transition: max-height ease-out .2s;
+            max-height: 68px !important;
           }
         }
         

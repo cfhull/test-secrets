@@ -24,6 +24,13 @@ class CardDock extends React.PureComponent {
     this.toggleProperty = this.toggleProperty.bind(this);
   }
 
+  UNSAFE_componentWillReceiveProps(newProps) {
+    // necessary to ensure smooth height transitions
+    if (newProps.cardData.length !== this.props.cardData.length) {
+      this.setState({ expandedProperties: {} });
+    }
+  }
+
   removeCard(id) {
     this.props.removeCard(id);
   }
@@ -47,6 +54,17 @@ class CardDock extends React.PureComponent {
   toggleProperty(property, expanded) {
     const expandedProperties = {...this.state.expandedProperties};
     expandedProperties[property] = !expanded;
+
+    // necessary to ensure smooth height transitions
+    try {
+      const elems = document.getElementsByClassName(`cell ${property}`);
+      const greatestHeight = _.max(_.map(elems, 'scrollHeight'));
+      _.each(elems, elem => {
+        elem.style.maxHeight = greatestHeight + 20 + 'px';
+      })
+    }
+    catch(e) {}
+
     this.setState({ expandedProperties });
   }
 
@@ -77,7 +95,7 @@ class CardDock extends React.PureComponent {
 
       const expandible = this.getIsExpandible(field);
 
-      const expanded = !!this.state.expandedProperties[field.sheetId];
+      const expanded = !!this.state.expandedProperties[sheetId];
 
       let expandIcon = null;
       if (expandible) {
@@ -85,13 +103,13 @@ class CardDock extends React.PureComponent {
         const iconType = expanded ? ICON_TYPE.COLLAPSE : ICON_TYPE.EXPAND;
         expandIcon = (
           <TriggerIcon
-            onClick={this.toggleProperty.bind(this, field.sheetId, expanded)}
+            onClick={this.toggleProperty.bind(this, sheetId, expanded)}
             iconType={iconType}
           />
         );
       }
 
-      let cellClass = 'cell';
+      let cellClass = 'cell ' + sheetId;
       if (expandible) {
         cellClass += ' expandible';
       }
