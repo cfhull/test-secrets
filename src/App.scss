@@ -418,7 +418,7 @@ $light-gray: #f7f7f7;
   }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 2 * $FS-card-width) {
   /* LEGEND */
   .legend {
     position: fixed;
@@ -448,6 +448,7 @@ $light-gray: #f7f7f7;
   /* DOCK */
   /* for smaller screens, don't "dock" */
   .card-dock-container {
+    width: unset;
     .card-dock {
       width: 100%;
 
@@ -461,6 +462,11 @@ $light-gray: #f7f7f7;
       }
       &.card-count-2 .card-table,
       &.card-count-3 .card-table {
+        width: 100%;
+        .card {
+          min-width: $FS-card-width;
+          width: $FS-card-width;
+        }
       }
     }
   }
