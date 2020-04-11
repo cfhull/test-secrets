@@ -171,7 +171,7 @@ $light-gray: #f7f7f7;
       width: 16px; //FS
     }
     
-    .scroll-hint {
+    &.scroll-hint {
       text-align: center;
       position: absolute;
       /* center hint above the cards - keep in sync with width */
@@ -179,7 +179,7 @@ $light-gray: #f7f7f7;
       width: 200px; 
       top: -40px;
       height: 40px;
-      .dismissed {
+      &.dismissed {
         top: 0;
         transition: top ease 0.8s;
       }
@@ -188,7 +188,7 @@ $light-gray: #f7f7f7;
       }
     }
     
-    .selection-hint {
+    &.selection-hint {
       position: absolute;
       /* NOTE: keep in sync with .card-dock-wrapper .card-dock-container top */
       top: 100px;
@@ -452,107 +452,18 @@ $light-gray: #f7f7f7;
     .card-dock {
       width: 100%;
 
-      &.card-count-1 .card-table {
-        width: 100%;
-        .card {
-          width: 100%;
-          min-width: $FS-card-width;
-          max-width: unset;
-        }
+      &.card-count-1 .card-table .card {
+        // width: 100%;
+        max-width: unset;
       }
+      &.card-count-1 .card-table,
       &.card-count-2 .card-table,
       &.card-count-3 .card-table {
         width: 100%;
         .card {
-          min-width: $FS-card-width;
           width: $FS-card-width;
         }
       }
     }
   }
-
-
-  .NOTTT {
-    .card-dock-container,
-    .card-dock-container.maximized {
-      /* position: absolute;
-      top: 100vh; */
-    }
-
-    .scroll-hint {
-      left: calc(50vw - 100px);
-    }
-
-    .selection-hint {
-      height: 110px;
-      top: 0;
-      /* top: -110px; */
-      left: calc(50vw - 148px);
-      /* right: unset; */
-      width: 286px;
-      transition: top ease 0.8s;
-    }
-    .selection-hint.sole-hint {
-      top: -110px;
-    }
-    .selection-hint.sole-hint.dismissed {
-      top: 0;
-      /* right: calc(50% - 148px); */
-    }
-
-    .card-dock thead td {
-      font-size: 20px;
-      line-height: 32px;
-      height: 80px;
-      /* make room for trigger-icon */
-      padding-right: 40px;
-    }
-    
-    thead td .remove-icon {
-      width: 40px;
-      top: 12px;
-      right: 8px;
-    }
-
-    .card-dock .property-name,
-    .card-dock .property-location-title {
-      font-size: 20px;
-      letter-spacing: unset;
-    }
-
-    .property-value {
-      font-size: 20px;
-    }
-    .property-cell.expandible .property-value:not(.expanded) {
-      max-height: 49px;
-    }
-
-    .property-cell .trigger-icon {
-      width: 30px;
-      right: 7px;
-      top: 20px;
-    }
-
-    .card-dock td {
-      padding: 22px;
-    }
-
-    .card-dock-container.card-count-1 {
-      /* min-width: 325px; */
-      width: 100%;
-      max-width: unset;
-    }
-    .card-dock-container.card-count-2 {
-      /* min-width: 650px; */
-      width: 150%;
-      max-width: unset;
-    }
-    .card-dock-container.card-count-3 {
-      /* min-width: 975px; */
-      width: 200%;
-      max-width: unset;
-    }
-}
-}
-@media (max-width: 991px) {
 }

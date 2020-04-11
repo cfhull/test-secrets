@@ -316,6 +316,8 @@ class CardDock extends React.PureComponent {
       >
         <div className={classes}>
           <div className="card-table">
+          {this.getScrollHint()}
+          {this.getSelectionHint()}
             <div className='row header'>{this.getNames()}</div>
             {this.getRows()}
           </div>
