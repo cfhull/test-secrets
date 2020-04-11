@@ -81,8 +81,8 @@ html, body, #root, .app, .map-container {
 }
 
 .legend.hidden {
-  height: 10px;
-  width: 10px;
+  background: transparent;
+  box-shadow: none;
 }
 .legend.hidden .content {
   display: none;
@@ -250,6 +250,8 @@ $light-gray: #f7f7f7;
       .row {
         height: 100%; //?
         display: flex;
+        // just so it appears above dismissed user-hints
+        position: relative;
       }
       
       .card {
@@ -449,6 +451,34 @@ $light-gray: #f7f7f7;
   /* for smaller screens, don't "dock" */
   .card-dock-container {
     width: unset;
+    min-width: 100vw;
+
+    .user-hint{
+      &.scroll-hint {
+        left: calc(50vw - 100px);
+      }
+  
+      &.selection-hint {
+        height: 110px;
+        top: 0;
+        /* top: -110px; */
+        left: calc(50vw - 148px);
+        /* right: unset; */
+        width: 286px;
+        transition: top ease 0.8s;
+
+        &.sole-hint {
+          top: -110px;
+          right: unset;
+
+          &.dismissed {
+            top: 0;
+            /* right: calc(50% - 148px); */
+          }
+        }
+      }
+    }
+
     .card-dock {
       width: 100%;
 
