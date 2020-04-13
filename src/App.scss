@@ -150,7 +150,7 @@ $light-gray: #f7f7f7;
 .card-dock-container { //card-dock-wrapper
   // .trigger-icon { width: 4px }
   
-  background-color: white;
+  background-color: #eee;
 
   z-index: 5;
   position: absolute;
@@ -179,9 +179,10 @@ $light-gray: #f7f7f7;
       width: 200px; 
       top: -40px;
       height: 40px;
+      animation: slide-up 1.2s forwards;
       &.dismissed {
-        top: 0;
-        transition: top ease 0.8s;
+        top: 100vh;
+        transition: top ease 3s;
       }
       .content {
         padding: 12px;
@@ -194,10 +195,10 @@ $light-gray: #f7f7f7;
       top: 100px;
       right: -230px;
       width: 230px;
-      transition: right ease 0.8s;
+      transition: right ease 2s;
       
       &.dismissed {
-        right: 0;
+        right: -100vw;
       }
       .content {
         padding: 20px;
@@ -237,13 +238,13 @@ $light-gray: #f7f7f7;
       // nor the empty portion of the dock to overflow the right
       width: 100%;
     }
-    background-color: white;
 
     .card-table { //table.card-dock
       position: relative;
       /* top of card should stick up above window bottom */
       top: -100px; //FS
-      box-shadow: rgba(0, 0, 0, 0.1) -2px -4px 10px 2px;
+      // tough to mesh with card animation onto screen
+      // box-shadow: rgba(0, 0, 0, 0.1) -2px -4px 10px 2px;
 
       // background: lightsalmon;
 
@@ -260,6 +261,8 @@ $light-gray: #f7f7f7;
         // height: 100%;
         display: inline-block;
         // vertical-align: top;
+
+        animation: slide-up .8s forwards;
       }
 
       .cell {
@@ -398,25 +401,53 @@ $light-gray: #f7f7f7;
     }
     
     /* alternating row colors */
-    .row:nth-child(even) {
+    .row:nth-child(even) .card {
       background-color: $light-gray;
       .cell.expandible:not(.expanded):before {
         // appropriate color for text fade
         background: linear-gradient(transparent, $light-gray 15px);
       }
     } 
-    .row:nth-child(odd) {
+    .row:nth-child(odd) .card {
       background-color: white;
       .cell.expandible:not(.expanded):before {
         // appropriate color for text fade
         background: linear-gradient(transparent, white 15px);
       }
     }
-    .row:not(:first-child) .card:not(:first-child) .cell {
+    .row .card .cell {
       /* for a subtle division between cards 
          compensate headers with added 1px */
-      border-left: solid #f2f2f2 1px; // #f2f2f2 1px;
+      // border-left: solid #f2f2f2 .5px;
+      border: solid #eeeeee75 .5px;
     }
+  }
+}
+
+@keyframes slide-right {
+  from {
+    transform: translate(-$FS-card-width);
+    z-index: 1;
+  }
+  to {
+    transform: translate(0);
+    z-index: 2000;
+  }
+}
+@keyframes slide-left {
+  from {
+    transform: translate(100vw);
+  }
+  to {
+    transform: translate(0);
+  }
+}
+@keyframes slide-up {
+  from {
+    transform: translate(0, 100vh);
+  }
+  to {
+    transform: translate(0);
   }
 }
 
@@ -472,7 +503,7 @@ $light-gray: #f7f7f7;
           right: unset;
 
           &.dismissed {
-            top: 0;
+            top: 100vh;
             /* right: calc(50% - 148px); */
           }
         }
