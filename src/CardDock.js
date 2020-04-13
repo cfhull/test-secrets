@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import _ from 'lodash';
 import TriggerIcon, { ICON_TYPE } from './TriggerIcon';
 import { SHEET_FIELDS, ORDERED_CARD_FIELDS, COMPOSITE_FIELDS, LINK_FIELD_PAIRS } from './fields';
@@ -142,9 +143,10 @@ class CardDock extends React.PureComponent {
   getIsExpandible(field) {
     if (field === LOCATION) {
       // if any experimint in the card dock has multiple locations, the location cell should be expandible
-      return _.some(this.props.cardData, expCardSet => expCardSet.length > 1);
+      return _.some(this.props.cardData, expCardSet => expCardSet.length > 2);
     }
-    if (!field.isExpandible || field.isComposite) {
+    // TODO: should fields designate isExpandible? if so, use here
+    if (field.isComposite || field.isFeatureHeader) {
       // TODO: should composite rows (Related Resources be expandible? how to measure?)
       return false;
     }
@@ -153,10 +155,10 @@ class CardDock extends React.PureComponent {
       return true;
     }
 
-    // if any experiment's value for the cell is longer than 100 characters
+    // if any experiment's value for the cell is longer than X characters
     return _.some(this.props.cardData, expCardSet => {
       // only need to check first location since we only hit this case if cell is undifferentiated
-      return expCardSet[0][field.sheetId].length > 100;
+      return expCardSet[0][field.sheetId].length > 120;
     });
   }
 
@@ -286,7 +288,7 @@ class CardDock extends React.PureComponent {
     let classes = 'selection-hint';
 
     if (this.state.scrollHintDismissed) {
-      classes += ' sole-hint';
+      classes += ' scroll-initiated';
     }
     return (
       <UserHint
