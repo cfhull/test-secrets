@@ -150,7 +150,7 @@ $light-gray: #f7f7f7;
 .card-dock-container { //card-dock-wrapper
   // .trigger-icon { width: 4px }
   
-  background-color: lightseagreen;
+  background-color: white;
 
   z-index: 5;
   position: absolute;
@@ -237,7 +237,7 @@ $light-gray: #f7f7f7;
       // nor the empty portion of the dock to overflow the right
       width: 100%;
     }
-    background-color: lightskyblue;
+    background-color: white;
 
     .card-table { //table.card-dock
       position: relative;
