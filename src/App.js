@@ -12,13 +12,13 @@ const { LONGITUDE, LATITUDE, NAME, LOCATION, TYPE, EID } = SHEET_FIELDS;
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 const MAX_SELECTED_POINTS = 3;
+const STARTING_LNG = -98;
+const STARTING_LAT = 40;
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      lat: 40,
-      lng: -98,
       zoom: 3,
       hovered: {},
       selectedIds: [],
@@ -38,21 +38,21 @@ class App extends React.Component {
     this.map = new mapboxgl.Map({
       container: this.mapContainer,
       style: styleData,
-      center: [this.state.lng, this.state.lat],
+      center: [STARTING_LNG, STARTING_LAT],
       zoom: this.state.zoom,
     });
     
-    this.map.on('move', () => {
+    this.map.on('move', _.debounce(() => {
       this.featuresOnUnhover();
       console.log('lat: ', this.map.getCenter().lat.toFixed(4));
       console.log('lng: ', this.map.getCenter().lng.toFixed(4));
       console.log('zoom: ', this.map.getZoom().toFixed(2));
-      this.setState({
-        lng: this.map.getCenter().lng.toFixed(4),
-        lat: this.map.getCenter().lat.toFixed(4),
-        zoom: this.map.getZoom().toFixed(2)
-      });
-    });
+      // this.setState({
+      //   lng: this.map.getCenter().lng.toFixed(4),
+      //   lat: this.map.getCenter().lat.toFixed(4),
+      //   zoom: this.map.getZoom().toFixed(2)
+      // });
+    }, 200, { leading: true, trailing: false }));
     
     this.map.on('load', this.removeMapMask.bind(this));
 
