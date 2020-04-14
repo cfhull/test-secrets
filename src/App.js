@@ -1,11 +1,12 @@
+import './App.scss';
 import CardDock from './CardDock';
 import Legend from './Legend';
+import LoadingMask from './LoadingMask';
 import React from 'react';
 import Tooltip from './Tooltip';
-import mapboxgl from 'mapbox-gl';
 import _ from 'lodash';
+import mapboxgl from 'mapbox-gl';
 import styleData from './style.json';
-import './App.scss';
 import { SHEET_FIELDS } from './fields';
 
 const { LONGITUDE, LATITUDE, NAME, LOCATION, TYPE, EID } = SHEET_FIELDS;
@@ -24,7 +25,11 @@ class App extends React.Component {
       selectedIds: [],
       isTouchScreen: false,
       selectionHintDismissed: false,
-      maxCardHintTriggered: false
+      maxCardHintTriggered: false,
+      mapLoaded: false,
+      dataLoaded: false,
+      mapLoaded: false,
+      mapConfigured: false
     };
 
     this.map = null;
@@ -42,20 +47,15 @@ class App extends React.Component {
       zoom: this.state.zoom,
     });
     
+    this.map.on('load', this.markMapLoaded.bind(this));
+
     this.map.on('move', _.debounce(() => {
       this.featuresOnUnhover();
       console.log('lat: ', this.map.getCenter().lat.toFixed(4));
       console.log('lng: ', this.map.getCenter().lng.toFixed(4));
       console.log('zoom: ', this.map.getZoom().toFixed(2));
-      // this.setState({
-      //   lng: this.map.getCenter().lng.toFixed(4),
-      //   lat: this.map.getCenter().lat.toFixed(4),
-      //   zoom: this.map.getZoom().toFixed(2)
-      // });
-    }, 200, { leading: true, trailing: false }));
+    }, 200, { leading: true, trailing: false }));  
     
-    this.map.on('load', this.removeMapMask.bind(this));
-
     this.map.on('click', 'experimentSites', this.featuresOnClick.bind(this));
     this.map.on('mouseenter', 'experimentSites', this.featuresOnHover.bind(this));
     this.map.on('mouseleave', 'experimentSites', this.featuresOnUnhover.bind(this));
@@ -65,8 +65,8 @@ class App extends React.Component {
     load.call(this); 
   }
   
-  removeMapMask() {
-    console.log('MAP LOADED', new Date);
+  markMapLoaded() {
+    this.setState({ mapLoaded: true });
   }
 
   registerTouchScreen() {
@@ -189,12 +189,21 @@ class App extends React.Component {
   }
   
   render() {
+    const { dataLoaded, mapLoaded, mapConfigured } = this.state;
+    const loading = !dataLoaded || !mapLoaded || !mapConfigured;
+    let classes = 'app';
+    if (loading) {
+      classes += ' loading';
+    }
     return (
-      <div className='app'>
-        {this.getCardDock()}
-        {this.getTooltip()}
-        <div ref={el => this.mapContainer = el} className='map-container' />
-        <Legend />
+      <div>
+        <LoadingMask dataLoaded={dataLoaded} mapLoaded={mapLoaded} mapConfigured={mapConfigured} />
+        <div className={classes}>
+          {this.getCardDock()}
+          {this.getTooltip()}
+          <div ref={el => this.mapContainer = el} className='map-container' />
+          <Legend />
+        </div>
       </div>
     );
   }
@@ -261,12 +270,12 @@ function load () {
     
     experimentsData.features.push(...items);
     this.map.getSource('experiments').setData(experimentsData);
-    console.log('THREE', new Date);
+    this.setState({ mapConfigured: true });
   }
 
   // Fetch Local Article Data
   const experimentsReq = new XMLHttpRequest();
-  console.log('ONE', new Date);
+  this.setState({ dataLoaded: true });
   experimentsReq.addEventListener('load',  () => { reqHandler('experiments', experimentsReq) });
   experimentsReq.open('GET', process.env.REACT_APP_SHEET_URL);
   experimentsReq.send();

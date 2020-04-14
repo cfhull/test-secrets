@@ -1,3 +1,22 @@
+
+// COLORS
+$color-past: rgb(0,80,92);
+$color-ongoing: rgb(175,105,12);
+$color-proposed: rgb(223,70,73);
+$light-gray: #f7f7f7;
+
+// SIZES
+$FS-card-width: 300px;
+$FS-dock-width: $FS-card-width * 3;
+$scroll-hint-width: 200px;
+$scroll-hint-height: 40px;
+$selection-hint-width: 230px;
+$selection-hint-height: 134px;
+$max-point-hint-width: 425px;
+$max-point-hint-height: 85px;
+
+$card-peek-height: 100px;
+
 * {
   margin: 0;
   padding: 0;
@@ -28,6 +47,52 @@ html, body, #root, .app, .map-container {
   /* necessary to prevent dock from overflowing page on mobile */
   position: absolute;
   overflow: scroll;
+  filter: blur(0px);
+  transition: filter 1s ease;
+
+  &.loading {
+    filter: blur(8px);
+  }
+}
+
+.mask {
+  position: fixed;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  z-index: 100;
+  background-color: rgba(0,80,92,.4);
+  &.loaded {
+    background-color: rgba(0,0,0,0);
+    translate: 100% 100%;;
+    transition: background-color ease 1s, translate ease 0s 1s;
+  }
+  .content {
+    margin: auto;
+    font-size: 22px;
+    text-transform: uppercase;
+    .loading-dots {
+      display: flex;
+      justify-content: space-evenly;
+      div {
+        width: 18px;
+        height: 18px;
+        border-radius: 9px;
+        animation: ball-pulse 1s ease infinite;
+        &:nth-child(1) {
+          animation-delay: -.2s;
+          background-color: $color-past;
+        }
+        &:nth-child(2) {
+          animation-delay: -.1s;
+          background-color: $color-ongoing;
+        }
+        &:nth-child(3) {
+          background-color: $color-proposed;
+        }
+      }
+    }
+  }
 }
 
 /* MAP */
@@ -139,28 +204,10 @@ html, body, #root, .app, .map-container {
   font-weight: 700;
 }
 
-// COLORS
-$color-past: rgba(0,80,92,.8);
-$color-ongoing: rgba(175,105,12,.8);
-$color-proposed: rgba(223,70,73,.8);
-$light-gray: #f7f7f7;
-
-// SIZES
-$FS-card-width: 300px;
-$FS-dock-width: $FS-card-width * 3;
-$scroll-hint-width: 200px;
-$scroll-hint-height: 40px;
-$selection-hint-width: 230px;
-$selection-hint-height: 134px;
-$max-point-hint-width: 425px;
-$max-point-hint-height: 85px;
-
-$card-peek-height: 100px;
-
 /*{ CARD DOCK */
 .card-dock-container { //card-dock-wrapper
   // .trigger-icon { width: 4px }
-  
+
   background-color: #eee;
 
   z-index: 5;
@@ -181,13 +228,13 @@ $card-peek-height: 100px;
       stroke-width: 8; //FS
       width: 16px; //FS
     }
-    
+
     &.scroll-hint {
       text-align: center;
       position: absolute;
       /* center hint above the first card */
       left: calc((#{$FS-card-width} - #{$scroll-hint-width}) / 2);
-      width: $scroll-hint-width; 
+      width: $scroll-hint-width;
       top: -$scroll-hint-height;
       height: $scroll-hint-height;
       animation: slide-up 1.2s forwards;
@@ -199,7 +246,7 @@ $card-peek-height: 100px;
         padding: 12px;
       }
     }
-    
+
     &.selection-hint {
       position: absolute;
       top: $card-peek-height;
@@ -246,7 +293,7 @@ $card-peek-height: 100px;
       }
     }
   }
-  
+
   .card-dock { //card-dock-container
     height: 100%;
 
@@ -262,7 +309,7 @@ $card-peek-height: 100px;
     &.card-count-3 .card-table {
       width: $FS-card-width * 3;
     }
-    
+
     // the card-dock is centered (unmoved by card-count)
     margin-left: calc((100vw - #{$FS-dock-width}) / 2);
     @media screen and (max-width: $FS-dock-width) {
@@ -287,7 +334,7 @@ $card-peek-height: 100px;
         // just so it appears above dismissed user-hints
         position: relative;
       }
-      
+
       .card {
         max-width: $FS-card-width; //FS
         flex: 1 0 0;
@@ -344,7 +391,7 @@ $card-peek-height: 100px;
           // overflow: hidden;
           padding-top: 4px;
           font-size: 14px; //FS
-          
+
           a {
             display: block;
             cursor: pointer;
@@ -356,21 +403,21 @@ $card-peek-height: 100px;
           max-height: 3000px;
           transition: max-height ease-in .2s;
           overflow: hidden;
-          
+
           &:not(.expanded) {
             transition: max-height ease-out .2s;
             // important because it has to override the inline style set by JS
             max-height: 75px !important;
-            
+
             &:before {
               height: 20px;
-            }        
+            }
           }
           // gradient text to fade unexpanded cellsqq
           &:before {
             content: '';
             width: 100%;
-            height: 0px;    
+            height: 0px;
             transition: height ease-in-out .3s;
             position: absolute;
             left: 0;
@@ -378,7 +425,7 @@ $card-peek-height: 100px;
             // appropriate color given with alternating row colors
           }
         }
-        
+
       }
 
       // HEADER (NAME) STYLES
@@ -409,7 +456,7 @@ $card-peek-height: 100px;
             // to compensate for border-left added to other cells
             // width: $FS-card-width + 1px;
           }
-          
+
           .cell {
             padding-top: 20px; //FS
             // height: 100px;
@@ -420,7 +467,7 @@ $card-peek-height: 100px;
             /* so trigger has a positioned element to hang onto */
             position: relative;
             font-weight: 700;
-            
+
             .remove-icon {
               position: absolute;
               width: 14px; //FS
@@ -430,10 +477,10 @@ $card-peek-height: 100px;
           }
         }
       }
-      
+
 
     }
-    
+
     /* alternating row colors */
     .row:nth-child(even) .card {
       background-color: $light-gray;
@@ -441,7 +488,7 @@ $card-peek-height: 100px;
         // appropriate color for text fade
         background: linear-gradient(transparent, $light-gray 15px);
       }
-    } 
+    }
     .row:nth-child(odd) .card {
       background-color: white;
       .cell.expandible:not(.expanded):before {
@@ -450,58 +497,11 @@ $card-peek-height: 100px;
       }
     }
     .row .card .cell {
-      /* for a subtle division between cards 
+      /* for a subtle division between cards
          compensate headers with added 1px */
       // border-left: solid #f2f2f2 .5px;
       border: solid #eeeeee75 .5px;
     }
-  }
-}
-
-@keyframes slide-right {
-  from {
-    transform: translate(-$FS-card-width);
-    z-index: 1;
-  }
-  to {
-    transform: translate(0);
-    z-index: 20;
-  }
-}
-@keyframes slide-left {
-  from {
-    transform: translate(100vw);
-  }
-  to {
-    transform: translate(0);
-  }
-}
-@keyframes slide-up {
-  from {
-    transform: translate(0, 100vh);
-  }
-  to {
-    transform: translate(0);
-  }
-}
-@keyframes max-point-pop-up {
-  0% {
-    transform: translate(0, 0);
-  }
-  20% {
-    transform: translate(0, -$max-point-hint-height);
-  }
-  80% {
-    transform: translate(0, -$max-point-hint-height);
-  }
-  99% {
-    // annoying work-around because display: none can't be set in an animation
-    transform: translate(0, 0) scale(1, 1);
-    visibility: visible;
-  }
-  100% {
-    transform: scale(0, 0);
-    visibility: none;
   }
 }
 
@@ -572,5 +572,64 @@ $card-peek-height: 100px;
         }
       }
     }
+  }
+}
+
+@keyframes ball-pulse {
+  0%, 100%, 60% {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  30% {
+      opacity: .1;
+      -webkit-transform: scale(.01);
+      transform: scale(.01);
+  }
+}
+@keyframes slide-right {
+  from {
+    transform: translate(-$FS-card-width);
+    z-index: 1;
+  }
+  to {
+    transform: translate(0);
+    z-index: 20;
+  }
+}
+@keyframes slide-left {
+  from {
+    transform: translate(100vw);
+  }
+  to {
+    transform: translate(0);
+  }
+}
+@keyframes slide-up {
+  from {
+    transform: translate(0, 100vh);
+  }
+  to {
+    transform: translate(0);
+  }
+}
+@keyframes max-point-pop-up {
+  0% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(0, -$max-point-hint-height);
+  }
+  80% {
+    transform: translate(0, -$max-point-hint-height);
+  }
+  99% {
+    // annoying work-around because display: none can't be set in an animation
+    transform: translate(0, 0) scale(1, 1);
+    visibility: visible;
+  }
+  100% {
+    transform: scale(0, 0);
+    visibility: none;
   }
 }
