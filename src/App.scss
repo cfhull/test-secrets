@@ -1,8 +1,12 @@
 
 // COLORS
-$color-past: rgb(0,80,92);
-$color-ongoing: rgb(175,105,12);
-$color-proposed: rgb(223,70,73);
+$color-past: rgb(49,113,121);
+$color-ongoing: rgb(189,133,57);
+$color-proposed: rgb(225,105,106);
+// (mapbox values)
+// $color-past: rgba(0,80,92,.8);
+// $color-ongoing: rgba(175,105,12,.8);
+// $color-proposed: rgba(223,70,73,.8);
 $light-gray: #f7f7f7;
 
 // SIZES
@@ -48,7 +52,7 @@ html, body, #root, .app, .map-container {
   position: absolute;
   overflow: scroll;
   filter: blur(0px);
-  transition: filter 1s ease;
+  transition: filter 2s ease;
 
   &.loading {
     filter: blur(8px);
@@ -62,10 +66,12 @@ html, body, #root, .app, .map-container {
   width: 100%;
   z-index: 100;
   background-color: rgba(0,80,92,.4);
+  opacity: 100%;
   &.loaded {
     background-color: rgba(0,0,0,0);
+    opacity: 0%;
     translate: 100% 100%;;
-    transition: background-color ease 1s, translate ease 0s 1s;
+    transition: background-color ease 2s, opacity ease 1s .5s, translate ease 0s 2s;
   }
   .content {
     margin: auto;
