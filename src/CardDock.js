@@ -265,52 +265,66 @@ class CardDock extends React.PureComponent {
   }
 
   getScrollHint() {
-    const content = (
-    <>scroll for more {<TriggerIcon iconType={ICON_TYPE.D_ARROW} />}</>
-    );
+    const content = <>scroll for more {<TriggerIcon iconType={ICON_TYPE.D_ARROW} />}</>
     return (
       <UserHint
         content={content}
         classes={'scroll-hint'}
-        dismissed={this.state.scrollHintDismissed}
+        dismissed={this.state.scrollHintDismissed || this.props.maxCardHintTriggered}
       />
     );
   }
 
   getSelectionHint() {
     const content = (
-    <>
-      click more map points to compare experiments<p className='maximum'>(max. 3)</p>
-      <TriggerIcon iconType={ICON_TYPE.R_ARROW} />
-    </>
+      <>
+        click more map points to compare experiments<p className='maximum'>(max. 3)</p>
+        <TriggerIcon iconType={ICON_TYPE.R_ARROW} />
+      </>
     );
 
     let classes = 'selection-hint';
-
     if (this.state.scrollHintDismissed) {
       classes += ' scroll-initiated';
     }
+    
     return (
       <UserHint
-        content={content}
-        classes={classes}
-        dismissed={this.props.selectionHintDismissed}
+      content={content}
+      classes={classes}
+      dismissed={this.props.selectionHintDismissed}
       />
-    );
-  }
-
-  render() {
-    if (!this.props.cardData.length) {
-      return null;
+      );
     }
+  
+    getMaxPointHint() {
+      const content = <>Only 3 experiments may be viewed at once. Remove a card to add another experiment.</>
 
-    let classes = `card-dock card-count-${this.props.cardData.length}`;
-    if (!this.state.minimized) {
-      classes += ' maximized';
+      let classes = 'max-point-hint';
+      if (this.props.maxCardHintTriggered) {
+        classes += ' triggered'
+      }
+
+      return (
+        <UserHint
+          content={content}
+          classes={classes}
+        />
+      );
     }
-
-    return (
-      <div
+    
+    render() {
+      if (!this.props.cardData.length) {
+        return null;
+      }
+      
+      let classes = `card-dock card-count-${this.props.cardData.length}`;
+      if (!this.state.minimized) {
+        classes += ' maximized';
+      }
+      
+      return (
+        <div
         onWheel={this.slideDock}
         onDoubleClick={this.toggleDock}
         onTouchStart={this.maximizeDock}
@@ -320,6 +334,7 @@ class CardDock extends React.PureComponent {
           <div className="card-table">
           {this.getScrollHint()}
           {this.getSelectionHint()}
+          {this.getMaxPointHint()}
             <div className='row header'>{this.getNames()}</div>
             {this.getRows()}
           </div>

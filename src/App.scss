@@ -152,6 +152,8 @@ $scroll-hint-width: 200px;
 $scroll-hint-height: 40px;
 $selection-hint-width: 230px;
 $selection-hint-height: 134px;
+$max-point-hint-width: 425px;
+$max-point-hint-height: 85px;
 
 $card-peek-height: 100px;
 
@@ -225,6 +227,22 @@ $card-peek-height: 100px;
         .maximum {
           display: block;
         }
+      }
+    }
+    &.max-point-hint {
+      position: absolute;
+      width: $max-point-hint-width;
+      height: $max-point-hint-height;
+      left: calc((#{$FS-dock-width} - #{$max-point-hint-width}) / 2);
+      &:not(.triggered) {
+        display: none;
+      }
+      &.triggered {
+        animation: max-point-pop-up 4s forwards;
+      }
+      .content {
+        text-align: center;
+        padding: 20px;
       }
     }
   }
@@ -447,7 +465,7 @@ $card-peek-height: 100px;
   }
   to {
     transform: translate(0);
-    z-index: 2000;
+    z-index: 20;
   }
 }
 @keyframes slide-left {
@@ -464,6 +482,26 @@ $card-peek-height: 100px;
   }
   to {
     transform: translate(0);
+  }
+}
+@keyframes max-point-pop-up {
+  0% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(0, -$max-point-hint-height);
+  }
+  80% {
+    transform: translate(0, -$max-point-hint-height);
+  }
+  99% {
+    // annoying work-around because display: none can't be set in an animation
+    transform: translate(0, 0) scale(1, 1);
+    visibility: visible;
+  }
+  100% {
+    transform: scale(0, 0);
+    visibility: none;
   }
 }
 

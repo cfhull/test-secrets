@@ -23,7 +23,8 @@ class App extends React.Component {
       hovered: {},
       selectedIds: [],
       isTouchScreen: false,
-      selectionHintDismissed: false
+      selectionHintDismissed: false,
+      maxCardHintTriggered: false
     };
 
     this.map = null;
@@ -53,16 +54,22 @@ class App extends React.Component {
       });
     });
     
+    this.map.on('load', this.removeMapMask.bind(this));
+
     this.map.on('click', 'experimentSites', this.featuresOnClick.bind(this));
     this.map.on('mouseenter', 'experimentSites', this.featuresOnHover.bind(this));
     this.map.on('mouseleave', 'experimentSites', this.featuresOnUnhover.bind(this));
 
-    this.map.on('touchstart', 'experimentSites', this.touchstart.bind(this));
+    this.map.on('touchstart', 'experimentSites', this.registerTouchScreen.bind(this));
     
     load.call(this); 
   }
   
-  touchstart(e) {
+  removeMapMask() {
+    console.log('MAP LOADED', new Date);
+  }
+
+  registerTouchScreen() {
     this.setState({ isTouchScreen: true });
   }
 
@@ -79,8 +86,7 @@ class App extends React.Component {
 
     if (!alreadySelected) {
       if (selectedIds.length >= MAX_SELECTED_POINTS) {
-        console.log('OH SHET!');
-        // warn user
+        this.setState({ maxCardHintTriggered: true });
         return;
       } else {
         selectedIds.push(expId);
@@ -169,7 +175,7 @@ class App extends React.Component {
       return null;
     }
 
-    const { selectedIds, isTouchScreen, selectionHintDismissed } = this.state;
+    const { selectedIds, isTouchScreen, selectionHintDismissed, maxCardHintTriggered } = this.state;
     const cardData = selectedIds.map(this.getFeaturesByExperimentId);
     return (
       <CardDock
@@ -177,6 +183,7 @@ class App extends React.Component {
         cardData={cardData}
         isTouchScreen={isTouchScreen}
         selectionHintDismissed={selectionHintDismissed}
+        maxCardHintTriggered={maxCardHintTriggered}
       />
     );
   }
@@ -211,6 +218,7 @@ function load () {
 
   const reqHandler = (source, req) => {
     const [ columnHeaderRow, ...rows ] = JSON.parse(req.responseText).feed.entry;
+    console.log('TWO', new Date);
     const properties = Object.keys(rows[0])
       .filter(function (p) { 
         return p.startsWith('gsx$') & !p.endsWith('_db1zf');
@@ -253,12 +261,13 @@ function load () {
     
     experimentsData.features.push(...items);
     this.map.getSource('experiments').setData(experimentsData);
+    console.log('THREE', new Date);
   }
 
   // Fetch Local Article Data
   const experimentsReq = new XMLHttpRequest();
+  console.log('ONE', new Date);
   experimentsReq.addEventListener('load',  () => { reqHandler('experiments', experimentsReq) });
-  console.log(process.env.REACT_APP_SHEET_URL);
   experimentsReq.open('GET', process.env.REACT_APP_SHEET_URL);
   experimentsReq.send();
 }
