@@ -210,18 +210,15 @@ html, body, #root, .app, .map-container {
 }
 
 /*{ CARD DOCK */
-.card-dock-container { //card-dock-wrapper
-  // .trigger-icon { width: 4px }
-
+.card-dock-container {
   background-color: #eee;
 
   z-index: 5;
-  position: absolute;
+  position: relative;
   /* dock background initially just off-screen, appears when user scrolls up */
   top: 100vh;
   width: 100%;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px 3px;
-  // background: white;
 
   .user-hint {
     text-transform: uppercase;
