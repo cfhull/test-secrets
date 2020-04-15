@@ -70,8 +70,8 @@ html, body, #root, .app, .map-container {
   &.loaded {
     background-color: rgba(0,0,0,0);
     opacity: 0%;
-    translate: 100% 100%;;
-    transition: background-color ease 2s, opacity ease 1s .5s, translate ease 0s 2s;
+    transform: translate(100%, 100%);
+    transition: background-color ease 2s, opacity ease 1s .5s, transform ease 0s 2s;
   }
   .content {
     margin: auto;
