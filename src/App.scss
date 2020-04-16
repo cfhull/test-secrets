@@ -50,7 +50,8 @@ html, body, #root, .app, .map-container {
   /* necessary to prevent dock from overflowing page on mobile */
   position: absolute;
   overflow: scroll;
-  filter: blur(0px);
+  // filter messes with positioning of app/children. behaves correctly without implicitly setting
+  // filter: blur(0px);
   transition: filter 2s ease;
 
   &.loading {
