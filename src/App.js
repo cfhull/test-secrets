@@ -13,14 +13,14 @@ const { LONGITUDE, LATITUDE, NAME, LOCATION, TYPE, EID } = SHEET_FIELDS;
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 const MAX_SELECTED_POINTS = 3;
-const STARTING_LNG = -98;
-const STARTING_LAT = 40;
+const STARTING_LNG = -9.5;
+const STARTING_LAT = 17;
+const STARTING_ZOOM = 1.5;
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      zoom: 3,
       hovered: {},
       selectedIds: [],
       isTouchScreen: false,
@@ -44,7 +44,7 @@ class App extends React.Component {
       container: this.mapContainer,
       style: styleData,
       center: [STARTING_LNG, STARTING_LAT],
-      zoom: this.state.zoom,
+      zoom: STARTING_ZOOM,
     });
     
     this.map.on('load', this.markMapLoaded.bind(this));
