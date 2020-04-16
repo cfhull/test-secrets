@@ -1,13 +1,16 @@
-
 // COLORS
-$color-past: rgb(49,113,121);
-$color-ongoing: rgb(189,133,57);
-$color-proposed: rgb(225,105,106);
-// (mapbox values)
-// $color-past: rgba(0,80,92,.8);
-// $color-ongoing: rgba(175,105,12,.8);
-// $color-proposed: rgba(223,70,73,.8);
+$color-past: rgb(25,96,107);
+$color-ongoing: rgb(182,119,35);
+$color-proposed: rgb(225,87,90);
+// mapbox values (equivalent in hue to above, but semi-transparent to reveal ovelrap etc)
+// $color-past: rgba(0,80,92,.9);
+// $color-ongoing: rgba(175,105,12,.9);
+// $color-proposed: rgba(223,70,73,.9);
 $light-gray: #f7f7f7;
+$semi-trans-light-gray: transparentize($light-gray, .2);
+$trans-light-gray: transparentize($light-gray, .4);
+$middle-gray: #eee;
+$trans-middle-gray: transparentize($middle-gray, .5);
 
 // SIZES
 $FS-card-width: 300px;
@@ -18,7 +21,6 @@ $selection-hint-width: 230px;
 $selection-hint-height: 134px;
 $max-point-hint-width: 425px;
 $max-point-hint-height: 85px;
-
 $card-peek-height: 100px;
 
 * {
@@ -55,7 +57,7 @@ html, body, #root, .app, .map-container {
   transition: filter 2s ease;
 
   &.loading {
-    filter: blur(8px);
+    filter: blur(4px);
   }
 }
 
@@ -65,7 +67,7 @@ html, body, #root, .app, .map-container {
   height: 100%;
   width: 100%;
   z-index: 100;
-  background-color: rgba(0,80,92,.4);
+  background-color: $trans-light-gray;
   opacity: 1;
   &.loaded {
     background-color: rgba(0,0,0,0);
@@ -77,9 +79,12 @@ html, body, #root, .app, .map-container {
     margin: auto;
     font-size: 22px;
     text-transform: uppercase;
+    color: $color-past;
+    transform: translate(0,16px);
     .loading-dots {
       display: flex;
       justify-content: space-evenly;
+      padding: 4px 4px 0 0;
       div {
         width: 18px;
         height: 18px;
@@ -113,7 +118,7 @@ html, body, #root, .app, .map-container {
   position: fixed;
   top: 8px;
   right: 8px;
-  background: #ffffffcc;
+  background: $semi-trans-light-gray;
   padding: 8px;
   border-radius: 4px;
   font-size: 12px;
@@ -148,7 +153,6 @@ html, body, #root, .app, .map-container {
   top: 5px;
   width: 16px;
   stroke-width: 5;
-  /* user-select: none; */
 }
 
 .legend.hidden {
@@ -183,7 +187,6 @@ html, body, #root, .app, .map-container {
 }
 
 .tooltip .detail {
-  /* TODO: ? (UI) */
   font-size: 12px;
   padding-top: 5px;
 }
@@ -211,10 +214,8 @@ html, body, #root, .app, .map-container {
 }
 
 /*{ CARD DOCK */
-.card-dock-container { //card-dock-wrapper
-  // .trigger-icon { width: 4px }
-
-  background-color: #eee;
+.card-dock-container {
+  background-color: $middle-gray;
 
   z-index: 5;
   position: absolute;
@@ -222,7 +223,6 @@ html, body, #root, .app, .map-container {
   top: 100vh;
   width: 100%;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px 3px;
-  // background: white;
 
   .user-hint {
     text-transform: uppercase;
@@ -300,7 +300,7 @@ html, body, #root, .app, .map-container {
     }
   }
 
-  .card-dock { //card-dock-container
+  .card-dock {
     height: 100%;
 
     // dock always takes up 3-card width (when screen ample size)
@@ -325,14 +325,12 @@ html, body, #root, .app, .map-container {
       width: 100%;
     }
 
-    .card-table { //table.card-dock
+    .card-table {
       position: relative;
       /* top of card should stick up above window bottom */
       top: -$card-peek-height; //FS
       // tough to mesh with card animation onto screen
       // box-shadow: rgba(0, 0, 0, 0.1) -2px -4px 10px 2px;
-
-      // background: lightsalmon;
 
       .row {
         height: 100%; //?
@@ -419,7 +417,7 @@ html, body, #root, .app, .map-container {
               height: 20px;
             }
           }
-          // gradient text to fade unexpanded cellsqq
+          // gradient text to fade unexpanded cells
           &:before {
             content: '';
             width: 100%;
@@ -503,10 +501,7 @@ html, body, #root, .app, .map-container {
       }
     }
     .row .card .cell {
-      /* for a subtle division between cards
-         compensate headers with added 1px */
-      // border-left: solid #f2f2f2 .5px;
-      border: solid #eeeeee75 .5px;
+      border: solid $trans-middle-gray .5px;
     }
   }
 }

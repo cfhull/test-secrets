@@ -227,7 +227,6 @@ function load () {
 
   const reqHandler = (source, req) => {
     const [ columnHeaderRow, ...rows ] = JSON.parse(req.responseText).feed.entry;
-    console.log('TWO', new Date);
     const properties = Object.keys(rows[0])
       .filter(function (p) { 
         return p.startsWith('gsx$') & !p.endsWith('_db1zf');

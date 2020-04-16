@@ -3032,7 +3032,7 @@
                 ["==", ["get", "type"], "ongoing"], "rgb(175,105,12)",
                 "gray"
               ],
-              "circle-opacity": 0.8,
+              "circle-opacity": 0.9,
               "circle-radius": ["interpolate",
                   ["exponential", 1.3],
                   ["zoom"],
