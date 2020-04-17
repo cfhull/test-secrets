@@ -1,6 +1,6 @@
 {
     "version": 8,
-    "name": "Frank-pared-copy",
+    "name": "BIL experiments v3",
     "metadata": {
         "mapbox:type": "default",
         "mapbox:origin": "basic-v1",
@@ -88,7 +88,7 @@
         "mapbox:uiParadigm": "components",
         "mapbox:trackposition": false,
         "mapbox:decompiler": {
-            "id": "ck8qaf79a01bs1ionh6t7899f",
+            "id": "ck8t7vp4904x61ipfhb1r1cee",
             "componentVersion": "0.4.0",
             "strata": [
                 {
@@ -769,7 +769,7 @@
             }
         }
     },
-    "sprite": "https://tiles.evictionlab.org/sprites",
+    "sprite": "mapbox://sprites/basic-income/ck8t7vp4904x61ipfhb1r1cee/ehllwe8o1bu6zsyhngdcibqdf",
     "glyphs": "mapbox://fonts/alphalpha/{fontstack}/{range}.pbf",
     "layers": [
         {
