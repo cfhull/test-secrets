@@ -1,11 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import _ from 'lodash';
 import TriggerIcon, { ICON_TYPE } from './TriggerIcon';
 import { SHEET_FIELDS, ORDERED_CARD_FIELDS, COMPOSITE_FIELDS, LINK_FIELD_PAIRS } from './fields';
 import UserHint from './UserHint';
 
 const { LOCATION, NAME, EID, TYPE, WEBSITE } = SHEET_FIELDS;
+
+// time (in seconds) before the max card user hint auto-dismisses
+const MAX_CARD_HINT_TIMEOUT = 30;
 
 // pure component? (shallow compare map features?) (perf)
 class CardDock extends React.PureComponent {
@@ -15,7 +17,8 @@ class CardDock extends React.PureComponent {
     this.state = {
       minimized: true,
       expandedProperties: {},
-      scrollHintDismissed: false    
+      scrollHintDismissed: false,  
+      maxPointHintDismissed: false
     };
 
     this.removeCard = this.removeCard.bind(this);
@@ -23,12 +26,16 @@ class CardDock extends React.PureComponent {
     this.toggleDock = this.toggleDock.bind(this);
     this.maximizeDock = this.maximizeDock.bind(this);
     this.toggleProperty = this.toggleProperty.bind(this);
+    this.dismissMaxPointHint = this.dismissMaxPointHint.bind(this);
   }
 
   UNSAFE_componentWillReceiveProps(newProps) {
     // necessary to ensure smooth height transitions
     if (newProps.cardData.length !== this.props.cardData.length) {
       this.setState({ expandedProperties: {} });
+    }
+    if (newProps.maxCardHintTriggered !== this.props.maxCardHintTriggered) {
+      setTimeout(this.dismissMaxPointHint, 1000 * MAX_CARD_HINT_TIMEOUT);
     }
   }
 
@@ -290,9 +297,9 @@ class CardDock extends React.PureComponent {
     
     return (
       <UserHint
-      content={content}
-      classes={classes}
-      dismissed={this.props.selectionHintDismissed}
+        content={content}
+        classes={classes}
+        dismissed={this.props.selectionHintDismissed}
       />
       );
     }
@@ -309,8 +316,14 @@ class CardDock extends React.PureComponent {
         <UserHint
           content={content}
           classes={classes}
+          onDismiss={this.dismissMaxPointHint}
+          dismissed={this.state.maxPointHintDismissed}
         />
       );
+    }
+
+    dismissMaxPointHint() {
+      this.setState({ maxPointHintDismissed: true });
     }
     
     render() {

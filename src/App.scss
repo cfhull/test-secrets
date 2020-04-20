@@ -291,11 +291,19 @@ html, body, #root, .app, .map-container {
         display: none;
       }
       &.triggered {
-        animation: max-point-pop-up 4s forwards;
+        animation: pop-up .5s forwards;
+        &.dismissed {
+          animation: descend-then-disappear 1s forwards;
+        }
       }
       .content {
         text-align: center;
         padding: 20px;
+      }
+      .trigger-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
       }
     }
   }
@@ -486,14 +494,14 @@ html, body, #root, .app, .map-container {
     }
 
     /* alternating row colors */
-    .row:nth-child(even) .card {
+    .row:nth-child(odd) .card {
       background-color: $light-gray;
       .cell.expandible:not(.expanded):before {
         // appropriate color for text fade
         background: linear-gradient(transparent, $light-gray 15px);
       }
     }
-    .row:nth-child(odd) .card {
+    .row:nth-child(even) .card {
       background-color: white;
       .cell.expandible:not(.expanded):before {
         // appropriate color for text fade
@@ -614,14 +622,16 @@ html, body, #root, .app, .map-container {
     transform: translate(0);
   }
 }
-@keyframes max-point-pop-up {
-  0% {
+@keyframes pop-up {
+  from {
     transform: translate(0, 0);
   }
-  20% {
+  to {
     transform: translate(0, -$max-point-hint-height);
   }
-  80% {
+}
+@keyframes descend-then-disappear {
+  0% {
     transform: translate(0, -$max-point-hint-height);
   }
   99% {
@@ -631,6 +641,6 @@ html, body, #root, .app, .map-container {
   }
   100% {
     transform: scale(0, 0);
-    visibility: none;
+    visibility: hidden;
   }
 }
