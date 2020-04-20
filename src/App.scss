@@ -26,7 +26,7 @@ $max-point-hint-width: 425px;
 $max-point-hint-height: 85px;
 $card-peek-height: 100px;
 $intro-panel-width: 390px;
-$intro-panel-icon-offset: 10px;
+$intro-panel-icon-offset: 8px;
 
 * {
   margin: 0;
@@ -117,7 +117,7 @@ html, body, #root, .app, .map-container {
   left: 0;
   z-index: 3;
   top: $FS-boundary-padding;
-  bottom: 150px;
+  bottom: calc(#{$FS-boundary-padding} + #{$card-peek-height});
   min-height: 120px;
   width: $intro-panel-width;
   background: white;
@@ -129,12 +129,11 @@ html, body, #root, .app, .map-container {
 
   .info-icon {
     stroke-width: 0;
-    height: 35px;
-    width: 35px;
-    position: absolute;
-    right: $intro-panel-icon-offset;
-    top: $intro-panel-icon-offset;
-    transition: position ease .4s 1s;
+    height: 30px;
+    width: 30px;
+    position: fixed;
+    left: $intro-panel-icon-offset;
+    top: calc(#{$FS-boundary-padding} + #{$intro-panel-icon-offset});
     path {
       cursor: pointer;
     }
@@ -143,14 +142,14 @@ html, body, #root, .app, .map-container {
   &.closed {
     left: -$intro-panel-width;
     .info-icon {
-      position: fixed;
-      left: calc(#{$FS-boundary-padding} + #{$intro-panel-icon-offset});
-      top: calc(#{$FS-boundary-padding} + #{$intro-panel-icon-offset});
+      // position: fixed;
+      // left: calc(#{$FS-boundary-padding} + #{$intro-panel-icon-offset});
+      // top: calc(#{$FS-boundary-padding} + #{$intro-panel-icon-offset});
     }
   }
 
   .content {
-    padding: 40px;
+    padding: 35px 35px 45px 45px;
     // height: 100%;
     h1 {
       font-size: 18px;
@@ -589,13 +588,14 @@ html, body, #root, .app, .map-container {
     right: 0;
     width: 100%;
     z-index: 100;
-
+    .content {
+      padding: 45px;
+    }
     &.closed {
       left: -100%;
-
-      .info-icon {
-        top: calc(#{$SS-legend-height} + #{$FS-boundary-padding} + #{$intro-panel-icon-offset});
-      }
+    }
+    .info-icon {
+      top: calc(#{$SS-legend-height} + #{$FS-boundary-padding} + #{$intro-panel-icon-offset});
     }
   }
 
