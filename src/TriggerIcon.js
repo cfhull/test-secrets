@@ -5,7 +5,8 @@ const ICON_TYPE = {
   EXPAND: 'expand',
   COLLAPSE: 'collapse',
   D_ARROW: 'down-arrow',
-  R_ARROW: 'right-arrow'
+  R_ARROW: 'right-arrow',
+  INFO_ICON: 'info-icon'
 };
 
 class TriggerIcon extends React.Component {
@@ -51,6 +52,14 @@ class TriggerIcon extends React.Component {
       </>
     )
   }
+
+  getInfoIcon() {
+    return (
+      <>
+        <path d="m128 22.158a105.84 105.84 0 0 0 -105.84 105.84 105.84 105.84 0 0 0 105.84 105.84 105.84 105.84 0 0 0 105.84 -105.84 105.84 105.84 0 0 0 -105.84 -105.84zm0 32.76c5.16 0.117 9.55 1.875 13.18 5.273 3.34 3.575 5.07 7.94 5.19 13.096-0.12 5.156-1.85 9.404-5.19 12.744-3.63 3.75-8.02 5.625-13.18 5.625s-9.4-1.875-12.74-5.625c-3.75-3.34-5.63-7.588-5.63-12.744s1.88-9.521 5.63-13.096c3.34-3.398 7.58-5.156 12.74-5.273zm-16.35 53.792h32.79v92.37h-32.79v-92.37z" fill-rule="evenodd" fill="#72a7cf"/>
+      </>
+    )
+  }
   
   getBracketWrap(icon) {
     return (
@@ -66,6 +75,7 @@ class TriggerIcon extends React.Component {
     let icon;
     let classes = 'trigger-icon ';
     let transform = '';
+    let viewBox = '0 0 100 100';
     switch (this.props.iconType) {
       case ICON_TYPE.REMOVE:
         icon = this.getRemove();
@@ -88,6 +98,11 @@ class TriggerIcon extends React.Component {
         classes += 'right-arrow';
         transform += 'rotate(270)';
         break;
+      case ICON_TYPE.INFO_ICON:
+        icon = this.getInfoIcon();
+        classes += 'info-icon';
+        viewBox = '0 0 256 256'
+        break;
       default:
         console.error('incorrect type');
     }
@@ -100,7 +115,7 @@ class TriggerIcon extends React.Component {
     return (
       <svg
         onClick={this.props.onClick}
-        viewBox='0 0 100 100'
+        viewBox={viewBox}
         transform={transform}
         className={classes}
       >

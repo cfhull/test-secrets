@@ -1,5 +1,6 @@
 import './App.scss';
 import CardDock from './CardDock';
+import IntroPanel from './IntroPanel';
 import Legend from './Legend';
 import LoadingMask from './LoadingMask';
 import React from 'react';
@@ -21,15 +22,15 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hovered: {},
-      selectedIds: [],
+      dataLoaded: false,
+      mapLoaded: false,
+      mapConfigured: false,
       isTouchScreen: false,
       selectionHintDismissed: false,
       maxCardHintTriggered: false,
-      mapLoaded: false,
-      dataLoaded: false,
-      mapLoaded: false,
-      mapConfigured: false
+      IntroPanelOpen: true,
+      hovered: {},
+      selectedIds: []
     };
 
     this.map = null;
@@ -46,7 +47,7 @@ class App extends React.Component {
       center: [STARTING_LNG, STARTING_LAT],
       zoom: STARTING_ZOOM,
     });
-    
+
     this.map.on('load', this.markMapLoaded.bind(this));
 
     this.map.on('move', _.debounce(() => {
@@ -199,6 +200,7 @@ class App extends React.Component {
       <div>
         <LoadingMask dataLoaded={dataLoaded} mapLoaded={mapLoaded} mapConfigured={mapConfigured} />
         <div className={classes}>
+          <IntroPanel />
           {this.getCardDock()}
           {this.getTooltip()}
           <div ref={el => this.mapContainer = el} className='map-container' />
