@@ -434,8 +434,10 @@ html, body, #root, .app, .map-container {
         .property-name .trigger-icon {
           position: absolute;
           width: 14px;
-          right: 5px;
-          top: 9px;
+          right: 0;
+          top: 4px;
+          box-sizing: content-box;
+          padding: 5px;
         }
         .property-name,
         .location-title {
@@ -549,8 +551,10 @@ html, body, #root, .app, .map-container {
             .remove-icon {
               position: absolute;
               width: 14px; //FS
-              top: 6px; //FS
-              right: 6px; //FS
+              top: 0; //FS
+              right: 0; //FS
+              padding: 6px;
+              box-sizing: content-box;
             }
           }
         }

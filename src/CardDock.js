@@ -30,9 +30,15 @@ class CardDock extends React.PureComponent {
   }
 
   UNSAFE_componentWillReceiveProps(newProps) {
-    // necessary to ensure smooth height transitions
     if (newProps.cardData.length !== this.props.cardData.length) {
+      // necessary to ensure smooth height transitions
       this.setState({ expandedProperties: {} });
+
+      const cardWasRemoved = newProps.cardData.length < this.props.cardData.length;
+      if (cardWasRemoved && this.props.maxCardHintTriggered && !this.state.maxPointHintDismissed) {
+        // if a card is removed after hint is given, dismiss hint
+        this.dismissMaxPointHint();
+      }
     }
     if (newProps.maxCardHintTriggered !== this.props.maxCardHintTriggered) {
       setTimeout(this.dismissMaxPointHint, 1000 * MAX_CARD_HINT_TIMEOUT);
