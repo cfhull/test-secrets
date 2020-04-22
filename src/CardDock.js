@@ -328,7 +328,7 @@ class CardDock extends React.PureComponent {
       return (
         <div
         onWheel={this.slideDock}
-        onTouchStart={this.slideDock}
+        onTouchMove={this.slideDock}
         className={'card-dock-container'}
       >
         <div className={classes}>
