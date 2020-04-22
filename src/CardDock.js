@@ -21,7 +21,7 @@ class CardDock extends React.PureComponent {
     };
 
     this.removeCard = this.removeCard.bind(this);
-    this.slideDock = this.slideDock.bind(this);
+    this.dismissScrollHint = this.dismissScrollHint.bind(this);
     this.toggleProperty = this.toggleProperty.bind(this);
     this.dismissMaxPointHint = this.dismissMaxPointHint.bind(this);
   }
@@ -46,10 +46,8 @@ class CardDock extends React.PureComponent {
     this.props.removeCard(id);
   }
 
-  slideDock(e) {
-    if (e.deltaY && e.deltaY > 0) {
-      this.setState({ scrollHintDismissed: true });
-    }
+  dismissScrollHint() {
+    this.setState({ scrollHintDismissed: true });
   }
 
   toggleProperty(property, expanded) {
@@ -327,8 +325,8 @@ class CardDock extends React.PureComponent {
       const classes = `card-dock card-count-${this.props.cardData.length}`;
       return (
         <div
-        onWheel={this.slideDock}
-        onTouchMove={this.slideDock}
+        onWheel={this.dismissScrollHint}
+        onTouchMove={this.dismissScrollHint}
         className={'card-dock-container'}
       >
         <div className={classes}>
