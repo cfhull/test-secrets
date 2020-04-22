@@ -22,8 +22,6 @@ class CardDock extends React.PureComponent {
 
     this.removeCard = this.removeCard.bind(this);
     this.slideDock = this.slideDock.bind(this);
-    this.toggleDock = this.toggleDock.bind(this);
-    this.maximizeDock = this.maximizeDock.bind(this);
     this.toggleProperty = this.toggleProperty.bind(this);
     this.dismissMaxPointHint = this.dismissMaxPointHint.bind(this);
   }
@@ -330,8 +328,7 @@ class CardDock extends React.PureComponent {
       return (
         <div
         onWheel={this.slideDock}
-        onDoubleClick={this.toggleDock}
-        onTouchStart={this.maximizeDock}
+        onTouchStart={this.slideDock}
         className={'card-dock-container'}
       >
         <div className={classes}>
