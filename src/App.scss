@@ -646,14 +646,14 @@ html, body, #root, .app, .map-container {
         left: calc(50vw - (#{$scroll-hint-width} / 2));
       }
       &.selection-hint {
-        top: 0;
+        top: -$selection-hint-height;
         &.scroll-initiated {
-          transition: top ease 0.8s;
-          top: -$selection-hint-height;
+          animation: slide-up 1.2s forwards;
           left: calc(50vw - (#{$selection-hint-width}) / 2);
           &.dismissed {
-            transition: top ease 3s;
-            top: 100vh;
+            top: 0;
+            transform: scale(0);
+            transition: top ease .8s, transform ease 0s .8s;
           }
         }
       }
@@ -714,5 +714,13 @@ html, body, #root, .app, .map-container {
   }
   to {
     transform: translate(0);
+  }
+}
+@keyframes pop-up {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(0, -$selection-hint-height);
   }
 }
