@@ -357,14 +357,13 @@ html, body, #root, .app, .map-container {
         display: none;
       }
       &.triggered {
-        transition: transform ease 1s;
-        transform: translate(0, -$max-point-hint-height);
+        transition: top ease .8s;
+        top: -$max-point-hint-height;
 
         &.dismissed {
-          // shrink to nothing and send it low enough that it hasn't shrunk perceptibly while in view
-          // transition rather than animate so we don't see it on later dock renders
-          transform: translate(0, 5000px) scale(0);
-          transition: transform cubic-bezier(.95,.02,.4,0) 1s;
+          top: 0;
+          transform: scale(0);
+          transition: top ease .8s, transform 0s .8s;
         }
       }
       .content {
