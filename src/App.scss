@@ -85,7 +85,7 @@ html, body, #root, .app, .map-container {
     font-size: 22px;
     text-transform: uppercase;
     color: $color-past;
-    transform: translate(0,16px);
+    transform: translate(0, 16px);
     .loading-dots {
       display: flex;
       justify-content: space-evenly;
@@ -357,9 +357,16 @@ html, body, #root, .app, .map-container {
         display: none;
       }
       &.triggered {
-        animation: pop-up .5s forwards;
+        // animation: pop-up .5s forwards;
+        transition: transform ease 1s;
+        // animation: descend-then-disappear 1s forwards;
+        transform: translate(0, -$max-point-hint-height);
+
         &.dismissed {
-          animation: descend-then-disappear 1s forwards;
+          transition: transform ease 4s, scale ease 0s 4s;
+          // animation: descend-then-disappear 1s forwards;
+          transform: translate(0, 100vh);
+          scale: 0 0;
         }
       }
       .content {
