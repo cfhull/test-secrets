@@ -15,7 +15,6 @@ class CardDock extends React.PureComponent {
     super(props);
 
     this.state = {
-      minimized: true,
       expandedProperties: {},
       scrollHintDismissed: false,  
       maxPointHintDismissed: false
@@ -51,18 +50,8 @@ class CardDock extends React.PureComponent {
 
   slideDock(e) {
     if (e.deltaY && e.deltaY > 0) {
-      this.setState({ minimized: false, scrollHintDismissed: true });
+      this.setState({ scrollHintDismissed: true });
     }
-  }
-
-  toggleDock() {
-    // TODO: call toggle? or remove, make only scroll-controlled
-    this.setState(state => ({ minimized: !this.state.minimized }));
-  }
-
-  maximizeDock() {
-    // TODO: call toggle? or remove, make only scroll-controlled
-    this.setState(state => ({ minimized: false }));
   }
 
   toggleProperty(property, expanded) {
@@ -337,11 +326,7 @@ class CardDock extends React.PureComponent {
         return null;
       }
       
-      let classes = `card-dock card-count-${this.props.cardData.length}`;
-      if (!this.state.minimized) {
-        classes += ' maximized';
-      }
-      
+      const classes = `card-dock card-count-${this.props.cardData.length}`;
       return (
         <div
         onWheel={this.slideDock}

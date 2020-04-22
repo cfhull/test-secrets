@@ -279,7 +279,7 @@ html, body, #root, .app, .map-container {
   font-weight: 700;
 }
 
-/*{ CARD DOCK */
+/* CARD DOCK */
 .card-dock-container {
   background-color: $middle-gray;
 
@@ -635,7 +635,6 @@ html, body, #root, .app, .map-container {
   }
 
   /* DOCK */
-  /* for smaller screens, don't "dock" */
   .card-dock-container {
     width: unset;
     min-width: 100vw;
