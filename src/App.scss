@@ -357,16 +357,14 @@ html, body, #root, .app, .map-container {
         display: none;
       }
       &.triggered {
-        // animation: pop-up .5s forwards;
         transition: transform ease 1s;
-        // animation: descend-then-disappear 1s forwards;
         transform: translate(0, -$max-point-hint-height);
 
         &.dismissed {
-          transition: transform ease 4s, scale ease 0s 4s;
-          // animation: descend-then-disappear 1s forwards;
-          transform: translate(0, 100vh);
-          scale: 0 0;
+          // shrink to nothing and send it low enough that it hasn't shrunk perceptibly while in view
+          // transition rather than animate so we don't see it on later dock renders
+          transform: translate(0, 5000px) scale(0);
+          transition: transform cubic-bezier(.95,.02,.4,0) 1s;
         }
       }
       .content {
@@ -716,27 +714,5 @@ html, body, #root, .app, .map-container {
   }
   to {
     transform: translate(0);
-  }
-}
-@keyframes pop-up {
-  from {
-    transform: translate(0, 0);
-  }
-  to {
-    transform: translate(0, -$max-point-hint-height);
-  }
-}
-@keyframes descend-then-disappear {
-  0% {
-    transform: translate(0, -$max-point-hint-height);
-  }
-  99% {
-    // annoying work-around because display: none can't be set in an animation
-    transform: translate(0, 0) scale(1, 1);
-    visibility: visible;
-  }
-  100% {
-    transform: scale(0, 0);
-    visibility: hidden;
   }
 }
