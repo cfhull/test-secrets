@@ -17,6 +17,7 @@ const MAX_SELECTED_POINTS = 3;
 const STARTING_LNG = -9.5;
 const STARTING_LAT = 17;
 const STARTING_ZOOM = 1.5;
+const CONTROL_QUERY_STRING = true;
 
 class App extends React.Component {
   constructor(props) {
@@ -96,6 +97,11 @@ class App extends React.Component {
       selectedIds.splice(idx, 1);
     }
 
+    if (CONTROL_QUERY_STRING) {
+      const queryString = '?selected=' + selectedIds.join(',');
+      window.parent.postMessage({ selectedIds: selectedIds, queryString }, "http://localhost:1313");
+    }
+
     // dismiss selection hint once multiple points have been selected
     const selectionHintDismissed = (selectedIds.length > 1) || this.state.selectionHintDismissed;
     this.setState({ selectedIds, selectionHintDismissed });
@@ -150,6 +156,11 @@ class App extends React.Component {
     const selectedIds = [...this.state.selectedIds];
     const idx = selectedIds.indexOf(expId);
     selectedIds.splice(idx, 1);
+
+    if (CONTROL_QUERY_STRING) {
+      const queryString = '?selected=' + selectedIds.join(',');
+      window.parent.postMessage({ selectedIds: selectedIds, queryString }, "http://localhost:1313");
+    }
 
     this.setState({ selectedIds });
     this.map.setFeatureState({
