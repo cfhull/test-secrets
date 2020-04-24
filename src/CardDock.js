@@ -14,22 +14,24 @@ class CardDock extends React.PureComponent {
   constructor(props) {
     super(props);
 
+    // FIELDS NO LONGER EXPANDIBLE
+    // uncomment 'expand' and 'toggle'-related code here & in CSS to reactivate
     this.state = {
-      expandedProperties: {},
+      // expandedProperties: {},
       scrollHintDismissed: false,  
       maxPointHintDismissed: false
     };
 
     this.removeCard = this.removeCard.bind(this);
     this.dismissScrollHint = this.dismissScrollHint.bind(this);
-    this.toggleProperty = this.toggleProperty.bind(this);
+    // this.toggleProperty = this.toggleProperty.bind(this);
     this.dismissMaxPointHint = this.dismissMaxPointHint.bind(this);
   }
 
   UNSAFE_componentWillReceiveProps(newProps) {
     if (newProps.cardData.length !== this.props.cardData.length) {
       // necessary to ensure smooth height transitions
-      this.setState({ expandedProperties: {} });
+      // this.setState({ expandedProperties: {} });
 
       const cardWasRemoved = newProps.cardData.length < this.props.cardData.length;
       if (cardWasRemoved && this.props.maxCardHintTriggered && !this.state.maxPointHintDismissed) {
@@ -50,22 +52,22 @@ class CardDock extends React.PureComponent {
     this.setState({ scrollHintDismissed: true });
   }
 
-  toggleProperty(property, expanded) {
-    const expandedProperties = {...this.state.expandedProperties};
-    expandedProperties[property] = !expanded;
+  // toggleProperty(property, expanded) {
+  //   const expandedProperties = {...this.state.expandedProperties};
+  //   expandedProperties[property] = !expanded;
 
-    // necessary to ensure smooth height transitions
-    try {
-      const elems = document.getElementsByClassName(`cell ${property}`);
-      const greatestHeight = _.max(_.map(elems, 'scrollHeight'));
-      _.each(elems, elem => {
-        elem.style.maxHeight = greatestHeight + 20 + 'px';
-      })
-    }
-    catch(e) {}
+  //   // necessary to ensure smooth height transitions
+  //   try {
+  //     const elems = document.getElementsByClassName(`cell ${property}`);
+  //     const greatestHeight = _.max(_.map(elems, 'scrollHeight'));
+  //     _.each(elems, elem => {
+  //       elem.style.maxHeight = greatestHeight + 20 + 'px';
+  //     })
+  //   }
+  //   catch(e) {}
 
-    this.setState({ expandedProperties });
-  }
+  //   this.setState({ expandedProperties });
+  // }
 
   getNames() {
     // TODO: don't bind in render (perf)
@@ -92,29 +94,29 @@ class CardDock extends React.PureComponent {
     return ORDERED_CARD_FIELDS.map(field => {
       const { displayName, sheetId, isFeatureHeader } = field;
 
-      const expandible = this.getIsExpandible(field);
+      // const expandible = this.getIsExpandible(field);
 
-      const expanded = !!this.state.expandedProperties[sheetId];
+      // const expanded = !!this.state.expandedProperties[sheetId];
 
       let expandIcon = null;
-      if (expandible) {
-        // TODO: also don't bind in render (perf)
-        const iconType = expanded ? ICON_TYPE.COLLAPSE : ICON_TYPE.EXPAND;
-        expandIcon = (
-          <TriggerIcon
-            onClick={this.toggleProperty.bind(this, sheetId, expanded)}
-            iconType={iconType}
-          />
-        );
-      }
+      // if (expandible) {
+      //   // TODO: also don't bind in render (perf)
+      //   const iconType = expanded ? ICON_TYPE.COLLAPSE : ICON_TYPE.EXPAND;
+      //   expandIcon = (
+      //     <TriggerIcon
+      //       onClick={this.toggleProperty.bind(this, sheetId, expanded)}
+      //       iconType={iconType}
+      //     />
+      //   );
+      // }
 
       let cellClass = 'cell ' + sheetId;
-      if (expandible) {
-        cellClass += ' expandible';
-      }
-      if (expanded) {
-        cellClass += ' expanded';
-      }
+      // if (expandible) {
+      //   cellClass += ' expandible';
+      // }
+      // if (expanded) {
+      //   cellClass += ' expanded';
+      // }
       if (isFeatureHeader) {
         cellClass += ' feature-header';
       }
@@ -138,27 +140,27 @@ class CardDock extends React.PureComponent {
 
   // whether a given row should be expandible (succinct cells don't need expand triggers)
   // TODO: use ref, and after rerender check height, add classname accordingly?
-  getIsExpandible(field) {
-    if (field === LOCATION) {
-      // if any experimint in the card dock has multiple locations, the location cell should be expandible
-      return _.some(this.props.cardData, expCardSet => expCardSet.length > 2);
-    }
-    // TODO: should fields designate isExpandible? if so, use here
-    if (field.isComposite || field.isFeatureHeader) {
-      // TODO: should composite rows (Related Resources be expandible? how to measure?)
-      return false;
-    }
-    if (_.some(this.props.cardData, expCardSet => this.getIsDifferentiated(expCardSet, field))) {
-      // if any selected experiment has differentiated data for the field, cell should be expandible
-      return true;
-    }
+  // getIsExpandible(field) {
+  //   if (field === LOCATION) {
+  //     // if any experimint in the card dock has multiple locations, the location cell should be expandible
+  //     return _.some(this.props.cardData, expCardSet => expCardSet.length > 2);
+  //   }
+  //   // TODO: should fields designate isExpandible? if so, use here
+  //   if (field.isComposite || field.isFeatureHeader) {
+  //     // TODO: should composite rows (Related Resources be expandible? how to measure?)
+  //     return false;
+  //   }
+  //   if (_.some(this.props.cardData, expCardSet => this.getIsDifferentiated(expCardSet, field))) {
+  //     // if any selected experiment has differentiated data for the field, cell should be expandible
+  //     return true;
+  //   }
 
-    // if any experiment's value for the cell is longer than X characters
-    return _.some(this.props.cardData, expCardSet => {
-      // only need to check first location since we only hit this case if cell is undifferentiated
-      return expCardSet[0][field.sheetId].length > 120;
-    });
-  }
+  //   // if any experiment's value for the cell is longer than X characters
+  //   return _.some(this.props.cardData, expCardSet => {
+  //     // only need to check first location since we only hit this case if cell is undifferentiated
+  //     return expCardSet[0][field.sheetId].length > 120;
+  //   });
+  // }
 
   // returns true if the data for a given field of a given experiment
   // has differing values across experiment locations

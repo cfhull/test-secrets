@@ -487,33 +487,33 @@ html, body, #root, .app, .map-container {
             padding-bottom: 8px;
           }
         }
+        // FIELDS NO LONGER EXPANDIBLE
+        // &.expandible {
+        //   max-height: 3000px;
+        //   transition: max-height ease-in .2s;
+        //   overflow: hidden;
 
-        &.expandible {
-          max-height: 3000px;
-          transition: max-height ease-in .2s;
-          overflow: hidden;
+        //   &:not(.expanded) {
+        //     transition: max-height ease-out .2s;
+        //     // important because it has to override the inline style set by JS
+        //     max-height: 75px !important;
 
-          &:not(.expanded) {
-            transition: max-height ease-out .2s;
-            // important because it has to override the inline style set by JS
-            max-height: 75px !important;
-
-            &:before {
-              height: 20px;
-            }
-          }
-          // gradient text to fade unexpanded cells
-          &:before {
-            content: '';
-            width: 100%;
-            height: 0px;
-            transition: height ease-in-out .3s;
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            // appropriate color given with alternating row colors
-          }
-        }
+        //     &:before {
+        //       height: 20px;
+        //     }
+        //   }
+        //   // gradient text to fade unexpanded cells
+        //   &:before {
+        //     content: '';
+        //     width: 100%;
+        //     height: 0px;
+        //     transition: height ease-in-out .3s;
+        //     position: absolute;
+        //     left: 0;
+        //     bottom: 0;
+        //     // appropriate color given with alternating row colors
+        //   }
+        // }
 
       }
 
@@ -575,17 +575,17 @@ html, body, #root, .app, .map-container {
     /* alternating row colors */
     .row:nth-child(odd) .card {
       background-color: $light-gray;
-      .cell.expandible:not(.expanded):before {
-        // appropriate color for text fade
-        background: linear-gradient(transparent, $light-gray 15px);
-      }
+      // .cell.expandible:not(.expanded):before {
+      //   // appropriate color for text fade
+      //   background: linear-gradient(transparent, $light-gray 15px);
+      // }
     }
     .row:nth-child(even) .card {
       background-color: white;
-      .cell.expandible:not(.expanded):before {
-        // appropriate color for text fade
-        background: linear-gradient(transparent, white 15px);
-      }
+      // .cell.expandible:not(.expanded):before {
+      //   // appropriate color for text fade
+      //   background: linear-gradient(transparent, white 15px);
+      // }
     }
     .row .card .cell {
       border: solid $trans-middle-gray .5px;

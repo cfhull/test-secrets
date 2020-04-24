@@ -36,22 +36,22 @@ const SHEET_FIELDS = {
   IMPLEMENTER: {
     displayName: 'Implementing Agency',
     sheetId: 'implementer',
-    isExpandible: true
+    // isExpandible: true
   },
   RESEARCHER: {
     displayName: 'Research Agency',
     sheetId: 'researcher',
-    isExpandible: true
+    // isExpandible: true
   },
   FUNDER: {
     displayName: 'Funding Agency',
     sheetId: 'funder',
-    isExpandible: true
+    // isExpandible: true
   },
   TARGETING: {
     displayName: 'Type of Targeting',
     sheetId: 'targeting',
-    isExpandible: true
+    // isExpandible: true
   },
   UNIT: {
     displayName: 'Unit of Recipient',
@@ -60,7 +60,7 @@ const SHEET_FIELDS = {
   AMOUNT: {
     displayName: 'Amount of Transfer',
     sheetId: 'amount',
-    isExpandible: true
+    // isExpandible: true
   },
   FREQUENCY: {
     displayName: 'Frequency of Payment',
@@ -73,7 +73,7 @@ const SHEET_FIELDS = {
   NOTES: {
     displayName: 'Additional Notes of Interest',
     sheetId: 'notes',
-    isExpandible: true
+    // isExpandible: true
   },
   WEBSITE: {
     displayName: 'Link to Website',
@@ -156,7 +156,7 @@ const COMPOSITE_FIELDS = {
   RELATED_RESOURCES: {
     displayName: 'Links to Related Resources',
     sheetId: null,
-    isExpandible: true,
+    // isExpandible: true,
     isComposite: true
   }
 };
