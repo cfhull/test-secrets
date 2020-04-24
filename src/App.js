@@ -283,6 +283,24 @@ function load () {
     experimentsData.features.push(...items);
     this.map.getSource('experiments').setData(experimentsData);
     this.setState({ mapConfigured: true });
+
+    if (CONTROL_QUERY_STRING) {
+      const queryString = window.location.search;
+      const idString = window.location.search.slice(window.location.search.indexOf('=') + 1);
+      if (!idString.length) {
+        return;
+      }
+      const selectedIds = idString.split(',').map(s => Number(s));
+      const selectionHintDismissed = selectedIds.length > 1;
+      this.setState({ selectedIds, selectionHintDismissed });
+      _.each(selectedIds, id => {
+        this.map.setFeatureState({
+            source: 'experiments',
+            id,
+          }, { selected: true }
+        );
+      });
+    }
   }
 
   // Fetch Local Article Data
