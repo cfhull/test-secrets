@@ -98,7 +98,7 @@ class App extends React.Component {
     }
 
     if (CONTROL_QUERY_STRING) {
-      const queryString = '?selected=' + selectedIds.join(',');
+      const queryString = '?s=' + selectedIds.join(',');
       window.parent.postMessage({ selectedIds: selectedIds, queryString }, "http://localhost:1313");
     }
 
@@ -285,6 +285,7 @@ function load () {
     this.setState({ mapConfigured: true });
 
     if (CONTROL_QUERY_STRING) {
+      // TODOXXX: use real eids, limit 3?, filter out non-experiments, wrap in try, unique only
       const queryString = window.location.search;
       const idString = window.location.search.slice(window.location.search.indexOf('=') + 1);
       if (!idString.length) {
