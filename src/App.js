@@ -14,8 +14,8 @@ const { LONGITUDE, LATITUDE, NAME, LOCATION, TYPE, EID } = SHEET_FIELDS;
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 const MAX_SELECTED_POINTS = 3;
-const STARTING_LNG = -9.5;
-const STARTING_LAT = 17;
+const STARTING_LNG = -19;
+const STARTING_LAT = 29;
 const STARTING_ZOOM = 1.5;
 const CONTROL_QUERY_STRING = true;
 
@@ -29,7 +29,6 @@ class App extends React.Component {
       isTouchScreen: false,
       selectionHintDismissed: false,
       maxCardHintTriggered: false,
-      IntroPanelOpen: true,
       hovered: {},
       selectedIds: []
     };
@@ -47,6 +46,10 @@ class App extends React.Component {
       style: styleData,
       center: [STARTING_LNG, STARTING_LAT],
       zoom: STARTING_ZOOM,
+      maxBounds: [
+        [-170.99, -80], // SW coordinates
+        [189, 85] // NE coordinates
+      ]
     });
 
     this.map.on('load', this.markMapLoaded.bind(this));
