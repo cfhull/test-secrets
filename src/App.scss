@@ -378,6 +378,11 @@ html, body, #root, .app, .map-container {
     }
   }
 
+  @media screen and (max-width: $FS-dock-width) {
+    // goes with below media query, prevents container from leaving empty space to right on scroll
+    width: unset;
+  }
+
   .card-dock {
     height: 100%;
 
