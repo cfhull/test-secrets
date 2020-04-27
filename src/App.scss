@@ -67,6 +67,7 @@ html, body, #root, .app, .map-container {
   }
 }
 
+/* LOADING MASK */
 .mask {
   position: fixed;
   display: flex;
@@ -110,6 +111,12 @@ html, body, #root, .app, .map-container {
       }
     }
   }
+}
+
+/* MAPBOX CONTROLS (need access to sass vars) */
+.mapboxgl-ctrl-top-right {
+  top: calc(#{$SS-legend-height} + #{$FS-boundary-padding} + #{$intro-panel-icon-offset});
+  right: $FS-boundary-padding;
 }
 
 /* INTRO PANEL */
@@ -195,6 +202,9 @@ html, body, #root, .app, .map-container {
 .legend div {
   padding: 4px;
   font-weight: 300;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .legend i {
