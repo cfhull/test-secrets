@@ -1,3 +1,8 @@
+import './mapbox-gl.css';
+import './mapbox-gl-ctrl-zoom-in.svg';
+import './mapbox-gl-ctrl-zoom-out.svg';
+import './mapbox-gl-ctrl-attrib.svg';
+import './mapbox-gl-ctrl-logo.svg';
 import './App.scss';
 import CardDock from './CardDock';
 import IntroPanel from './IntroPanel';
@@ -51,6 +56,12 @@ class App extends React.Component {
         [189, 85] // NE coordinates
       ]
     });
+
+    this.map.addControl(new mapboxgl.NavigationControl());
+    // disable map rotation using right click + drag
+    this.map.dragRotate.disable();
+    // disable map rotation using touch rotation gesture
+    this.map.touchZoomRotate.disableRotation();
 
     this.map.on('load', this.markMapLoaded.bind(this));
 
