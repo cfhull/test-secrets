@@ -50,8 +50,13 @@ html, body, #root, .app, .map-container {
 .trigger-icon {
   stroke: black;
   stroke-width: 3;
-  cursor: pointer;
   fill: none;
+  &.remove-icon, &.expand-icon, &.collapse-icon, &.info-icon, &.stemless {
+    cursor: pointer;
+    * {
+      cursor: pointer;
+    }
+  }
 }
 
 .app {
@@ -142,18 +147,17 @@ html, body, #root, .app, .map-container {
     position: fixed;
     left: $intro-panel-icon-offset;
     top: calc(#{$FS-boundary-padding} + #{$intro-panel-icon-offset});
-    path {
-      cursor: pointer;
-    }
+  }
+  .left-arrow {
+    width: 27px;
+    stroke-width: 5;
+    position: absolute;
+    right: 0;
+    top: 10px;
   }
 
   &.closed {
     left: -$intro-panel-width;
-    .info-icon {
-      // position: fixed;
-      // left: calc(#{$FS-boundary-padding} + #{$intro-panel-icon-offset});
-      // top: calc(#{$FS-boundary-padding} + #{$intro-panel-icon-offset});
-    }
   }
 
   .content {

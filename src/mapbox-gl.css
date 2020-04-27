@@ -207,6 +207,9 @@ a.mapboxgl-ctrl-logo {
 }
 
 /* OUR MODIFIED MAPBOX STYLES */
+.mapboxgl-ctrl-attrib a {
+  cursor: pointer;
+}
 
 .mapboxgl-ctrl-group button span {
   cursor: pointer;

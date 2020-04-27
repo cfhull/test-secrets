@@ -327,10 +327,10 @@ class CardDock extends React.PureComponent {
       const classes = `card-dock card-count-${this.props.cardData.length}`;
       return (
         <div
-        onWheel={this.dismissScrollHint}
-        onTouchMove={this.dismissScrollHint}
-        className={'card-dock-container'}
-      >
+          onWheel={this.dismissScrollHint}
+          onTouchMove={this.dismissScrollHint}
+          className={'card-dock-container'}
+        >
         <div className={classes}>
           <div className="card-table">
           {this.getScrollHint()}

@@ -23,7 +23,8 @@ class IntroPanel extends React.Component {
     const iconType = this.state.open ? ICON_TYPE.COLLAPSE : ICON_TYPE.EXPAND;
     return (
       <div className={classes}>
-        <TriggerIcon onClick={this.toggleOpen} iconType={ICON_TYPE.INFO_ICON} />
+        <TriggerIcon title='Info panel' onClick={this.toggleOpen} iconType={ICON_TYPE.INFO_ICON} />
+        <TriggerIcon title='Close' onClick={this.toggleOpen} iconType={ICON_TYPE.L_ARROW_STEMLESS} />
         <div className='content'>
           <h1>Map of Universal Basic Income Experiments and Related Programs</h1>
           <p>How and where have Universal Basic Income (UBI) and its cousin policies been tested? What are some significant differences between these programs and which features do they share with an ideal UBI policy? What impacts can be measured when giving individuals unconditional cash on a regular basis? This geospatial map presents UBI-related experiments, pilots, programs and policies throughout the world, some past and some ongoing, and enables the user to compare them across a range of design and implementation features. It sheds light on many basic income related experiments over the past 60 years in order to inform the current dialogue around a potential basic income policy in the United States and beyond.</p>
