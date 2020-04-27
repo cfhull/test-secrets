@@ -17,6 +17,7 @@ $dark-gray: #ccc;
 $FS-boundary-padding: 8px;
 $SS-legend-height: 130px;
 $FS-card-width: 300px;
+$mobile-breakpoint: $FS-card-width * 2; 
 $FS-dock-width: $FS-card-width * 3;
 $scroll-hint-width: 200px;
 $scroll-hint-height: 40px;
@@ -287,7 +288,7 @@ html, body, #root, .app, .map-container {
   position: absolute;
   /* dock background initially just off-screen, appears when user scrolls up */
   top: 100vh;
-  width: 100%;
+  min-width: 100%; // fixes pesky variable container width bug below
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px 3px;
 
   .user-hint {
@@ -378,10 +379,12 @@ html, body, #root, .app, .map-container {
     }
   }
 
-  @media screen and (max-width: $FS-dock-width) {
-    // goes with below media query, prevents container from leaving empty space to right on scroll
-    width: unset;
-  }
+  // REMOVED BECAUSE SHOULD ONLY APPLY TO CARD-COUNT-3, add class to card-container if needed
+  // solved instead by giving card-container 100% min-width rather than width
+  // @media screen and (max-width: $FS-dock-width) {
+  //   // goes with below media query, prevents container from leaving empty space to right on scroll
+  //   // width: unset;
+  // }
 
   .card-dock {
     height: 100%;
@@ -593,7 +596,7 @@ html, body, #root, .app, .map-container {
   }
 }
 
-@media (max-width: 2 * $FS-card-width) {
+@media (max-width: $mobile-breakpoint) {
   /* INTRO PANEL */
   .intro-panel {
     top: calc(#{$SS-legend-height} + #{$FS-boundary-padding});
