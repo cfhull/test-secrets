@@ -12,13 +12,33 @@ $trans-light-gray: transparentize($light-gray, .4);
 $middle-gray: #eee;
 $trans-middle-gray: transparentize($middle-gray, .5);
 $dark-gray: #ccc;
+$property-color: #757575;
+
+// BASE BIL COLORS
+
+$slate-gray: #7E8085;
+$slate-gray: #74757B;
+$med-gray: #6d6d6d;
+//$med-gray: #74757B;
+$coldblack: #282F36;
+$green: #00505C;
+$tealgreen: #6EC9D7;
+$button-bronze: #B26F16;
+$button-bronze-active: #9a6013;
+$dkbronze: #A36514;
+$white: #ffffff;
+$black: #373737;
+
+// BOX-SHADOW
+
+$box-shadow: rgba(0, 0, 0, 0.1) 0 1px 3px;
 
 // SIZES
 $FS-boundary-padding: 8px;
 $SS-legend-height: 130px;
 $FS-card-width: 300px;
 $FS-dock-width: $FS-card-width * 3;
-$scroll-hint-width: 200px;
+$scroll-hint-width: 224px;
 $scroll-hint-height: 40px;
 $selection-hint-width: 230px;
 $selection-hint-height: 134px;
@@ -281,7 +301,8 @@ html, body, #root, .app, .map-container {
 
 /* CARD DOCK */
 .card-dock-container {
-  background-color: $middle-gray;
+ // background-color: $middle-gray;
+  background-color: #fff;
 
   z-index: 5;
   position: absolute;
@@ -295,10 +316,11 @@ html, body, #root, .app, .map-container {
     background: rgb(244, 253, 255);
     color: rgb(59, 123, 138);
     font-size: 16px; //FS
+    font-size: 14px;
     .trigger-icon {
       stroke: rgb(59, 123, 138);
       stroke-width: 8; //FS
-      width: 16px; //FS
+      width: 12px; //FS
     }
 
     &.scroll-hint {
@@ -315,7 +337,8 @@ html, body, #root, .app, .map-container {
         transition: top ease 3s;
       }
       .content {
-        padding: 12px;
+        padding: 10px;
+        font-weight: 600;
       }
     }
 
@@ -338,6 +361,10 @@ html, body, #root, .app, .map-container {
       }
       .content {
         padding: 20px;
+        font-weight: 600;
+        p {
+          font-weight: 600;
+        }
         svg {
           position: absolute;
           top: 44%;
@@ -414,7 +441,7 @@ html, body, #root, .app, .map-container {
       top: -$card-peek-height; //FS
       // tough to mesh with card animation onto screen
       // box-shadow: rgba(0, 0, 0, 0.1) -2px -4px 10px 2px;
-
+      box-shadow: $box-shadow;
       .row {
         height: 100%; //?
         display: flex;
@@ -435,7 +462,7 @@ html, body, #root, .app, .map-container {
       .cell {
         // don't add different side padding for different cell types
         // or cells won't align vertically
-        padding: 10px; //FS
+        padding: 16px; //FS
         // display: inline-block;
         // box-sizing: border-box;
         height: 100%; //?
@@ -447,6 +474,9 @@ html, body, #root, .app, .map-container {
           top: 4px;
           box-sizing: content-box;
           padding: 5px;
+        }
+        .property-name {
+          color: $property-color;
         }
         .property-name,
         .location-title {
@@ -467,7 +497,7 @@ html, body, #root, .app, .map-container {
 
         &.feature-header {
           .property-name {
-
+            color: $property-color;
             font-weight: 700;
             text-align: center;
           }
@@ -478,7 +508,7 @@ html, body, #root, .app, .map-container {
 
         .value {
           // overflow: hidden;
-          padding-top: 4px;
+          padding-top: 8px;
           font-size: 14px; //FS
 
           a {
@@ -574,7 +604,8 @@ html, body, #root, .app, .map-container {
 
     /* alternating row colors */
     .row:nth-child(odd) .card {
-      background-color: $light-gray;
+      background-color: #f8f8f8;
+      background-color: #f9f9f9;
       // .cell.expandible:not(.expanded):before {
       //   // appropriate color for text fade
       //   background: linear-gradient(transparent, $light-gray 15px);
@@ -588,7 +619,7 @@ html, body, #root, .app, .map-container {
       // }
     }
     .row .card .cell {
-      border: solid $trans-middle-gray .5px;
+    //  border: solid $trans-middle-gray .5px;
     }
   }
 }
@@ -647,10 +678,19 @@ html, body, #root, .app, .map-container {
     .user-hint{
       &.scroll-hint {
         left: calc(50vw - (#{$scroll-hint-width} / 2));
+        .content {
+          font-weight: 600;
+        }
       }
       &.selection-hint {
         top: -$selection-hint-height;
         &.scroll-initiated {
+          .content {
+            font-weight: 600;
+            p {
+              font-weight: 600;
+            }
+          }
           animation: slide-up 1.2s forwards;
           left: calc(50vw - (#{$selection-hint-width}) / 2);
           &.dismissed {
