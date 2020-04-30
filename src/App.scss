@@ -138,8 +138,11 @@ html, body, #root, .app, .map-container {
   left: 0;
   z-index: 3;
   top: $FS-boundary-padding;
-  bottom: calc(#{$FS-boundary-padding} + #{$card-peek-height});
-  min-height: 120px;
+  // bottom: calc(#{$FS-boundary-padding} + #{$card-peek-height});
+  // won't stretch to bottom unless screen height is minimal (then scroll activates)
+  bottom: $FS-boundary-padding;
+  max-height: 580px;
+  min-height: 200px;
   width: $intro-panel-width;
   background: white;
   border: solid $dark-gray 1px;
@@ -177,6 +180,9 @@ html, body, #root, .app, .map-container {
     padding: 35px 35px 45px 45px;
     // height: 100%;
     .nav {
+      .section-name {
+        cursor: pointer;
+      }
       p {
         display: inline;
         font-size: 14px;
@@ -196,7 +202,7 @@ html, body, #root, .app, .map-container {
       .info {
         flex: 47px 0 0;
         flex-shrink: 0;
-        padding-top: 3px;
+        align-self: center;
         .info-icon {
           stroke-width: 0;
           width: 100%;
@@ -212,7 +218,6 @@ html, body, #root, .app, .map-container {
     }
 
     .section-text {
-
       p {
         font-size: 14px;
         font-weight: 300;
@@ -223,6 +228,7 @@ html, body, #root, .app, .map-container {
           padding-left: 7px;
           font-weight: 700;
           white-space: nowrap;
+          cursor: pointer;
         }
       }
     }
@@ -685,6 +691,7 @@ html, body, #root, .app, .map-container {
     right: 0;
     width: 100%;
     z-index: 100;
+    max-height: unset;
 
     &:not(.closed) .trigger {
       right: 10px;

@@ -22,7 +22,7 @@ class Legend extends React.Component {
       classes += ' hidden';
     }
 
-    const title = expanded ? 'Hide legend' : 'Show legend';
+    const title = expanded ? 'Hide Legend' : 'Show Legend';
 
     const iconType = expanded ? ICON_TYPE.COLLAPSE : ICON_TYPE.EXPAND;
     return (

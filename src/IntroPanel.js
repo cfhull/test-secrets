@@ -96,10 +96,11 @@ class IntroPanel extends React.Component {
     }
 
     const iconType = this.state.open ? ICON_TYPE.L_ARROW_STEMLESS : ICON_TYPE.R_ARROW_STEMLESS;
+    const title = this.state.open ? 'Close' : 'Open';
     return (
       <div className={classes}> 
         <div className='trigger'>
-          <TriggerIcon title='Close' onClick={this.toggleOpen} iconType={iconType} />
+          <TriggerIcon title={title} onClick={this.toggleOpen} iconType={iconType} />
         </div>
         <div className='intro-panel'>
           <div className='content'>
