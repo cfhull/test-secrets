@@ -15,15 +15,19 @@ class Legend extends React.Component {
   }
 
   render() {
+    const { expanded } = this.state;
+
     let classes = 'legend';
-    if (!this.state.expanded) {
+    if (!expanded) {
       classes += ' hidden';
     }
 
-    const iconType = this.state.expanded ? ICON_TYPE.COLLAPSE : ICON_TYPE.EXPAND;
+    const title = expanded ? 'Hide legend' : 'Show legend';
+
+    const iconType = expanded ? ICON_TYPE.COLLAPSE : ICON_TYPE.EXPAND;
     return (
       <div className={classes}>
-          <TriggerIcon onClick={this.toggleExpand} inBrackets={true} iconType={iconType} />
+          <TriggerIcon title={title} onClick={this.toggleExpand} inBrackets={true} iconType={iconType} />
           <div className='content'>
             <div><i className='past' />Past Experiments</div>
             <div><i className='ongoing' />Ongoing Experiments</div>

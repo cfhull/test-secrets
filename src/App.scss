@@ -37,6 +37,7 @@ $box-shadow: rgba(0, 0, 0, 0.1) 0 1px 3px;
 $FS-boundary-padding: 8px;
 $SS-legend-height: 130px;
 $FS-card-width: 300px;
+$mobile-breakpoint: $FS-card-width * 2; 
 $FS-dock-width: $FS-card-width * 3;
 $scroll-hint-width: 224px;
 $scroll-hint-height: 40px;
@@ -69,8 +70,13 @@ html, body, #root, .app, .map-container {
 .trigger-icon {
   stroke: black;
   stroke-width: 3;
-  cursor: pointer;
   fill: none;
+  &.remove-icon, &.expand-icon, &.collapse-icon, &.info-icon, &.stemless {
+    cursor: pointer;
+    * {
+      cursor: pointer;
+    }
+  }
 }
 
 .app {
@@ -86,6 +92,7 @@ html, body, #root, .app, .map-container {
   }
 }
 
+/* LOADING MASK */
 .mask {
   position: fixed;
   display: flex;
@@ -131,6 +138,12 @@ html, body, #root, .app, .map-container {
   }
 }
 
+/* MAPBOX CONTROLS (need access to sass vars) */
+.mapboxgl-ctrl-top-right {
+  top: calc(#{$SS-legend-height} + #{$FS-boundary-padding} + #{$intro-panel-icon-offset});
+  right: $FS-boundary-padding;
+}
+
 /* INTRO PANEL */
 .intro-panel {
   position: fixed;
@@ -154,18 +167,17 @@ html, body, #root, .app, .map-container {
     position: fixed;
     left: $intro-panel-icon-offset;
     top: calc(#{$FS-boundary-padding} + #{$intro-panel-icon-offset});
-    path {
-      cursor: pointer;
-    }
+  }
+  .left-arrow {
+    width: 27px;
+    stroke-width: 5;
+    position: absolute;
+    right: 7px;
+    top: 10px;
   }
 
   &.closed {
     left: -$intro-panel-width;
-    .info-icon {
-      // position: fixed;
-      // left: calc(#{$FS-boundary-padding} + #{$intro-panel-icon-offset});
-      // top: calc(#{$FS-boundary-padding} + #{$intro-panel-icon-offset});
-    }
   }
 
   .content {
@@ -214,6 +226,9 @@ html, body, #root, .app, .map-container {
 .legend div {
   padding: 4px;
   font-weight: 300;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .legend i {
@@ -299,6 +314,27 @@ html, body, #root, .app, .map-container {
   font-weight: 700;
 }
 
+.card-dock-mask { transition: background-color ease .8s; }
+.card-dock-mask.active {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(20, 20, 20, 0.4);
+  z-index: 5;
+
+  &.card-count-1 {
+    min-width: $FS-card-width * 1;
+  }
+  &.card-count-2 {
+    min-width: $FS-card-width * 2;
+  }
+  &.card-count-3 {
+    min-width: $FS-card-width * 3;
+  }
+}
+
 /* CARD DOCK */
 .card-dock-container {
  // background-color: $middle-gray;
@@ -308,7 +344,7 @@ html, body, #root, .app, .map-container {
   position: absolute;
   /* dock background initially just off-screen, appears when user scrolls up */
   top: 100vh;
-  width: 100%;
+  min-width: 100%; // fixes pesky variable container width bug below
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px 3px;
 
   .user-hint {
@@ -405,10 +441,12 @@ html, body, #root, .app, .map-container {
     }
   }
 
-  @media screen and (max-width: $FS-dock-width) {
-    // goes with below media query, prevents container from leaving empty space to right on scroll
-    width: unset;
-  }
+  // REMOVED BECAUSE SHOULD ONLY APPLY TO CARD-COUNT-3, add class to card-container if needed
+  // solved instead by giving card-container 100% min-width rather than width
+  // @media screen and (max-width: $FS-dock-width) {
+  //   // goes with below media query, prevents container from leaving empty space to right on scroll
+  //   // width: unset;
+  // }
 
   .card-dock {
     height: 100%;
@@ -624,7 +662,7 @@ html, body, #root, .app, .map-container {
   }
 }
 
-@media (max-width: 2 * $FS-card-width) {
+@media (max-width: $mobile-breakpoint) {
   /* INTRO PANEL */
   .intro-panel {
     top: calc(#{$SS-legend-height} + #{$FS-boundary-padding});

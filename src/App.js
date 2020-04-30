@@ -1,3 +1,8 @@
+import './mapbox-gl.css';
+import './mapbox-gl-ctrl-zoom-in.svg';
+import './mapbox-gl-ctrl-zoom-out.svg';
+import './mapbox-gl-ctrl-attrib.svg';
+import './mapbox-gl-ctrl-logo.svg';
 import './App.scss';
 import CardDock from './CardDock';
 import IntroPanel from './IntroPanel';
@@ -17,7 +22,7 @@ const MAX_SELECTED_POINTS = 3;
 const STARTING_LNG = -19;
 const STARTING_LAT = 29;
 const STARTING_ZOOM = 1.5;
-const CONTROL_QUERY_STRING = true;
+const CONTROL_QUERY_STRING = false;
 
 class App extends React.Component {
   constructor(props) {
@@ -33,7 +38,9 @@ class App extends React.Component {
       selectedIds: []
     };
 
+    this.mapContainer = React.createRef();
     this.map = null;
+
     this.getCardDock = this.getCardDock.bind(this);
     this.getTooltip = this.getTooltip.bind(this);
     this.removeCard = this.removeCard.bind(this);
@@ -42,7 +49,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.map = new mapboxgl.Map({
-      container: this.mapContainer,
+      container: this.mapContainer.current,
       style: styleData,
       center: [STARTING_LNG, STARTING_LAT],
       zoom: STARTING_ZOOM,
@@ -51,6 +58,12 @@ class App extends React.Component {
         [189, 85] // NE coordinates
       ]
     });
+
+    this.map.addControl(new mapboxgl.NavigationControl());
+    // disable map rotation using right click + drag
+    this.map.dragRotate.disable();
+    // disable map rotation using touch rotation gesture
+    this.map.touchZoomRotate.disableRotation();
 
     this.map.on('load', this.markMapLoaded.bind(this));
 
@@ -217,7 +230,7 @@ class App extends React.Component {
           <IntroPanel />
           {this.getCardDock()}
           {this.getTooltip()}
-          <div ref={el => this.mapContainer = el} className='map-container' />
+          <div ref={this.mapContainer} className='map-container' />
           <Legend />
         </div>
       </div>

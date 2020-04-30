@@ -5,7 +5,10 @@ const ICON_TYPE = {
   EXPAND: 'expand',
   COLLAPSE: 'collapse',
   D_ARROW: 'down-arrow',
+  D_ARROW_STEMLESS: 'down-arrow-stemless',
   R_ARROW: 'right-arrow',
+  L_ARROW: 'left-arrow',
+  L_ARROW_STEMLESS: 'left-arrow-stemless',
   INFO_ICON: 'info-icon'
 };
 
@@ -44,10 +47,10 @@ class TriggerIcon extends React.Component {
     )    
   }
 
-  getDownArrow() {
+  getDownArrow(stemless) {
     return (
       <>
-        <polyline points='50,0 50,100' />
+        {!stemless && <polyline points='50,0 50,100' />}
         <polyline points='10,55 50,100 90,55' />
       </>
     )
@@ -93,10 +96,24 @@ class TriggerIcon extends React.Component {
         icon = this.getDownArrow();
         classes += 'down-arrow';
         break;
+      case ICON_TYPE.D_ARROW_STL_ARROW_STEMLESS:
+        icon = this.getDownArrow(true);
+        classes += 'down-arrow stemless';
+        break;
       case ICON_TYPE.R_ARROW:
         icon = this.getDownArrow();
         classes += 'right-arrow';
         transform += 'rotate(270)';
+        break;
+      case ICON_TYPE.L_ARROW:
+        icon = this.getDownArrow();
+        classes += 'left-arrow';
+        transform += 'rotate(90)';
+        break;
+      case ICON_TYPE.L_ARROW_STEMLESS:
+        icon = this.getDownArrow(true);
+        classes += 'left-arrow stemless';
+        transform += 'rotate(90)';
         break;
       case ICON_TYPE.INFO_ICON:
         icon = this.getInfoIcon();
@@ -113,14 +130,15 @@ class TriggerIcon extends React.Component {
     }
 
     return (
-      <svg
-        onClick={this.props.onClick}
-        viewBox={viewBox}
-        transform={transform}
-        className={classes}
-      >
-        {icon}
-      </svg>
+        <svg
+          onClick={this.props.onClick}
+          viewBox={viewBox}
+          transform={transform}
+          className={classes}
+        >
+          {this.props.title && <title>{this.props.title}</title>}
+          {icon}
+        </svg>
     )
   }
 }

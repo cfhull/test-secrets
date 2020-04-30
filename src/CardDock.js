@@ -8,22 +8,31 @@ const { LOCATION, NAME, EID, TYPE, WEBSITE } = SHEET_FIELDS;
 
 // time (in seconds) before the max card user hint auto-dismisses
 const MAX_CARD_HINT_TIMEOUT = 30;
+const SCROLL_THROTTLE_DELAY = 500;
 
 // pure component? (shallow compare map features?) (perf)
 class CardDock extends React.PureComponent {
   constructor(props) {
     super(props);
 
+    this.containerRef = React.createRef();
+
     // FIELDS NO LONGER EXPANDIBLE
     // uncomment 'expand' and 'toggle'-related code here & in CSS to reactivate
     this.state = {
       // expandedProperties: {},
       scrollHintDismissed: false,  
-      maxPointHintDismissed: false
+      maxPointHintDismissed: false,
+      mapMaskActive: false
     };
 
     this.removeCard = this.removeCard.bind(this);
-    this.dismissScrollHint = this.dismissScrollHint.bind(this);
+    this.updateMask = this.updateMask.bind(this);
+    this.throttledUpdateMask = _.throttle(
+      this.throttledUpdateMask,
+      SCROLL_THROTTLE_DELAY,
+      { leading: true, trailing: true }
+    ).bind(this);
     // this.toggleProperty = this.toggleProperty.bind(this);
     this.dismissMaxPointHint = this.dismissMaxPointHint.bind(this);
   }
@@ -39,6 +48,11 @@ class CardDock extends React.PureComponent {
         this.dismissMaxPointHint();
       }
     }
+
+    if (!newProps.cardData.length) {
+      this.setState({ mapMaskActive: false });
+    }
+
     if (newProps.maxCardHintTriggered !== this.props.maxCardHintTriggered) {
       setTimeout(this.dismissMaxPointHint, 1000 * MAX_CARD_HINT_TIMEOUT);
     }
@@ -48,8 +62,29 @@ class CardDock extends React.PureComponent {
     this.props.removeCard(id);
   }
 
-  dismissScrollHint() {
-    this.setState({ scrollHintDismissed: true });
+  updateMask(e) {
+    this.throttledUpdateMask(e.deltaY);
+  }
+
+  throttledUpdateMask(deltaY) {
+    if (!this.state.scrollHintDismissed) {
+      this.setState({ scrollHintDismissed: true });
+    }
+
+    if (deltaY > 0) {
+      this.setState({ mapMaskActive: true });
+      return;
+    }
+
+    const { top } = this.containerRef.current.getBoundingClientRect();
+    const { innerHeight } = window;
+
+    const distanceFromBottom = innerHeight - top;
+    const mapMaskActive = distanceFromBottom > 5;
+
+    if (mapMaskActive !== this.state.mapMaskActive) {
+      this.setState({ mapMaskActive });
+    }
   }
 
   // toggleProperty(property, expanded) {
@@ -294,50 +329,58 @@ class CardDock extends React.PureComponent {
         classes={classes}
         dismissed={this.props.selectionHintDismissed}
       />
-      );
-    }
+    );
+  }
   
-    getMaxPointHint() {
-      const content = <>Only 3 experiments may be viewed at once. Remove a card to add another experiment.</>
+  getMaxPointHint() {
+    const content = <>Only 3 experiments may be viewed at once. Remove a card to add another experiment.</>
 
-      let classes = 'max-point-hint';
-      if (this.props.maxCardHintTriggered) {
-        classes += ' triggered'
-      }
-
-      return (
-        <UserHint
-          content={content}
-          classes={classes}
-          onDismiss={this.dismissMaxPointHint}
-          dismissed={this.state.maxPointHintDismissed}
-        />
-      );
+    let classes = 'max-point-hint';
+    if (this.props.maxCardHintTriggered) {
+      classes += ' triggered'
     }
 
-    dismissMaxPointHint() {
-      this.setState({ maxPointHintDismissed: true });
+    return (
+      <UserHint
+        content={content}
+        classes={classes}
+        onDismiss={this.dismissMaxPointHint}
+        dismissed={this.state.maxPointHintDismissed}
+      />
+    );
+  }
+
+  dismissMaxPointHint() {
+    this.setState({ maxPointHintDismissed: true });
+  }
+  
+  render() {
+    if (!this.props.cardData.length) {
+      return null;
     }
     
-    render() {
-      if (!this.props.cardData.length) {
-        return null;
-      }
-      
-      const classes = `card-dock card-count-${this.props.cardData.length}`;
-      return (
+    const classes = `card-dock card-count-${this.props.cardData.length}`;
+
+    let maskClass = 'card-dock-mask';
+    if (this.state.mapMaskActive) {
+      maskClass += ` active card-count-${this.props.cardData.length}`;
+    }
+    return (
+      <div className={maskClass} onWheel={this.updateMask} onTouchMove={this.updateMask}>
         <div
-        onWheel={this.dismissScrollHint}
-        onTouchMove={this.dismissScrollHint}
-        className={'card-dock-container'}
-      >
-        <div className={classes}>
-          <div className="card-table">
-          {this.getScrollHint()}
-          {this.getSelectionHint()}
-          {this.getMaxPointHint()}
-            <div className='row header'>{this.getNames()}</div>
-            {this.getRows()}
+          onWheel={this.updateMask}
+          onTouchMove={this.updateMask}
+          className={'card-dock-container'}
+          ref={this.containerRef}
+        >
+          <div className={classes}>
+            <div className="card-table">
+            {this.getScrollHint()}
+            {this.getSelectionHint()}
+            {this.getMaxPointHint()}
+              <div className='row header'>{this.getNames()}</div>
+              {this.getRows()}
+            </div>
           </div>
         </div>
       </div>
