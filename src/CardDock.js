@@ -366,7 +366,7 @@ class CardDock extends React.PureComponent {
       maskClass += ` active card-count-${this.props.cardData.length}`;
     }
     return (
-      <div className={maskClass} onWheel={this.updateMask}>
+      <div className={maskClass} onWheel={this.updateMask} onTouchMove={this.updateMask}>
         <div
           onWheel={this.updateMask}
           onTouchMove={this.updateMask}
