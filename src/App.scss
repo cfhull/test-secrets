@@ -294,6 +294,27 @@ html, body, #root, .app, .map-container {
   font-weight: 700;
 }
 
+.card-dock-mask { transition: background-color ease .8s; }
+.card-dock-mask.active {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(20, 20, 20, 0.4);
+  z-index: 5;
+
+  &.card-count-1 {
+    min-width: $FS-card-width * 1;
+  }
+  &.card-count-2 {
+    min-width: $FS-card-width * 2;
+  }
+  &.card-count-3 {
+    min-width: $FS-card-width * 3;
+  }
+}
+
 /* CARD DOCK */
 .card-dock-container {
   background-color: $middle-gray;

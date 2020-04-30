@@ -22,7 +22,7 @@ const MAX_SELECTED_POINTS = 3;
 const STARTING_LNG = -19;
 const STARTING_LAT = 29;
 const STARTING_ZOOM = 1.5;
-const CONTROL_QUERY_STRING = true;
+const CONTROL_QUERY_STRING = false;
 
 class App extends React.Component {
   constructor(props) {
@@ -38,7 +38,9 @@ class App extends React.Component {
       selectedIds: []
     };
 
+    this.mapContainer = React.createRef();
     this.map = null;
+
     this.getCardDock = this.getCardDock.bind(this);
     this.getTooltip = this.getTooltip.bind(this);
     this.removeCard = this.removeCard.bind(this);
@@ -47,7 +49,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.map = new mapboxgl.Map({
-      container: this.mapContainer,
+      container: this.mapContainer.current,
       style: styleData,
       center: [STARTING_LNG, STARTING_LAT],
       zoom: STARTING_ZOOM,
@@ -228,7 +230,7 @@ class App extends React.Component {
           <IntroPanel />
           {this.getCardDock()}
           {this.getTooltip()}
-          <div ref={el => this.mapContainer = el} className='map-container' />
+          <div ref={this.mapContainer} className='map-container' />
           <Legend />
         </div>
       </div>
