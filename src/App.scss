@@ -20,6 +20,8 @@ $hint-content: rgb(59, 123, 138);
 
 // SIZES
 $FS-boundary-padding: 8px;
+$FS-legend-width: 200px;
+$FS-legend-height: 103px;
 $SS-legend-height: 130px;
 $FS-card-width: 300px;
 $mobile-breakpoint: $FS-card-width * 2; 
@@ -31,8 +33,9 @@ $selection-hint-height: 134px;
 $max-point-hint-width: 425px;
 $max-point-hint-height: 85px;
 $card-peek-height: 100px;
-$intro-panel-width: 390px;
+$intro-panel-width: 450px;
 $intro-panel-icon-offset: 8px;
+$standard-border-radius: 4px;
 
 * {
   margin: 0;
@@ -56,7 +59,7 @@ html, body, #root, .app, .map-container {
   stroke: black;
   stroke-width: 3;
   fill: none;
-  &.remove-icon, &.expand-icon, &.collapse-icon, &.info-icon, &.stemless {
+  &.remove-icon, &.expand-icon, &.collapse-icon, &.stemless {
     cursor: pointer;
     * {
       cursor: pointer;
@@ -130,7 +133,7 @@ html, body, #root, .app, .map-container {
 }
 
 /* INTRO PANEL */
-.intro-panel {
+.intro-panel-wrapper {
   position: fixed;
   left: 0;
   z-index: 3;
@@ -140,25 +143,30 @@ html, body, #root, .app, .map-container {
   width: $intro-panel-width;
   background: white;
   border: solid $dark-gray 1px;
-  overflow: scroll;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
+  overflow: visible;
+  border-top-right-radius: $standard-border-radius;
+  border-bottom-right-radius: $standard-border-radius;
   transition: left ease 1s;
 
-  .info-icon {
-    stroke-width: 0;
-    height: 30px;
-    width: 30px;
-    position: fixed;
-    left: $intro-panel-icon-offset;
-    top: calc(#{$FS-boundary-padding} + #{$intro-panel-icon-offset});
+  .intro-panel {
+    height: 100%;
+    overflow: scroll;
   }
-  .left-arrow {
-    width: 27px;
-    stroke-width: 5;
+
+  .trigger {
     position: absolute;
-    right: 7px;
+    right: -32px;
     top: 10px;
+    padding: 7px;
+    border: solid $dark-gray 1px;
+    border-left: none;
+    border-top-right-radius: $standard-border-radius;
+    border-bottom-right-radius: $standard-border-radius;
+    background: white;
+    .trigger-icon {
+      stroke-width: 6;
+      width: 17px;
+    }
   }
 
   &.closed {
@@ -168,12 +176,27 @@ html, body, #root, .app, .map-container {
   .content {
     padding: 35px 35px 45px 45px;
     // height: 100%;
-    h1 {
-      font-size: 18px;
-      font-weight: 700;
-      border-bottom: 1px solid $dark-gray;
+    .header {
+      display: flex;
       padding-bottom: 20px;
       margin-bottom: 20px;
+      border-bottom: 1px solid $dark-gray;
+      .info {
+        flex: 47px 0 0;
+        flex-shrink: 0;
+        padding-top: 3px;
+        .info-icon {
+          stroke-width: 0;
+          width: 100%;
+          left: $intro-panel-icon-offset;
+          top: calc(#{$FS-boundary-padding} + #{$intro-panel-icon-offset});
+        }
+      }
+      h1 {
+        padding-left: 10px;
+        font-size: 18px;
+        font-weight: 700;
+      }
     }
     h2 {
       font-size: 15px;
@@ -203,7 +226,7 @@ html, body, #root, .app, .map-container {
   right: $FS-boundary-padding;
   background: $semi-trans-light-gray;
   padding: 8px;
-  border-radius: 4px;
+  border-radius: $standard-border-radius;
   font-size: 12px;
   text-transform: uppercase;
   box-shadow: $very-trans-black 3px 3px 5px;
@@ -259,7 +282,7 @@ html, body, #root, .app, .map-container {
   max-width: 210px;
   box-shadow: $very-trans-black 3px 3px 5px;
   border-top: gray solid 8px;
-  border-radius: 4px;
+  border-radius: $standard-border-radius;
 }
 
 .tooltip.past {
@@ -638,20 +661,23 @@ html, body, #root, .app, .map-container {
 
 @media (max-width: $mobile-breakpoint) {
   /* INTRO PANEL */
-  .intro-panel {
+  .intro-panel-wrapper {
     top: calc(#{$SS-legend-height} + #{$FS-boundary-padding});
     bottom: $FS-boundary-padding;
     right: 0;
     width: 100%;
     z-index: 100;
+
+    &:not(.closed) .trigger {
+      right: 10px;
+      border: none;
+      padding-right: 0;
+    }
     .content {
       padding: 45px;
     }
     &.closed {
       left: -100%;
-    }
-    .info-icon {
-      top: calc(#{$SS-legend-height} + #{$FS-boundary-padding} + #{$intro-panel-icon-offset});
     }
   }
 

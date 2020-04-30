@@ -7,6 +7,7 @@ const ICON_TYPE = {
   D_ARROW: 'down-arrow',
   D_ARROW_STEMLESS: 'down-arrow-stemless',
   R_ARROW: 'right-arrow',
+  R_ARROW_STEMLESS: 'right-arrow-stemless',
   L_ARROW: 'left-arrow',
   L_ARROW_STEMLESS: 'left-arrow-stemless',
   INFO_ICON: 'info-icon'
@@ -103,6 +104,11 @@ class TriggerIcon extends React.Component {
       case ICON_TYPE.R_ARROW:
         icon = this.getDownArrow();
         classes += 'right-arrow';
+        transform += 'rotate(270)';
+        break;
+      case ICON_TYPE.R_ARROW_STEMLESS:
+        icon = this.getDownArrow(true);
+        classes += 'right-arrow stemless';
         transform += 'rotate(270)';
         break;
       case ICON_TYPE.L_ARROW:
