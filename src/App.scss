@@ -12,6 +12,11 @@ $trans-light-gray: transparentize($light-gray, .4);
 $middle-gray: #eee;
 $trans-middle-gray: transparentize($middle-gray, .5);
 $dark-gray: #ccc;
+$very-trans-black: rgba(0,0,0,.1);
+$trans-black: rgba(0,0,0,.3);
+
+$hint-background: rgb(244, 253, 255);
+$hint-content: rgb(59, 123, 138);
 
 // SIZES
 $FS-boundary-padding: 8px;
@@ -82,7 +87,7 @@ html, body, #root, .app, .map-container {
   background-color: $trans-light-gray;
   opacity: 1;
   &.loaded {
-    background-color: rgba(0,0,0,0);
+    background-color: transparent;
     opacity: 0;
     transform: translate(100%, 100%);
     transition: background-color ease 2s, opacity ease 1s .5s, transform ease 0s 2s;
@@ -201,7 +206,7 @@ html, body, #root, .app, .map-container {
   border-radius: 4px;
   font-size: 12px;
   text-transform: uppercase;
-  box-shadow: rgba(0, 0, 0, 0.1) 3px 3px 5px;
+  box-shadow: $very-trans-black 3px 3px 5px;
 }
 .legend div {
   padding: 4px;
@@ -219,13 +224,13 @@ html, body, #root, .app, .map-container {
   margin-right: 8px;
 }
 .legend i.past {
-  background: rgba(0,80,92,.8);
+  background: $color-past;
 }
 .legend i.ongoing {
-  background: rgba(175,105,12,.8);
+  background: $color-ongoing;
 }
 .legend i.proposed {
-  background: rgba(223,70,73,.8);
+  background: $color-proposed;
 }
 
 .legend .trigger-icon {
@@ -252,19 +257,19 @@ html, body, #root, .app, .map-container {
   position: fixed;
   padding: 15px;
   max-width: 210px;
-  box-shadow: rgba(0, 0, 0, 0.1) 3px 3px 5px;
+  box-shadow: $very-trans-black 3px 3px 5px;
   border-top: gray solid 8px;
   border-radius: 4px;
 }
 
 .tooltip.past {
-  border-top-color: rgba(0,80,92,.8);
+  border-top-color: $color-past;
 }
 .tooltip.ongoing {
-  border-top-color: rgba(175,105,12,.8);
+  border-top-color: $color-ongoing;
 }
 .tooltip.proposed {
-  border-top-color: rgba(223,70,73,.8);
+  border-top-color: $color-proposed;
 }
 
 .tooltip .detail {
@@ -301,7 +306,7 @@ html, body, #root, .app, .map-container {
   right: 0;
   top: 0;
   bottom: 0;
-  background-color: rgba(20, 20, 20, 0.4);
+  background-color: $trans-black;
   z-index: 5;
 
   &.card-count-1 {
@@ -324,15 +329,15 @@ html, body, #root, .app, .map-container {
   /* dock background initially just off-screen, appears when user scrolls up */
   top: 100vh;
   min-width: 100%; // fixes pesky variable container width bug below
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px 3px;
+  box-shadow: $very-trans-black 0px 0px 10px 3px;
 
   .user-hint {
     text-transform: uppercase;
-    background: rgb(244, 253, 255);
-    color: rgb(59, 123, 138);
+    background: $hint-background;
+    color: $hint-content;
     font-size: 16px; //FS
     .trigger-icon {
-      stroke: rgb(59, 123, 138);
+      stroke: $hint-content;
       stroke-width: 8; //FS
       width: 16px; //FS
     }
@@ -451,7 +456,7 @@ html, body, #root, .app, .map-container {
       /* top of card should stick up above window bottom */
       top: -$card-peek-height; //FS
       // tough to mesh with card animation onto screen
-      // box-shadow: rgba(0, 0, 0, 0.1) -2px -4px 10px 2px;
+      // box-shadow: $very-trans-black -2px -4px 10px 2px;
 
       .row {
         height: 100%; //?
