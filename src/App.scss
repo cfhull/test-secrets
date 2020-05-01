@@ -12,6 +12,28 @@ $trans-light-gray: transparentize($light-gray, .4);
 $middle-gray: #eee;
 $trans-middle-gray: transparentize($middle-gray, .5);
 $dark-gray: #ccc;
+$property-color: #757575;
+
+// BASE BIL COLORS
+
+$slate-gray: #7E8085;
+$slate-gray: #74757B;
+$med-gray: #6d6d6d;
+//$med-gray: #74757B;
+$coldblack: #282F36;
+$green: #00505C;
+$tealgreen: #6EC9D7;
+$button-bronze: #B26F16;
+$button-bronze-active: #9a6013;
+$dkbronze: #A36514;
+$white: #ffffff;
+$black: #373737;
+$links: #04143c;
+$linkshover: #9a6013;
+
+// BOX-SHADOW
+
+$box-shadow: rgba(0, 0, 0, 0.1) 0 1px 3px;
 $very-trans-black: rgba(0,0,0,.1);
 $trans-black: rgba(0,0,0,.3);
 
@@ -26,7 +48,7 @@ $SS-legend-height: 130px;
 $FS-card-width: 300px;
 $mobile-breakpoint: $FS-card-width * 2; 
 $FS-dock-width: $FS-card-width * 3;
-$scroll-hint-width: 200px;
+$scroll-hint-width: 224px;
 $scroll-hint-height: 40px;
 $selection-hint-width: 230px;
 $selection-hint-height: 134px;
@@ -128,8 +150,10 @@ html, body, #root, .app, .map-container {
 
 /* MAPBOX CONTROLS (need access to sass vars) */
 .mapboxgl-ctrl-top-right {
-  top: calc(#{$SS-legend-height} + #{$FS-boundary-padding} + #{$intro-panel-icon-offset});
-  right: $FS-boundary-padding;
+  //top: calc(#{$SS-legend-height} + #{$FS-boundary-padding} + #{$intro-panel-icon-offset});
+  //right: $FS-boundary-padding;
+  top: 40vh;
+  right: 24px;
 }
 
 .mapboxgl-ctrl-group.custom {
@@ -149,9 +173,10 @@ html, body, #root, .app, .map-container {
   position: fixed;
   left: 0;
   z-index: 3;
-  top: $FS-boundary-padding;
+  //top: $FS-boundary-padding;
   // bottom: calc(#{$FS-boundary-padding} + #{$card-peek-height});
   // won't stretch to bottom unless screen height is minimal (then scroll activates)
+  top: 24px;
   bottom: $FS-boundary-padding;
   max-height: 580px;
   min-height: 200px;
@@ -237,11 +262,21 @@ html, body, #root, .app, .map-container {
         display: inline;
 
         &.advance-button {
-          padding-left: 7px;
+         // padding-left: 7px;
           font-weight: 700;
           white-space: nowrap;
           cursor: pointer;
         }
+      }
+    }
+    .next-prev {
+      display: flex;
+      justify-content: space-between;
+      width: 37%;
+      margin: auto;
+      padding-top: 16px;
+      p.advance-button {
+        padding: 0;
       }
     }
   }
@@ -258,9 +293,12 @@ html, body, #root, .app, .map-container {
 /* LEGEND */
 .legend {
   position: fixed;
-  top: $FS-boundary-padding;
-  right: $FS-boundary-padding;
-  background: $semi-trans-light-gray;
+  //top: $FS-boundary-padding;
+  //right: $FS-boundary-padding;
+  top: 32px;
+  right: 24px;
+  //background: $semi-trans-light-gray;
+  background: #fff;
   padding: 8px;
   border-radius: $standard-border-radius;
   font-size: 12px;
@@ -298,6 +336,9 @@ html, body, #root, .app, .map-container {
   top: 5px;
   width: 16px;
   stroke-width: 5;
+}
+.legend svg polyline {
+  display: none;
 }
 
 .legend.hidden {
@@ -381,7 +422,8 @@ html, body, #root, .app, .map-container {
 
 /* CARD DOCK */
 .card-dock-container {
-  background-color: $middle-gray;
+ // background-color: $middle-gray;
+  background-color: #fff;
 
   z-index: 5;
   position: absolute;
@@ -395,10 +437,11 @@ html, body, #root, .app, .map-container {
     background: $hint-background;
     color: $hint-content;
     font-size: 16px; //FS
+    font-size: 14px;
     .trigger-icon {
       stroke: $hint-content;
       stroke-width: 8; //FS
-      width: 16px; //FS
+      width: 12px; //FS
     }
 
     &.scroll-hint {
@@ -415,7 +458,8 @@ html, body, #root, .app, .map-container {
         transition: top ease 3s;
       }
       .content {
-        padding: 12px;
+        padding: 10px;
+        font-weight: 600;
       }
     }
 
@@ -438,6 +482,10 @@ html, body, #root, .app, .map-container {
       }
       .content {
         padding: 20px;
+        font-weight: 600;
+        p {
+          font-weight: 600;
+        }
         svg {
           position: absolute;
           top: 44%;
@@ -515,6 +563,8 @@ html, body, #root, .app, .map-container {
       /* top of card should stick up above window bottom */
       top: -$card-peek-height; //FS
       // tough to mesh with card animation onto screen
+      // box-shadow: rgba(0, 0, 0, 0.1) -2px -4px 10px 2px;
+      box-shadow: $box-shadow;
       // box-shadow: $very-trans-black -2px -4px 10px 2px;
 
       .row {
@@ -537,7 +587,7 @@ html, body, #root, .app, .map-container {
       .cell {
         // don't add different side padding for different cell types
         // or cells won't align vertically
-        padding: 10px; //FS
+        padding: 16px; //FS
         // display: inline-block;
         // box-sizing: border-box;
         height: 100%; //?
@@ -549,6 +599,9 @@ html, body, #root, .app, .map-container {
           top: 4px;
           box-sizing: content-box;
           padding: 5px;
+        }
+        .property-name {
+          color: $property-color;
         }
         .property-name,
         .location-title {
@@ -569,7 +622,7 @@ html, body, #root, .app, .map-container {
 
         &.feature-header {
           .property-name {
-
+            color: $property-color;
             font-weight: 700;
             text-align: center;
           }
@@ -580,13 +633,17 @@ html, body, #root, .app, .map-container {
 
         .value {
           // overflow: hidden;
-          padding-top: 4px;
+          padding-top: 8px;
           font-size: 14px; //FS
 
           a {
             display: block;
             cursor: pointer;
             padding-bottom: 8px;
+            color: $links;
+            &:hover {
+              color: $linkshover;
+            }
           }
         }
         // FIELDS NO LONGER EXPANDIBLE
@@ -676,7 +733,8 @@ html, body, #root, .app, .map-container {
 
     /* alternating row colors */
     .row:nth-child(odd) .card {
-      background-color: $light-gray;
+      background-color: #f8f8f8;
+      background-color: #f9f9f9;
       // .cell.expandible:not(.expanded):before {
       //   // appropriate color for text fade
       //   background: linear-gradient(transparent, $light-gray 15px);
@@ -690,7 +748,7 @@ html, body, #root, .app, .map-container {
       // }
     }
     .row .card .cell {
-      border: solid $trans-middle-gray .5px;
+    //  border: solid $trans-middle-gray .5px;
     }
   }
 }
@@ -752,10 +810,19 @@ html, body, #root, .app, .map-container {
     .user-hint{
       &.scroll-hint {
         left: calc(50vw - (#{$scroll-hint-width} / 2));
+        .content {
+          font-weight: 600;
+        }
       }
       &.selection-hint {
         top: -$selection-hint-height;
         &.scroll-initiated {
+          .content {
+            font-weight: 600;
+            p {
+              font-weight: 600;
+            }
+          }
           animation: slide-up 1.2s forwards;
           left: calc(50vw - (#{$selection-hint-width}) / 2);
           &.dismissed {
