@@ -161,9 +161,10 @@ html, body, #root, .app, .map-container {
   position: fixed;
   left: 0;
   z-index: 3;
-  top: $FS-boundary-padding;
+  //top: $FS-boundary-padding;
   // bottom: calc(#{$FS-boundary-padding} + #{$card-peek-height});
   // won't stretch to bottom unless screen height is minimal (then scroll activates)
+  top: 24px;
   bottom: $FS-boundary-padding;
   max-height: 580px;
   min-height: 200px;
@@ -249,11 +250,21 @@ html, body, #root, .app, .map-container {
         display: inline;
 
         &.advance-button {
-          padding-left: 7px;
+         // padding-left: 7px;
           font-weight: 700;
           white-space: nowrap;
           cursor: pointer;
         }
+      }
+    }
+    .next-prev {
+      display: flex;
+      justify-content: space-between;
+      width: 37%;
+      margin: auto;
+      padding-top: 16px;
+      p.advance-button {
+        padding: 0;
       }
     }
   }
@@ -274,7 +285,8 @@ html, body, #root, .app, .map-container {
   //right: $FS-boundary-padding;
   top: 32px;
   right: 24px;
-  background: $semi-trans-light-gray;
+  //background: $semi-trans-light-gray;
+  background: #fff;
   padding: 8px;
   border-radius: $standard-border-radius;
   font-size: 12px;

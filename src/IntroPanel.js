@@ -29,6 +29,7 @@ class IntroPanel extends React.Component {
     this.toggleOpen = this.toggleOpen.bind(this);
     this.setActiveSection = this.setActiveSection.bind(this);
     this.advanceActiveSection = this.advanceActiveSection.bind(this);
+    this.prevActiveSection = this.prevActiveSection.bind(this);
   }
 
   toggleOpen() {
@@ -71,12 +72,14 @@ class IntroPanel extends React.Component {
 
   getSection() {
     const { activeSectionIdx } = this.state;
+    const prevButton = activeSectionIdx === (SECTIONS.length) ? null :
+      <p className='advance-button prev' onClick={this.prevActiveSection}>PREVIOUS</p>;
     const advanceButton = activeSectionIdx === (SECTIONS.length - 1) ? null :
-      <p className='advance-button' onClick={this.advanceActiveSection}>NEXT ></p>;
+      <p className='advance-button next' onClick={this.advanceActiveSection}>NEXT</p>;
     return (
       <div className='section-text'>
         <p>{SECTIONS[this.state.activeSectionIdx].text}</p>
-        {advanceButton}
+        <div class="next-prev">{prevButton} | {advanceButton}</div>
       </div>
     );
   }
@@ -87,6 +90,9 @@ class IntroPanel extends React.Component {
   
   advanceActiveSection(activeSectionIdx) {
     this.setState(state => ({ activeSectionIdx: state.activeSectionIdx + 1 }));
+  }
+  prevActiveSection(activeSectionIdx) {
+    this.setState(state => ({ activeSectionIdx: state.activeSectionIdx - 1 }));
   }
 
   render() {
