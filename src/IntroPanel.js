@@ -72,18 +72,38 @@ class IntroPanel extends React.Component {
 
   getSection() {
     const { activeSectionIdx } = this.state;
-    const prevButton = activeSectionIdx === (SECTIONS.length) ? null :
-      <p className='advance-button prev' onClick={this.prevActiveSection}>PREVIOUS</p>;
-    const advanceButton = activeSectionIdx === (SECTIONS.length - 1) ? null :
-      <p className='advance-button next' onClick={this.advanceActiveSection}>NEXT</p>;
     return (
       <div className='section-text'>
-        <p>{SECTIONS[this.state.activeSectionIdx].text}</p>
-        <div class="next-prev">{prevButton} | {advanceButton}</div>
+        <p>{SECTIONS[activeSectionIdx].text}</p>
       </div>
     );
   }
+  
+  getNextPrev() {
+    const { activeSectionIdx } = this.state;
 
+    let prevHandler = null;
+    let prevClasses = 'advance-button prev'
+    if (activeSectionIdx !== 0) {
+      prevHandler = this.prevActiveSection;
+      prevClasses += ' active';
+    }
+    const prevButton = <p className={prevClasses} onClick={prevHandler}>PREVIOUS</p>;
+
+    let nextHandler = null;
+    let nextClasses = 'advance-button next'
+    if (activeSectionIdx < (SECTIONS.length - 1)) {
+      nextHandler = this.advanceActiveSection;
+      nextClasses += ' active';
+    }
+    const nextButton = <p className={nextClasses} onClick={nextHandler}>NEXT</p>;
+    return (
+      <div className='bottom-controls'>
+        <div class="next-prev">{prevButton} | {nextButton}</div>
+      </div>
+    );
+  }
+  
   setActiveSection(activeSectionIdx) {
     this.setState({ activeSectionIdx });
   }
@@ -113,6 +133,7 @@ class IntroPanel extends React.Component {
             {this.getHeader()}
             {this.getNav()}
             {this.getSection()}
+            {this.getNextPrev()}
           </div>
         </div>
       </div>

@@ -16,7 +16,7 @@ $property-color: #757575;
 
 // BASE BIL COLORS
 
-$slate-gray: #7E8085;
+// $slate-gray: #7E8085;
 $slate-gray: #74757B;
 $med-gray: #6d6d6d;
 //$med-gray: #74757B;
@@ -61,6 +61,7 @@ $intro-panel-width: 450px;
 $intro-panel-icon-offset: 8px;
 $standard-border-radius: 4px;
 $zoom-controls-top: 40vh;
+$intro-next-prev-height: 55px;
 
 * {
   margin: 0;
@@ -180,7 +181,7 @@ html, body, #root, .app, .map-container {
   // won't stretch to bottom unless screen height is minimal (then scroll activates)
   top: $FS-boundary-padding;
   bottom: $FS-boundary-padding;
-  max-height: 580px;
+  max-height: 600px;
   min-height: 200px;
   width: $intro-panel-width;
   background: white;
@@ -216,7 +217,8 @@ html, body, #root, .app, .map-container {
   }
 
   .content {
-    padding: 35px 35px 45px 45px;
+    padding: 40px;
+    padding-bottom: $intro-next-prev-height;
     // height: 100%;
     .nav {
       .section-name {
@@ -269,14 +271,32 @@ html, body, #root, .app, .map-container {
         }
       }
     }
-    .next-prev {
-      display: flex;
-      justify-content: space-between;
-      width: 37%;
-      margin: auto;
-      padding-top: 16px;
-      p.advance-button {
-        padding: 0;
+
+    .bottom-controls {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: $intro-next-prev-height;
+      background: white;
+      .next-prev {
+        display: flex;
+        justify-content: space-between;
+        width: 37%;
+        margin: auto;
+        padding-top: 16px;
+        font-size: 14px;
+        p.advance-button {
+          padding: 0;
+          &.active {
+            font-weight: 700;
+            cursor: pointer;
+          }
+          &:not(.active) {
+            font-weight: 300;
+            color: $slate-gray;
+          }
+        }
       }
     }
   }
@@ -765,9 +785,6 @@ html, body, #root, .app, .map-container {
       right: 10px;
       border: none;
       padding-right: 0;
-    }
-    .content {
-      padding: 45px;
     }
     &.closed {
       left: -100%;
