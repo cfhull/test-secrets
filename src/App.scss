@@ -160,7 +160,7 @@ html, body, #root, .app, .map-container {
 }
 
 .mapboxgl-ctrl-group.custom {
-  position: absolute;
+  position: fixed;
   right: $FS-boundary-padding;
   top: calc(#{$zoom-controls-top} + 65px); 
   z-index: 2;
