@@ -132,6 +132,18 @@ html, body, #root, .app, .map-container {
   right: $FS-boundary-padding;
 }
 
+.mapboxgl-ctrl-group.custom {
+  position: absolute;
+  right: 24px;
+  top: 40vh;
+  z-index: 3;
+
+  button.mapboxgl-ctrl-reset-view .mapboxgl-ctrl-icon {
+    background-image: url(svg/mapboxgl-ctrl-reset-view.svg);
+    background-size: 100%;  
+  }
+}
+
 /* INTRO PANEL */
 .intro-panel-wrapper {
   position: fixed;
