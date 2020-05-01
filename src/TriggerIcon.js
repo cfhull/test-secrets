@@ -5,12 +5,15 @@ const ICON_TYPE = {
   EXPAND: 'expand',
   COLLAPSE: 'collapse',
   D_ARROW: 'down-arrow',
+  NEW_DOWN_ARROW: 'new-down-arrow',
+  NEW_RIGHT_ARROW: 'new-right-arrow',
   D_ARROW_STEMLESS: 'down-arrow-stemless',
   R_ARROW: 'right-arrow',
   R_ARROW_STEMLESS: 'right-arrow-stemless',
   L_ARROW: 'left-arrow',
   L_ARROW_STEMLESS: 'left-arrow-stemless',
-  INFO_ICON: 'info-icon'
+  INFO_ICON: 'info-icon',
+  XCLOSE: 'x-close'
 };
 
 class TriggerIcon extends React.Component {
@@ -52,15 +55,36 @@ class TriggerIcon extends React.Component {
     return (
       <>
         {!stemless && <polyline points='50,0 50,100' />}
-        <polyline points='10,55 50,100 90,55' />
+        
+        <line x1="6.0098" y1="0.696815" x2="0.352949" y2="6.35367" stroke="#373737"/>
+        <line x1="6.00973" y1="11.3033" x2="0.352874" y2="5.64641" stroke="#373737"/>
       </>
+    )
+  }
+  getNewDownArrow() {
+    return (
+      <>
+        <path d="M1 5.5H10"  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path fill="none" d="M5.5 1L10 5.5L5.5 10"  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </>
+    )
+  }
+
+  getXClose() {
+    return (
+      <>
+        <line x1="5.30326" y1="5.30318" x2="15.9099" y2="15.9098" stroke=""/>
+        <line x1="15.9097" y1="5.30326" x2="5.30311" y2="15.9099" stroke=""/>
+      </>  
     )
   }
 
   getInfoIcon() {
     return (
       <>
-        <path d="m128 22.158a105.84 105.84 0 0 0 -105.84 105.84 105.84 105.84 0 0 0 105.84 105.84 105.84 105.84 0 0 0 105.84 -105.84 105.84 105.84 0 0 0 -105.84 -105.84zm0 32.76c5.16 0.117 9.55 1.875 13.18 5.273 3.34 3.575 5.07 7.94 5.19 13.096-0.12 5.156-1.85 9.404-5.19 12.744-3.63 3.75-8.02 5.625-13.18 5.625s-9.4-1.875-12.74-5.625c-3.75-3.34-5.63-7.588-5.63-12.744s1.88-9.521 5.63-13.096c3.34-3.398 7.58-5.156 12.74-5.273zm-16.35 53.792h32.79v92.37h-32.79v-92.37z" fill-rule="evenodd" fill="#72a7cf"/>
+        <circle cx="13.5" cy="13.5" r="13.5" fill="#DBEDF2"/>
+        <circle cx="13.5" cy="7.5" r="1.5" fill="#709FAC"/>
+        <rect x="12" y="11" width="3" height="10" rx="1.5" fill="#709FAC"/>
       </>
     )
   }
@@ -79,7 +103,7 @@ class TriggerIcon extends React.Component {
     let icon;
     let classes = 'trigger-icon ';
     let transform = '';
-    let viewBox = '0 0 100 100';
+    let viewBox = '0 0 12 12';
     switch (this.props.iconType) {
       case ICON_TYPE.REMOVE:
         icon = this.getRemove();
@@ -109,7 +133,7 @@ class TriggerIcon extends React.Component {
       case ICON_TYPE.R_ARROW_STEMLESS:
         icon = this.getDownArrow(true);
         classes += 'right-arrow stemless';
-        transform += 'rotate(270)';
+        transform += 'rotate(180)';
         break;
       case ICON_TYPE.L_ARROW:
         icon = this.getDownArrow();
@@ -119,13 +143,30 @@ class TriggerIcon extends React.Component {
       case ICON_TYPE.L_ARROW_STEMLESS:
         icon = this.getDownArrow(true);
         classes += 'left-arrow stemless';
-        transform += 'rotate(90)';
+        transform += 'rotate(0)';
         break;
       case ICON_TYPE.INFO_ICON:
         icon = this.getInfoIcon();
         classes += 'info-icon';
-        viewBox = '0 0 256 256'
+        viewBox = '0 0 27 27'
         break;
+      case ICON_TYPE.NEW_DOWN_ARROW:
+        icon = this.getNewDownArrow(true);
+        classes += 'new-down-arrow';
+        transform += 'rotate(90)';
+        viewBox = '0 0 11 11'
+        break; 
+      case ICON_TYPE.NEW_RIGHT_ARROW:
+        icon = this.getNewDownArrow(true);
+        classes += 'new-right-arrow';
+        transform += 'rotate(0)';
+        viewBox = '0 0 11 11'
+        break;  
+      case ICON_TYPE.XCLOSE:
+        icon = this.getXClose(true);
+        classes += 'x-close remove-icon';
+        viewBox = "0 0 22 22"
+        break;  
       default:
         console.error('incorrect type');
     }
