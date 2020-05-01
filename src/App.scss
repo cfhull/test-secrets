@@ -16,7 +16,7 @@ $property-color: #757575;
 
 // BASE BIL COLORS
 
-$slate-gray: #7E8085;
+// $slate-gray: #7E8085;
 $slate-gray: #74757B;
 $med-gray: #6d6d6d;
 //$med-gray: #74757B;
@@ -41,13 +41,15 @@ $hint-background: rgb(244, 253, 255);
 $hint-content: rgb(59, 123, 138);
 
 // SIZES
-$FS-boundary-padding: 8px;
-$FS-legend-width: 200px;
-$FS-legend-height: 103px;
-$SS-legend-height: 130px;
+// NOTE: FS = full-screen, SS = small-screen (to be used inside the mobile-breakpoint)
 $FS-card-width: 300px;
 $mobile-breakpoint: $FS-card-width * 2; 
 $FS-dock-width: $FS-card-width * 3;
+$FS-boundary-padding: 24px;
+$SS-boundary-padding: 16px;
+$FS-legend-width: 200px;
+$FS-legend-height: 103px;
+$SS-legend-height: 130px;
 $scroll-hint-width: 224px;
 $scroll-hint-height: 40px;
 $selection-hint-width: 230px;
@@ -58,6 +60,8 @@ $card-peek-height: 100px;
 $intro-panel-width: 450px;
 $intro-panel-icon-offset: 8px;
 $standard-border-radius: 4px;
+$zoom-controls-top: 40vh;
+$intro-next-prev-height: 55px;
 
 * {
   margin: 0;
@@ -151,9 +155,20 @@ html, body, #root, .app, .map-container {
 /* MAPBOX CONTROLS (need access to sass vars) */
 .mapboxgl-ctrl-top-right {
   //top: calc(#{$SS-legend-height} + #{$FS-boundary-padding} + #{$intro-panel-icon-offset});
-  //right: $FS-boundary-padding;
-  top: 40vh;
-  right: 24px;
+  top: $zoom-controls-top;
+  right: $FS-boundary-padding;
+}
+
+.mapboxgl-ctrl-group.custom {
+  position: absolute;
+  right: $FS-boundary-padding;
+  top: calc(#{$zoom-controls-top} + 65px); 
+  z-index: 2;
+
+  button.mapboxgl-ctrl-reset-view .mapboxgl-ctrl-icon {
+    background-image: url(svg/mapboxgl-ctrl-reset-view.svg);
+    background-size: 100%;  
+  }
 }
 
 /* INTRO PANEL */
@@ -164,9 +179,9 @@ html, body, #root, .app, .map-container {
   //top: $FS-boundary-padding;
   // bottom: calc(#{$FS-boundary-padding} + #{$card-peek-height});
   // won't stretch to bottom unless screen height is minimal (then scroll activates)
-  top: 24px;
+  top: $FS-boundary-padding;
   bottom: $FS-boundary-padding;
-  max-height: 580px;
+  max-height: 600px;
   min-height: 200px;
   width: $intro-panel-width;
   background: white;
@@ -202,7 +217,8 @@ html, body, #root, .app, .map-container {
   }
 
   .content {
-    padding: 35px 35px 45px 45px;
+    padding: 40px;
+    padding-bottom: $intro-next-prev-height;
     // height: 100%;
     .nav {
       .section-name {
@@ -240,8 +256,6 @@ html, body, #root, .app, .map-container {
         .info-icon {
           stroke-width: 0;
           width: 100%;
-          left: $intro-panel-icon-offset;
-          top: calc(#{$FS-boundary-padding} + #{$intro-panel-icon-offset});
         }
       }
       h1 {
@@ -266,14 +280,32 @@ html, body, #root, .app, .map-container {
         }
       }
     }
-    .next-prev {
-      display: flex;
-      justify-content: space-between;
-      width: 37%;
-      margin: auto;
-      padding-top: 16px;
-      p.advance-button {
-        padding: 0;
+
+    .bottom-controls {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: $intro-next-prev-height;
+      background: white;
+      .next-prev {
+        display: flex;
+        justify-content: space-between;
+        width: 37%;
+        margin: auto;
+        padding-top: 16px;
+        font-size: 14px;
+        p.advance-button {
+          padding: 0;
+          &.active {
+            font-weight: 700;
+            cursor: pointer;
+          }
+          &:not(.active) {
+            font-weight: 300;
+            color: $slate-gray;
+          }
+        }
       }
     }
   }
@@ -291,9 +323,8 @@ html, body, #root, .app, .map-container {
 .legend {
   position: fixed;
   //top: $FS-boundary-padding;
-  //right: $FS-boundary-padding;
   top: 32px;
-  right: 24px;
+  right: $FS-boundary-padding;
   //background: $semi-trans-light-gray;
   background: #fff;
   padding: 8px;
@@ -760,20 +791,16 @@ html, body, #root, .app, .map-container {
 @media (max-width: $mobile-breakpoint) {
   /* INTRO PANEL */
   .intro-panel-wrapper {
-    top: calc(#{$SS-legend-height} + #{$FS-boundary-padding});
-    bottom: $FS-boundary-padding;
+    top: calc(#{$SS-legend-height} + #{$SS-boundary-padding});
+    bottom: $SS-boundary-padding;
     right: 0;
     width: 100%;
-    z-index: 100;
     max-height: unset;
 
     &:not(.closed) .trigger {
       right: 10px;
       border: none;
       padding-right: 0;
-    }
-    .content {
-      padding: 45px;
     }
     &.closed {
       left: -100%;

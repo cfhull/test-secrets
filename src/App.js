@@ -115,7 +115,7 @@ class App extends React.Component {
 
     if (CONTROL_QUERY_STRING) {
       const queryString = '?s=' + selectedIds.join(',');
-      window.parent.postMessage({ selectedIds: selectedIds, queryString }, "http://localhost:1313");
+      window.parent.postMessage({ selectedIds: selectedIds, queryString }, 'http://localhost:1313');
     }
 
     // dismiss selection hint once multiple points have been selected
@@ -175,7 +175,7 @@ class App extends React.Component {
 
     if (CONTROL_QUERY_STRING) {
       const queryString = '?selected=' + selectedIds.join(',');
-      window.parent.postMessage({ selectedIds: selectedIds, queryString }, "http://localhost:1313");
+      window.parent.postMessage({ selectedIds: selectedIds, queryString }, 'http://localhost:1313');
     }
 
     this.setState({ selectedIds });
@@ -215,6 +215,30 @@ class App extends React.Component {
       />
     );
   }
+
+  getResetViewButton() {
+    const onClick = () => {
+      this.map.flyTo({
+        center: [STARTING_LNG, STARTING_LAT],
+        zoom: STARTING_ZOOM,
+        essential: true
+      });
+    };
+
+    return (
+      <div class='mapboxgl-ctrl mapboxgl-ctrl-group custom'>
+        <button
+          onClick={onClick}
+          class='mapboxgl-ctrl-reset-view'
+          type='button'
+          title='Reset view'
+          aria-label='Reset view'
+        >
+          <span class='mapboxgl-ctrl-icon' aria-hidden='true' />
+        </button>
+      </div>
+    );
+  }
   
   render() {
     const { dataLoaded, mapLoaded, mapConfigured } = this.state;
@@ -230,6 +254,7 @@ class App extends React.Component {
           <IntroPanel />
           {this.getCardDock()}
           {this.getTooltip()}
+          {this.getResetViewButton()}
           <div ref={this.mapContainer} className='map-container' />
           <Legend />
         </div>
