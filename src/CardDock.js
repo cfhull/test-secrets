@@ -71,6 +71,10 @@ class CardDock extends React.PureComponent {
       this.setState({ scrollHintDismissed: true });
     }
 
+    if (this.props.isTouchScreen) {
+      return;
+    }
+
     if (deltaY > 0) {
       this.setState({ mapMaskActive: true });
       return;
