@@ -41,13 +41,15 @@ $hint-background: rgb(244, 253, 255);
 $hint-content: rgb(59, 123, 138);
 
 // SIZES
-$FS-boundary-padding: 8px;
-$FS-legend-width: 200px;
-$FS-legend-height: 103px;
-$SS-legend-height: 130px;
+// NOTE: FS = full-screen, SS = small-screen (to be used inside the mobile-breakpoint)
 $FS-card-width: 300px;
 $mobile-breakpoint: $FS-card-width * 2; 
 $FS-dock-width: $FS-card-width * 3;
+$FS-boundary-padding: 24px;
+$SS-boundary-padding: 16px;
+$FS-legend-width: 200px;
+$FS-legend-height: 103px;
+$SS-legend-height: 130px;
 $scroll-hint-width: 224px;
 $scroll-hint-height: 40px;
 $selection-hint-width: 230px;
@@ -58,6 +60,7 @@ $card-peek-height: 100px;
 $intro-panel-width: 450px;
 $intro-panel-icon-offset: 8px;
 $standard-border-radius: 4px;
+$zoom-controls-top: 40vh;
 
 * {
   margin: 0;
@@ -151,16 +154,15 @@ html, body, #root, .app, .map-container {
 /* MAPBOX CONTROLS (need access to sass vars) */
 .mapboxgl-ctrl-top-right {
   //top: calc(#{$SS-legend-height} + #{$FS-boundary-padding} + #{$intro-panel-icon-offset});
-  //right: $FS-boundary-padding;
-  top: 40vh;
-  right: 24px;
+  top: $zoom-controls-top;
+  right: $FS-boundary-padding;
 }
 
 .mapboxgl-ctrl-group.custom {
   position: absolute;
-  right: 24px;
-  top: 40vh;
-  z-index: 3;
+  right: $FS-boundary-padding;
+  top: calc(#{$zoom-controls-top} + 65px); 
+  z-index: 2;
 
   button.mapboxgl-ctrl-reset-view .mapboxgl-ctrl-icon {
     background-image: url(svg/mapboxgl-ctrl-reset-view.svg);
@@ -176,7 +178,7 @@ html, body, #root, .app, .map-container {
   //top: $FS-boundary-padding;
   // bottom: calc(#{$FS-boundary-padding} + #{$card-peek-height});
   // won't stretch to bottom unless screen height is minimal (then scroll activates)
-  top: 24px;
+  top: $FS-boundary-padding;
   bottom: $FS-boundary-padding;
   max-height: 580px;
   min-height: 200px;
@@ -243,8 +245,6 @@ html, body, #root, .app, .map-container {
         .info-icon {
           stroke-width: 0;
           width: 100%;
-          left: $intro-panel-icon-offset;
-          top: calc(#{$FS-boundary-padding} + #{$intro-panel-icon-offset});
         }
       }
       h1 {
@@ -294,9 +294,8 @@ html, body, #root, .app, .map-container {
 .legend {
   position: fixed;
   //top: $FS-boundary-padding;
-  //right: $FS-boundary-padding;
   top: 32px;
-  right: 24px;
+  right: $FS-boundary-padding;
   //background: $semi-trans-light-gray;
   background: #fff;
   padding: 8px;
@@ -756,8 +755,8 @@ html, body, #root, .app, .map-container {
 @media (max-width: $mobile-breakpoint) {
   /* INTRO PANEL */
   .intro-panel-wrapper {
-    top: calc(#{$SS-legend-height} + #{$FS-boundary-padding});
-    bottom: $FS-boundary-padding;
+    top: calc(#{$SS-legend-height} + #{$SS-boundary-padding});
+    bottom: $SS-boundary-padding;
     right: 0;
     width: 100%;
     max-height: unset;
