@@ -28,6 +28,8 @@ $button-bronze-active: #9a6013;
 $dkbronze: #A36514;
 $white: #ffffff;
 $black: #373737;
+$links: #04143c;
+$linkshover: #9a6013;
 
 // BOX-SHADOW
 
@@ -140,8 +142,10 @@ html, body, #root, .app, .map-container {
 
 /* MAPBOX CONTROLS (need access to sass vars) */
 .mapboxgl-ctrl-top-right {
-  top: calc(#{$SS-legend-height} + #{$FS-boundary-padding} + #{$intro-panel-icon-offset});
-  right: $FS-boundary-padding;
+  //top: calc(#{$SS-legend-height} + #{$FS-boundary-padding} + #{$intro-panel-icon-offset});
+  //right: $FS-boundary-padding;
+  top: 40vh;
+  right: 24px;
 }
 
 /* INTRO PANEL */
@@ -214,8 +218,10 @@ html, body, #root, .app, .map-container {
 /* LEGEND */
 .legend {
   position: fixed;
-  top: $FS-boundary-padding;
-  right: $FS-boundary-padding;
+  //top: $FS-boundary-padding;
+  //right: $FS-boundary-padding;
+  top: 32px;
+  right: 24px;
   background: $semi-trans-light-gray;
   padding: 8px;
   border-radius: 4px;
@@ -254,6 +260,9 @@ html, body, #root, .app, .map-container {
   top: 5px;
   width: 16px;
   stroke-width: 5;
+}
+.legend svg polyline {
+  display: none;
 }
 
 .legend.hidden {
@@ -553,6 +562,10 @@ html, body, #root, .app, .map-container {
             display: block;
             cursor: pointer;
             padding-bottom: 8px;
+            color: $links;
+            &:hover {
+              color: $linkshover;
+            }
           }
         }
         // FIELDS NO LONGER EXPANDIBLE
