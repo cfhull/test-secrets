@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "785e6fbc9f736e53b3753e235e249617",
+    "revision": "852acea5dab4f24b2b46ec1e15feb8a4",
     "url": "/bil-map/index.html"
   },
   {
-    "revision": "1b590fc26b22be39ec89",
-    "url": "/bil-map/static/css/main.4ddf4f3c.chunk.css"
+    "revision": "cb5d35a21643d807bece",
+    "url": "/bil-map/static/css/main.6fcc0f36.chunk.css"
   },
   {
     "revision": "eb3eacdd69e25fad9363",
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/bil-map/static/js/2.87a3ada5.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "1b590fc26b22be39ec89",
-    "url": "/bil-map/static/js/main.7a573e0a.chunk.js"
+    "revision": "cb5d35a21643d807bece",
+    "url": "/bil-map/static/js/main.f8bb0fe6.chunk.js"
   },
   {
     "revision": "df6d84309ee1ca332b0a",
@@ -30,6 +30,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "08806268d9bac29ace8d925d7e235848",
     "url": "/bil-map/static/media/mapboxgl-ctrl-logo.08806268.svg"
+  },
+  {
+    "revision": "8dc1388b1fcc796b95fbb624ca6a8cde",
+    "url": "/bil-map/static/media/mapboxgl-ctrl-reset-view.8dc1388b.svg"
   },
   {
     "revision": "0b972bc0aeeb5bb2abec12bcaf3e5fd3",
