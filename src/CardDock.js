@@ -115,7 +115,7 @@ class CardDock extends React.PureComponent {
         <div className={classes} key={'header'+eid} >
           <div className='cell'>
             {name||'(none)'}
-            <TriggerIcon iconType={ICON_TYPE.REMOVE} onClick={this.removeCard.bind(this, eid)} />
+            <TriggerIcon iconType={ICON_TYPE.XCLOSE} onClick={this.removeCard.bind(this, eid)} />
           </div>
         </div>
     )});
@@ -297,7 +297,7 @@ class CardDock extends React.PureComponent {
   }
 
   getScrollHint() {
-    const content = <>scroll for more {<TriggerIcon iconType={ICON_TYPE.D_ARROW} />}</>
+    const content = <>scroll for more {<TriggerIcon iconType={ICON_TYPE.NEW_DOWN_ARROW} />}</>
     return (
       <UserHint
         content={content}
@@ -311,7 +311,7 @@ class CardDock extends React.PureComponent {
     const content = (
       <>
         click more map points to compare experiments<p className='maximum'>(max. 3)</p>
-        <TriggerIcon iconType={ICON_TYPE.R_ARROW} />
+        <TriggerIcon iconType={ICON_TYPE.NEW_RIGHT_ARROW} />
       </>
     );
 

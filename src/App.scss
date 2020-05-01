@@ -61,7 +61,7 @@ $intro-panel-width: 450px;
 $intro-panel-icon-offset: 8px;
 $standard-border-radius: 4px;
 $zoom-controls-top: 40vh;
-$intro-next-prev-height: 55px;
+$intro-next-prev-height: 60px;
 
 * {
   margin: 0;
@@ -82,9 +82,9 @@ html, body, #root, .app, .map-container {
 }
 
 .trigger-icon {
-  stroke: black;
-  stroke-width: 3;
-  fill: none;
+  //stroke: black;
+ // stroke-width: 3;
+  //fill: none;
   &.remove-icon, &.expand-icon, &.collapse-icon, &.stemless {
     cursor: pointer;
     * {
@@ -185,7 +185,7 @@ html, body, #root, .app, .map-container {
   min-height: 200px;
   width: $intro-panel-width;
   background: white;
-  border: solid $dark-gray 1px;
+  //border: solid $dark-gray 1px;
   overflow: visible;
   border-top-right-radius: $standard-border-radius;
   border-bottom-right-radius: $standard-border-radius;
@@ -194,26 +194,33 @@ html, body, #root, .app, .map-container {
   .intro-panel {
     height: 100%;
     overflow: scroll;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
   }
 
   .trigger {
     position: absolute;
     right: -32px;
     top: 10px;
-    padding: 7px;
-    border: solid $dark-gray 1px;
+    padding: 8px 8px 8px 11px;
+    border: solid #fff 1px;
     border-left: none;
-    border-top-right-radius: $standard-border-radius;
-    border-bottom-right-radius: $standard-border-radius;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
     background: white;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
     .trigger-icon {
-      stroke-width: 6;
-      width: 17px;
+     // stroke-width: 6;
+      width: 12px;
+      height: 12px;
     }
   }
 
+
   &.closed {
     left: -$intro-panel-width;
+    .trigger {
+      padding: 8px 11px 8px 8px;
+    }
   }
 
   .content {
@@ -225,27 +232,38 @@ html, body, #root, .app, .map-container {
       .section-name {
         white-space: nowrap;
         cursor: pointer;
+        color: #757575;
+        &.active {
+          color: #000;
+        }
+      }
+      p.divider {
+        display: none;
       }
       p {
         display: inline;
         font-size: 14px;
-        padding-right: 6px;
+        padding-right: 14px;
         &.active {
           font-weight: 700;
         }
       }
     }
-    .nav, .header {
-      padding-bottom: 20px;
-      margin-bottom: 20px;
-      border-bottom: 1px solid $dark-gray;  
+    .nav {
+      border-bottom: 1px solid $dark-gray; 
+      padding-bottom: 8px;
+      margin-bottom: 20px; 
     }
     .header {
       display: flex;
+      padding-bottom: 0px;
+      margin-bottom: 20px; 
       .info {
-        flex: 47px 0 0;
+        flex: 27px 0;
         flex-shrink: 0;
         align-self: center;
+        margin-top: 4px;
+        margin-right: 5px;
         .info-icon {
           stroke-width: 0;
           width: 100%;
@@ -255,15 +273,17 @@ html, body, #root, .app, .map-container {
         padding-left: 10px;
         font-size: 18px;
         font-weight: 700;
+        line-height: 1.3;
       }
     }
 
     .section-text {
       p {
         font-size: 14px;
-        font-weight: 300;
+        font-weight: 400;
         // padding: 4px 0;
         display: inline;
+        color: $slate-gray;
 
         &.advance-button {
          // padding-left: 7px;
@@ -394,26 +414,30 @@ html, body, #root, .app, .map-container {
 }
 
 .tooltip .detail {
-  font-size: 12px;
+  font-size: 14px;
   padding-top: 5px;
 }
 
 .tooltip .name {
   font-weight: 700;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .tooltip .click-hint {
-  font-size: 8px;
-  padding-top: 5px;
-  text-align: center;
+  font-size: 12px;
+  font-weight: 400;
+  padding-top: 16px;
+  text-align: left;
+  text-transform: uppercase;
+  color: #757575;
 }
 
 .tooltip .location-title {
   padding-top: 8px;
-  font-weight: 300;
-  font-size: 9px;
+  font-weight: 400;
+  font-size: 12px;
   text-transform: uppercase;
+  color: #757575;
 }
 
 .tooltip .hovered-location.emphasized {
@@ -476,8 +500,8 @@ html, body, #root, .app, .map-container {
     font-size: 14px;
     .trigger-icon {
       stroke: $hint-content;
-      stroke-width: 8; //FS
-      width: 12px; //FS
+     // stroke-width: 8; //FS
+     width: 12px; //FS
     }
 
     &.scroll-hint {
@@ -523,12 +547,15 @@ html, body, #root, .app, .map-container {
           font-weight: 600;
         }
         svg {
-          position: absolute;
-          top: 44%;
-          right: 20px;
+          position: relative;
+         // top: 44%;
+         // right: 20px;
+          margin-left: 8px;
+          position: relative;
+          top: 2px;
         }
         .maximum {
-          display: block;
+          display: inline-block;
         }
       }
     }
@@ -744,7 +771,7 @@ html, body, #root, .app, .map-container {
           .cell {
             padding-top: 20px; //FS
             // height: 100px;
-            font-size: 14px; //FS
+            font-size: 15px; //FS
             line-height: 21px; //FS
             letter-spacing: 0.03em;
             word-wrap: break-word;
@@ -754,11 +781,14 @@ html, body, #root, .app, .map-container {
 
             .remove-icon {
               position: absolute;
-              width: 14px; //FS
+              width: 22px; //FS
               top: 0; //FS
               right: 0; //FS
               padding: 6px;
               box-sizing: content-box;
+              stroke: #757575;
+              
+
             }
           }
         }

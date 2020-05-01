@@ -17,7 +17,7 @@ class UserHint extends React.Component {
 
     let dismissTrigger = null;
     if (this.props.onDismiss) {
-      dismissTrigger = <TriggerIcon iconType={ICON_TYPE.REMOVE} onClick={this.props.onDismiss} />;
+      dismissTrigger = <TriggerIcon iconType={ICON_TYPE.XCLOSE} onClick={this.props.onDismiss} />;
     }
     
     return (
