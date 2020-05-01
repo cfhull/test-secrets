@@ -108,10 +108,11 @@ class IntroPanel extends React.Component {
     this.setState({ activeSectionIdx });
   }
   
-  advanceActiveSection(activeSectionIdx) {
+  advanceActiveSection() {
     this.setState(state => ({ activeSectionIdx: state.activeSectionIdx + 1 }));
   }
-  prevActiveSection(activeSectionIdx) {
+  
+  prevActiveSection() {
     this.setState(state => ({ activeSectionIdx: state.activeSectionIdx - 1 }));
   }
 

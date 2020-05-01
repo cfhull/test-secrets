@@ -6,6 +6,8 @@ const ICON_TYPE = {
   COLLAPSE: 'collapse',
   D_ARROW: 'down-arrow',
   D_ARROW_STEMLESS: 'down-arrow-stemless',
+  U_ARROW: 'up-arrow',
+  U_ARROW_STEMLESS: 'up-arrow-stemless',
   R_ARROW: 'right-arrow',
   R_ARROW_STEMLESS: 'right-arrow-stemless',
   L_ARROW: 'left-arrow',
@@ -97,9 +99,19 @@ class TriggerIcon extends React.Component {
         icon = this.getDownArrow();
         classes += 'down-arrow';
         break;
-      case ICON_TYPE.D_ARROW_STL_ARROW_STEMLESS:
+      case ICON_TYPE.D_ARROW_STEMLESS:
         icon = this.getDownArrow(true);
         classes += 'down-arrow stemless';
+        break;
+      case ICON_TYPE.U_ARROW:
+        icon = this.getDownArrow();
+        classes += 'up-arrow';
+        transform += 'rotate(180)';
+        break;
+      case ICON_TYPE.U_ARROW_STEMLESS:
+        icon = this.getDownArrow(true);
+        classes += 'up-arrow stemless';
+        transform += 'rotate(180)';
         break;
       case ICON_TYPE.R_ARROW:
         icon = this.getDownArrow();

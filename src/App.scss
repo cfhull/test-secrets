@@ -221,7 +221,9 @@ html, body, #root, .app, .map-container {
     padding-bottom: $intro-next-prev-height;
     // height: 100%;
     .nav {
+      text-align: center;
       .section-name {
+        white-space: nowrap;
         cursor: pointer;
       }
       p {
@@ -418,6 +420,7 @@ html, body, #root, .app, .map-container {
   font-weight: 700;
 }
 
+/* CARD DOCK */
 .card-dock-mask { transition: background-color ease .8s; }
 .card-dock-mask.active {
   position: absolute;
@@ -439,7 +442,6 @@ html, body, #root, .app, .map-container {
   }
 }
 
-/* CARD DOCK */
 .card-dock-container {
  // background-color: $middle-gray;
   background-color: #fff;
@@ -450,6 +452,21 @@ html, body, #root, .app, .map-container {
   top: 100vh;
   min-width: 100%; // fixes pesky variable container width bug below
   box-shadow: $very-trans-black 0px 0px 10px 3px;
+
+  .scroll-up-button {
+    position: fixed;
+    right: $FS-boundary-padding;
+    bottom: -50px;
+    transition: bottom ease .4s;
+    &.active {
+      bottom: $FS-boundary-padding;
+    }
+    .trigger-icon {
+      width: 32px;
+      stroke: $hint-content;
+      stroke-width: 10;
+    } 
+  }
 
   .user-hint {
     text-transform: uppercase;
