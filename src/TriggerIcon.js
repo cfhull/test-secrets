@@ -103,7 +103,7 @@ class TriggerIcon extends React.Component {
     let icon;
     let classes = 'trigger-icon ';
     let transform = '';
-    let viewBox = '0 0 12 12';
+    let viewBox = '0 0 100 100';
     switch (this.props.iconType) {
       case ICON_TYPE.REMOVE:
         icon = this.getRemove();
@@ -134,6 +134,7 @@ class TriggerIcon extends React.Component {
         icon = this.getDownArrow(true);
         classes += 'right-arrow stemless';
         transform += 'rotate(180)';
+        viewBox = '0 0 12 12'
         break;
       case ICON_TYPE.L_ARROW:
         icon = this.getDownArrow();
@@ -144,6 +145,7 @@ class TriggerIcon extends React.Component {
         icon = this.getDownArrow(true);
         classes += 'left-arrow stemless';
         transform += 'rotate(0)';
+        viewBox = '0 0 12 12'
         break;
       case ICON_TYPE.INFO_ICON:
         icon = this.getInfoIcon();

@@ -49,7 +49,7 @@ $FS-boundary-padding: 24px;
 $SS-boundary-padding: 16px;
 $FS-legend-width: 200px;
 $FS-legend-height: 103px;
-$SS-legend-height: 130px;
+$SS-legend-height: 120px;
 $scroll-hint-width: 224px;
 $scroll-hint-height: 40px;
 $selection-hint-width: 230px;
@@ -57,7 +57,7 @@ $selection-hint-height: 134px;
 $max-point-hint-width: 425px;
 $max-point-hint-height: 85px;
 $card-peek-height: 100px;
-$intro-panel-width: 450px;
+$intro-panel-width: 430px;
 $intro-panel-icon-offset: 8px;
 $standard-border-radius: 4px;
 $zoom-controls-top: 40vh;
@@ -224,7 +224,7 @@ html, body, #root, .app, .map-container {
   }
 
   .content {
-    padding: 40px;
+    padding: 32px;
     padding-bottom: $intro-next-prev-height;
     // height: 100%;
     .nav {
@@ -375,9 +375,10 @@ html, body, #root, .app, .map-container {
   top: 5px;
   width: 16px;
   stroke-width: 5;
+  stroke: black;
 }
 .legend svg polyline {
- // display: none;
+  display: none;
 }
 
 .legend.hidden {
@@ -815,6 +816,7 @@ html, body, #root, .app, .map-container {
       right: 10px;
       border: none;
       padding-right: 0;
+      box-shadow: none;
     }
     &.closed {
       left: -100%;
@@ -830,10 +832,16 @@ html, body, #root, .app, .map-container {
     height: $SS-legend-height;
     padding: 0;
     background: white;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 272px;
+    padding: 2px 0 0 0;
+    background: white;
   }
   .legend .content {
     padding: 16px;
-    font-size: 18px;
+    font-size: 14px;
     letter-spacing: 0.1em;
   }
   .legend i {
