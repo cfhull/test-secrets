@@ -15,15 +15,14 @@ class CardDock extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.containerRef = React.createRef();
-
     // FIELDS NO LONGER EXPANDIBLE
     // uncomment 'expand' and 'toggle'-related code here & in CSS to reactivate
     this.state = {
       // expandedProperties: {},
       scrollHintDismissed: false,  
       maxPointHintDismissed: false,
-      mapMaskActive: false
+      mapMaskActive: false,
+      scrollUpButtonActive: false
     };
 
     this.removeCard = this.removeCard.bind(this);
@@ -35,6 +34,7 @@ class CardDock extends React.PureComponent {
     ).bind(this);
     // this.toggleProperty = this.toggleProperty.bind(this);
     this.dismissMaxPointHint = this.dismissMaxPointHint.bind(this);
+    this.scrollUp = this.scrollUp.bind(this);
   }
 
   UNSAFE_componentWillReceiveProps(newProps) {
@@ -67,28 +67,21 @@ class CardDock extends React.PureComponent {
   }
 
   throttledUpdateMask(deltaY) {
-    if (!this.state.scrollHintDismissed) {
-      this.setState({ scrollHintDismissed: true });
-    }
+    const { scrollTop } = this.props.appRef.current;
 
+    let mapMaskActive = false;
     if (this.props.isTouchScreen) {
-      return;
+      // no mask on mobile
+    } else if (deltaY > 0) {
+      // not really necessary with app ref but can't hurt
+      mapMaskActive = true;
+    } else if (scrollTop > 5) {
+      mapMaskActive = true;
     }
 
-    if (deltaY > 0) {
-      this.setState({ mapMaskActive: true });
-      return;
-    }
+    const scrollUpButtonActive = scrollTop > window.innerHeight;
 
-    const { top } = this.containerRef.current.getBoundingClientRect();
-    const { innerHeight } = window;
-
-    const distanceFromBottom = innerHeight - top;
-    const mapMaskActive = distanceFromBottom > 5;
-
-    if (mapMaskActive !== this.state.mapMaskActive) {
-      this.setState({ mapMaskActive });
-    }
+    this.setState({ scrollHintDismissed: true, scrollUpButtonActive, mapMaskActive });
   }
 
   // toggleProperty(property, expanded) {
@@ -357,7 +350,28 @@ class CardDock extends React.PureComponent {
   dismissMaxPointHint() {
     this.setState({ maxPointHintDismissed: true });
   }
+
+  getScrollUpButton() {
+    let classes = 'scroll-up-button';
+    if (this.state.scrollUpButtonActive) {
+      classes += ' active';
+    }
+
+    return (
+      <div className={classes} title='Scroll to top'>
+        <TriggerIcon iconType={ICON_TYPE.U_ARROW_STEMLESS} onClick={this.scrollUp} />
+      </div>
+    )
+  }
   
+  scrollUp() {
+    this.setState({ mapMaskActive: false, scrollUpButtonActive: false });
+    this.props.appRef.current.scroll({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   render() {
     if (!this.props.cardData.length) {
       return null;
@@ -375,15 +389,15 @@ class CardDock extends React.PureComponent {
           onWheel={this.updateMask}
           onTouchMove={this.updateMask}
           className={'card-dock-container'}
-          ref={this.containerRef}
         >
           <div className={classes}>
             <div className="card-table">
             {this.getScrollHint()}
             {this.getSelectionHint()}
             {this.getMaxPointHint()}
-              <div className='row header'>{this.getNames()}</div>
-              {this.getRows()}
+            <div className='row header'>{this.getNames()}</div>
+            {this.getRows()}
+            {this.getScrollUpButton()}
             </div>
           </div>
         </div>

@@ -39,6 +39,7 @@ class App extends React.Component {
     };
 
     this.mapContainer = React.createRef();
+    this.appRef = React.createRef();
     this.map = null;
 
     this.getCardDock = this.getCardDock.bind(this);
@@ -212,6 +213,7 @@ class App extends React.Component {
         isTouchScreen={isTouchScreen}
         selectionHintDismissed={selectionHintDismissed}
         maxCardHintTriggered={maxCardHintTriggered}
+        appRef={this.appRef}
       />
     );
   }
@@ -250,7 +252,7 @@ class App extends React.Component {
     return (
       <div>
         <LoadingMask dataLoaded={dataLoaded} mapLoaded={mapLoaded} mapConfigured={mapConfigured} />
-        <div className={classes}>
+        <div className={classes} ref={this.appRef}>
           <IntroPanel />
           {this.getCardDock()}
           {this.getTooltip()}
