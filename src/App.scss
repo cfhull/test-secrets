@@ -237,9 +237,6 @@ html, body, #root, .app, .map-container {
           color: #000;
         }
       }
-      p.divider {
-        display: none;
-      }
       p {
         display: inline;
         font-size: 14px;
@@ -388,9 +385,6 @@ html, body, #root, .app, .map-container {
   width: 16px;
   stroke-width: 5;
 }
-.legend svg polyline {
-  display: none;
-}
 
 .legend.hidden {
   background: transparent;
@@ -498,7 +492,6 @@ html, body, #root, .app, .map-container {
     .trigger-icon {
       width: 32px;
       stroke: $hint-content;
-      stroke-width: 10;
     } 
   }
 
