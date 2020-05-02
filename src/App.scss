@@ -53,7 +53,7 @@ $SS-legend-height: 120px;
 $scroll-hint-width: 224px;
 $scroll-hint-height: 40px;
 $selection-hint-width: 230px;
-$selection-hint-height: 134px;
+$selection-hint-height: 103px;
 $max-point-hint-width: 425px;
 $max-point-hint-height: 85px;
 $card-peek-height: 100px;
@@ -808,8 +808,9 @@ html, body, #root, .app, .map-container {
   .intro-panel-wrapper {
     top: calc(#{$SS-legend-height} + #{$SS-boundary-padding});
     bottom: $SS-boundary-padding;
+    bottom: 100px;
     right: 0;
-    width: 100%;
+    width: 94%;
     max-height: unset;
 
     &:not(.closed) .trigger {
@@ -820,7 +821,15 @@ html, body, #root, .app, .map-container {
     }
     &.closed {
       left: -100%;
+      .trigger {
+        right: -54px;
+        padding: 8px 11px 8px 32px;
+      }
     }
+   .content .bottom-controls {
+      border-top: #d4d4d4 1px solid;
+      margin: 0 24px;
+     }
   }
 
   /* LEGEND */
