@@ -309,14 +309,24 @@ html, body, #root, .app, .map-container {
         padding-top: 16px;
         font-size: 14px;
         p.advance-button {
-          padding: 0;
+          // padding: 0;
+          font-weight: 700;
           &.active {
-            font-weight: 700;
             cursor: pointer;
           }
           &:not(.active) {
-            font-weight: 300;
-            color: $slate-gray;
+            color: $dark-gray;
+            .trigger-icon {
+              stroke: $dark-gray;
+              cursor: unset;
+              line {
+                cursor: unset;
+              }
+            }
+          }
+          .trigger-icon {
+            width: 10px;
+            stroke-width: 2;
           }
         }
       }

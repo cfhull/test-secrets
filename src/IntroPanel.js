@@ -88,7 +88,12 @@ class IntroPanel extends React.Component {
       prevHandler = this.prevActiveSection;
       prevClasses += ' active';
     }
-    const prevButton = <p className={prevClasses} onClick={prevHandler}>PREVIOUS</p>;
+    const prevButton = (
+      <p className={prevClasses} onClick={prevHandler}>
+        <TriggerIcon iconType={ICON_TYPE.L_ARROW_STEMLESS} />
+        PREVIOUS
+      </p>
+    );
 
     let nextHandler = null;
     let nextClasses = 'advance-button next'
@@ -96,7 +101,12 @@ class IntroPanel extends React.Component {
       nextHandler = this.advanceActiveSection;
       nextClasses += ' active';
     }
-    const nextButton = <p className={nextClasses} onClick={nextHandler}>NEXT</p>;
+    const nextButton = (
+      <p className={nextClasses} onClick={nextHandler}>
+        NEXT
+        <TriggerIcon iconType={ICON_TYPE.R_ARROW_STEMLESS} />
+      </p>
+    );
     return (
       <div className='bottom-controls'>
         <div class="next-prev">{prevButton} | {nextButton}</div>
@@ -111,7 +121,7 @@ class IntroPanel extends React.Component {
   advanceActiveSection() {
     this.setState(state => ({ activeSectionIdx: state.activeSectionIdx + 1 }));
   }
-  
+
   prevActiveSection() {
     this.setState(state => ({ activeSectionIdx: state.activeSectionIdx - 1 }));
   }
