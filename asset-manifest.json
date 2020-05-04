@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/bil-map/static/css/main.5b946d6e.chunk.css",
-    "main.js": "/bil-map/static/js/main.b66dc361.chunk.js",
-    "main.js.map": "/bil-map/static/js/main.b66dc361.chunk.js.map",
+    "main.js": "/bil-map/static/js/main.2c15bdb2.chunk.js",
+    "main.js.map": "/bil-map/static/js/main.2c15bdb2.chunk.js.map",
     "runtime-main.js": "/bil-map/static/js/runtime-main.8860a1e1.js",
     "runtime-main.js.map": "/bil-map/static/js/runtime-main.8860a1e1.js.map",
     "static/js/2.87a3ada5.chunk.js": "/bil-map/static/js/2.87a3ada5.chunk.js",
     "static/js/2.87a3ada5.chunk.js.map": "/bil-map/static/js/2.87a3ada5.chunk.js.map",
     "index.html": "/bil-map/index.html",
-    "precache-manifest.084171ded78b129eae80f0bf3aee8233.js": "/bil-map/precache-manifest.084171ded78b129eae80f0bf3aee8233.js",
+    "precache-manifest.d50e633fd8569562ae0854896f786353.js": "/bil-map/precache-manifest.d50e633fd8569562ae0854896f786353.js",
     "service-worker.js": "/bil-map/service-worker.js",
     "static/css/main.5b946d6e.chunk.css.map": "/bil-map/static/css/main.5b946d6e.chunk.css.map",
     "static/js/2.87a3ada5.chunk.js.LICENSE.txt": "/bil-map/static/js/2.87a3ada5.chunk.js.LICENSE.txt",
@@ -19,6 +19,6 @@
     "static/js/runtime-main.8860a1e1.js",
     "static/js/2.87a3ada5.chunk.js",
     "static/css/main.5b946d6e.chunk.css",
-    "static/js/main.b66dc361.chunk.js"
+    "static/js/main.2c15bdb2.chunk.js"
   ]
 }
