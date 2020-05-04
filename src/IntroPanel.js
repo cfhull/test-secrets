@@ -54,16 +54,7 @@ class IntroPanel extends React.Component {
       if (i === this.state.activeSectionIdx) {
         classes += ' active';
       }
-      let divider = null;
-      if (i > 0) {
-        divider = <p className='divider'>|</p>;
-      }
-      return (
-        <>
-          {divider}
-          <p className={classes} onClick={this.setActiveSection.bind(this, i)}>{s.name}</p>
-        </>
-      )
+      return <p className={classes} onClick={this.setActiveSection.bind(this, i)}>{s.name}</p>;
     });
 
     return(

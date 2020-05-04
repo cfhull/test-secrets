@@ -27,7 +27,7 @@ class Legend extends React.Component {
     const iconType = expanded ? ICON_TYPE.COLLAPSE : ICON_TYPE.EXPAND;
     return (
       <div className={classes}>
-          <TriggerIcon title={title} onClick={this.toggleExpand} inBrackets={true} iconType={iconType} />
+          {/* <TriggerIcon title={title} onClick={this.toggleExpand} inBrackets={true} iconType={iconType} /> */}
           <div className='content'>
             <div><i className='past' />Past Experiments</div>
             <div><i className='ongoing' />Ongoing Experiments</div>
