@@ -877,7 +877,6 @@ html, body, #root, .app, .map-container {
       right: 0px;
       top: 4px;
       border: none;
-      /* padding-right: 0; */
       box-shadow: none;
       z-index: 5;
       width: 42px;
@@ -890,7 +889,6 @@ html, body, #root, .app, .map-container {
       left: -100%;
       .trigger {
         right: -32px;
-        // padding: 8px 11px 8px 32px;
       }
     }
     .content-body {
