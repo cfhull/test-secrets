@@ -297,7 +297,7 @@ class CardDock extends React.PureComponent {
   }
 
   getScrollHint() {
-    const content = <>scroll for more {<TriggerIcon iconType={ICON_TYPE.NEW_DOWN_ARROW} />}</>
+    const content = <>scroll for more {<TriggerIcon iconType={ICON_TYPE.D_ARROW} />}</>
     return (
       <UserHint
         content={content}
@@ -311,7 +311,7 @@ class CardDock extends React.PureComponent {
     const content = (
       <>
         click more map points to compare experiments<p className='maximum'>(max. 3)</p>
-        <TriggerIcon iconType={ICON_TYPE.NEW_RIGHT_ARROW} />
+        <TriggerIcon iconType={ICON_TYPE.R_ARROW} />
       </>
     );
 

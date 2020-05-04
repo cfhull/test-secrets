@@ -5,8 +5,6 @@ const ICON_TYPE = {
   EXPAND: 'expand',
   COLLAPSE: 'collapse',
   D_ARROW: 'down-arrow',
-  NEW_DOWN_ARROW: 'new-down-arrow',
-  NEW_RIGHT_ARROW: 'new-right-arrow',
   D_ARROW_STEMLESS: 'down-arrow-stemless',
   U_ARROW: 'up-arrow',
   U_ARROW_STEMLESS: 'up-arrow-stemless',
@@ -53,20 +51,11 @@ class TriggerIcon extends React.Component {
     )    
   }
 
-  getDownArrow(stemless) {
+  // right arrow is our "base" arrow. all arrows are right arrows, then get rotated by CSS transform
+  getRightArrow(stemless) {
     return (
       <>
-        {!stemless && <polyline points='50,0 50,100' />}
-        
-        <line x1="6.0098" y1="0.696815" x2="0.352949" y2="6.35367" stroke="#373737"/>
-        <line x1="6.00973" y1="11.3033" x2="0.352874" y2="5.64641" stroke="#373737"/>
-      </>
-    )
-  }
-  getNewDownArrow() {
-    return (
-      <>
-        <path d="M1 5.5H10"  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        {!stemless && <path d="M1 5.5H10"  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>}
         <path fill="none" d="M5.5 1L10 5.5L5.5 10"  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </>
     )
@@ -104,7 +93,6 @@ class TriggerIcon extends React.Component {
   render() {
     let icon;
     let classes = 'trigger-icon ';
-    let transform = '';
     let viewBox = '0 0 100 100';
     switch (this.props.iconType) {
       case ICON_TYPE.REMOVE:
@@ -120,69 +108,57 @@ class TriggerIcon extends React.Component {
         classes += 'collapse-icon';
         break;
       case ICON_TYPE.D_ARROW:
-        icon = this.getDownArrow();
-        classes += 'down-arrow';
+        icon = this.getRightArrow();
+        classes += 'down arrow';
+        viewBox = '0 0 11 11';
         break;
       case ICON_TYPE.D_ARROW_STEMLESS:
-        icon = this.getDownArrow(true);
-        classes += 'down-arrow stemless';
+        icon = this.getRightArrow(true);
+        classes += 'down arrow stemless';
+        viewBox = '0 0 11 11';
         break;
       case ICON_TYPE.U_ARROW:
-        icon = this.getDownArrow();
-        classes += 'up-arrow';
-        transform += 'rotate(180)';
+        icon = this.getRightArrow();
+        classes += 'up arrow';
+        viewBox = '0 0 11 11';
         break;
       case ICON_TYPE.U_ARROW_STEMLESS:
-        icon = this.getDownArrow(true);
-        classes += 'up-arrow stemless';
-        transform += 'rotate(180)';
+        icon = this.getRightArrow(true);
+        classes += 'up arrow stemless';
+        viewBox = '0 0 11 11';
         break;
       case ICON_TYPE.R_ARROW:
-        icon = this.getDownArrow();
-        classes += 'right-arrow';
-        transform += 'rotate(270)';
+        icon = this.getRightArrow();
+        classes += 'right arrow';
+        viewBox = '0 0 11 11';
         break;
       case ICON_TYPE.R_ARROW_STEMLESS:
-        icon = this.getDownArrow(true);
-        classes += 'right-arrow stemless';
-        transform += 'rotate(180)';
-        viewBox = '0 0 12 12'
+        icon = this.getRightArrow(true);
+        classes += 'right arrow stemless';
+        viewBox = '0 0 11 11'
         break;
       case ICON_TYPE.L_ARROW:
-        icon = this.getDownArrow();
-        classes += 'left-arrow';
-        transform += 'rotate(90)';
+        icon = this.getRightArrow();
+        classes += 'left arrow';
+        viewBox = '0 0 11 11';
         break;
       case ICON_TYPE.L_ARROW_STEMLESS:
-        icon = this.getDownArrow(true);
-        classes += 'left-arrow stemless';
-        transform += 'rotate(0)';
-        viewBox = '0 0 12 12'
+        icon = this.getRightArrow(true);
+        classes += 'left arrow stemless';
+        viewBox = '0 0 11 11'
         break;
       case ICON_TYPE.INFO_ICON:
         icon = this.getInfoIcon();
         classes += 'info-icon';
         viewBox = '0 0 27 27'
         break;
-      case ICON_TYPE.NEW_DOWN_ARROW:
-        icon = this.getNewDownArrow(true);
-        classes += 'new-down-arrow';
-        transform += 'rotate(90)';
-        viewBox = '0 0 11 11'
-        break; 
-      case ICON_TYPE.NEW_RIGHT_ARROW:
-        icon = this.getNewDownArrow(true);
-        classes += 'new-right-arrow';
-        transform += 'rotate(0)';
-        viewBox = '0 0 11 11'
-        break;  
       case ICON_TYPE.XCLOSE:
         icon = this.getXClose(true);
         classes += 'x-close remove-icon';
         viewBox = "0 0 22 22"
         break;  
       default:
-        console.error('incorrect type');
+        console.error('incorrect type: ', this.props.iconType);
     }
 
     if (this.props.inBrackets) {
@@ -194,7 +170,6 @@ class TriggerIcon extends React.Component {
         <svg
           onClick={this.props.onClick}
           viewBox={viewBox}
-          transform={transform}
           className={classes}
         >
           {this.props.title && <title>{this.props.title}</title>}

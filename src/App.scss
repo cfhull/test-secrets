@@ -82,14 +82,24 @@ html, body, #root, .app, .map-container {
 }
 
 .trigger-icon {
-  //stroke: black;
- // stroke-width: 3;
+  stroke: black;
+  stroke-width: 3;
   //fill: none;
   &.remove-icon, &.expand-icon, &.collapse-icon, &.stemless {
     cursor: pointer;
     * {
       cursor: pointer;
     }
+  }
+
+  &.left.arrow {
+    transform: rotate(180deg);
+  }
+  &.up.arrow {
+    transform: rotate(270deg);
+  }
+  &.down.arrow {
+    transform: rotate(90deg);
   }
 }
 
@@ -335,7 +345,7 @@ html, body, #root, .app, .map-container {
           .trigger-icon {
             stroke: $dark-gray;
             cursor: unset;
-            line {
+            path {
               cursor: unset;
             }
           }
@@ -509,7 +519,7 @@ html, body, #root, .app, .map-container {
       bottom: $FS-boundary-padding;
     }
     .trigger-icon {
-      width: 32px;
+      width: 24px;
       stroke: $hint-content;
     } 
   }
@@ -607,6 +617,7 @@ html, body, #root, .app, .map-container {
         position: absolute;
         top: 10px;
         right: 10px;
+        stroke-width: 1;
       }
     }
   }
@@ -809,8 +820,7 @@ html, body, #root, .app, .map-container {
               padding: 6px;
               box-sizing: content-box;
               stroke: #757575;
-              
-
+              stroke-width: 1;
             }
           }
         }
