@@ -55,8 +55,8 @@ class TriggerIcon extends React.Component {
   getRightArrow(stemless) {
     return (
       <>
-        {!stemless && <path d="M1 5.5H10"  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>}
-        <path fill="none" d="M5.5 1L10 5.5L5.5 10"  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        {!stemless && <path d="M1 5.5H10" stroke-linecap="round" stroke-linejoin="round"/>}
+        <path fill="none" d="M5.5 1L10 5.5L5.5 10" stroke-linecap="round" stroke-linejoin="round"/>
       </>
     )
   }
