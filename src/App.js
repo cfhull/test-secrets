@@ -79,7 +79,11 @@ class App extends React.Component {
     this.map.on('mouseenter', 'experimentSites', this.featuresOnHover.bind(this));
     this.map.on('mouseleave', 'experimentSites', this.featuresOnUnhover.bind(this));
 
-    this.map.on('touchstart', 'experimentSites', this.registerTouchScreen.bind(this));
+    this.map.on('touchstart', _.debounce(
+      this.registerTouchScreen.bind(this),
+      3000,
+      { leading: true, trailing: false }
+    ));
     
     load.call(this); 
   }
@@ -89,6 +93,12 @@ class App extends React.Component {
   }
 
   registerTouchScreen() {
+    // just fire once
+    if (this.state.isTouchScreen) {
+      return;
+    }
+    // make points more clickable on mobile
+    this.map.setPaintProperty('experimentSites','circle-stroke-width', 8);
     this.setState({ isTouchScreen: true });
   }
 

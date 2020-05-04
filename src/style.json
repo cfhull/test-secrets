@@ -3040,6 +3040,8 @@
                 ["==", ["get", "type"], "ongoing"], "rgb(175,105,12)",
                 "gray"
               ],
+              "circle-stroke-width": 0,
+              "circle-stroke-opacity": 0,
               "circle-opacity": 0.8,
               "circle-radius": ["interpolate",
                   ["exponential", 1.3],
