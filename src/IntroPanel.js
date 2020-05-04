@@ -8,15 +8,18 @@ const SECTIONS = [
   },
   { 
     name: 'How to Use',
-    text: 'The map contains experiments, pilots, policies and programs that have design and implementation features that crossover with the key principles of a universal basic income: unconditional, universal, regular, individual, and paid in cash.'
+    text: 'To view more information about each experiment on the map, click or tap on a dot. A card will appear containing the name of the experiment, and you can scroll or swipe to view a full table of data. Click up to 3 cards to compare the experiments’ features side by side. FULL EXPLAINER TK'
   },
   { 
     name: 'Inclusion Criteria',
-    text: 'As described in the review of the State of the Evidence on Universal Basic Income-type programs: An Umbrella Review (Hasdell, forthcoming), experiments recognized as pertinent to UBI research  are varied and can be classified into different types of cash transfer programs ranging from unconditional and universal cash to supplemental income schemes to resource dividends and minimum income guarantees (through a negative income tax).'
+    text: 'The map contains experiments, pilots, policies and programs that have design and implementation features that crossover with the key principles of a universal basic income: unconditional, universal, regular, individual, and paid in cash.',
+    text2: 'As described in the review of the State of the Evidence on Universal Basic Income-type programs: An Umbrella Review (Hasdell, forthcoming), experiments used to draw conclusions about UBI include the following categories of cash transfers: unconditional and universal cash to supplemental income schemes to resource dividends and minimum income guarantees (through a negative income tax).',
+    text3: 'The experiments, pilots, policies and programs we have included in this geospatial map all share multiple of the aforementioned features of a universal basic income policy and are frequently cited in the basic income literature used to infer potential impacts of a basic income policy (see Hoynes and Rothstein, 2019; Gentilini et. al, 2019, and Banerjee et. al, 2019; and Gibson et. al, 2018).',
+    text4: 'The Basic Income Lab included these experiments for this current version. Over time, we hope to add more experiments as they come to light.'
   },
   { 
     name: 'Citation',
-    text: 'The experiments, pilots, policies and programs we have included in this geospatial map all share multiple of the aforementioned features of a universal basic income policy and are frequently cited in the basic income literature used to infer potential impacts of a basic income policy (see Hoynes and Rothstein, 2019; Gentilini et. al, 2019, and Banerjee et. al, 2019; and Gibson et. al, 2018). The Basic Income Lab included these experiments for this current version. Over time, we hope to add more experiments as they come to light.'
+    text: 'Please cite as follows: Stanford Basic Income Lab [cartographer]. (2020). Global Map of Basic Income Experiments [map]. Retrieved from https://hyperobjekt.github.io/bil-map/'
   }
 ];
 
@@ -75,6 +78,9 @@ class IntroPanel extends React.Component {
     return (
       <div className='section-text'>
         <p>{SECTIONS[activeSectionIdx].text}</p>
+        <p>{SECTIONS[activeSectionIdx].text2}</p>
+        <p>{SECTIONS[activeSectionIdx].text3}</p>
+        <p>{SECTIONS[activeSectionIdx].text4}</p>
       </div>
     );
   }

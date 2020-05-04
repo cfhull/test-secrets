@@ -288,7 +288,6 @@ html, body, #root, .app, .map-container {
         // padding: 4px 0;
         display: inline;
         color: $slate-gray;
-
         &.advance-button {
          // padding-left: 7px;
           font-weight: 700;
@@ -306,6 +305,11 @@ html, body, #root, .app, .map-container {
     font-size: 14px;
     line-height: 1.6;
     color: #74757B;
+    .section-text {
+      p {
+        margin-bottom: 16px;
+      }
+    }
   }
   .bottom-controls {
     position: absolute;
@@ -314,10 +318,12 @@ html, body, #root, .app, .map-container {
     right: 0;
     height: $intro-next-prev-height;
     background: white;
+    border-top: #d4d4d4 1px solid;
+      margin: 0 24px;
     .next-prev {
       display: flex;
       justify-content: space-between;
-      width: 37%;
+      width: 41%;
       margin: auto;
       padding-top: 16px;
       font-size: 14px;
