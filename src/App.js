@@ -19,7 +19,7 @@ const { LONGITUDE, LATITUDE, NAME, LOCATION, TYPE, EID } = SHEET_FIELDS;
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 const MAX_SELECTED_POINTS = 3;
-const STARTING_LNG = -19;
+const STARTING_LNG = -30;
 const STARTING_LAT = 29;
 const STARTING_ZOOM = 1.5;
 const CONTROL_QUERY_STRING = false;
@@ -59,6 +59,14 @@ class App extends React.Component {
         [189, 85] // NE coordinates
       ]
     });
+
+    if (window.innerWidth < 800) {
+      // for smaller screens, initialize view on US
+      this.map.fitBounds([
+        [-128, 24],
+        [-65, 50]
+      ]);
+    }
 
     this.map.addControl(new mapboxgl.NavigationControl());
     // disable map rotation using right click + drag
