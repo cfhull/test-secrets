@@ -181,7 +181,7 @@ html, body, #root, .app, .map-container {
   // won't stretch to bottom unless screen height is minimal (then scroll activates)
   top: $FS-boundary-padding;
   bottom: $FS-boundary-padding;
-  max-height: 600px;
+  max-height: 540px;
   min-height: 200px;
   width: $intro-panel-width;
   background: white;
@@ -225,8 +225,12 @@ html, body, #root, .app, .map-container {
 
   .content {
     padding: 32px;
-    padding-bottom: $intro-next-prev-height;
+    //padding-bottom: $intro-next-prev-height;
+    padding-bottom: 0;
     // height: 100%;
+    position: absolute;
+    background-color: white;
+    z-index: 4;
     .nav {
       text-align: center;
       .section-name {
@@ -252,7 +256,7 @@ html, body, #root, .app, .map-container {
     .nav {
       border-bottom: 1px solid $dark-gray; 
       padding-bottom: 8px;
-      margin-bottom: 20px; 
+     // margin-bottom: 20px; 
     }
     .header {
       display: flex;
@@ -276,7 +280,7 @@ html, body, #root, .app, .map-container {
         line-height: 1.3;
       }
     }
-
+    
     .section-text {
       p {
         font-size: 14px;
@@ -293,41 +297,49 @@ html, body, #root, .app, .map-container {
         }
       }
     }
-
-    .bottom-controls {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: $intro-next-prev-height;
-      background: white;
-      .next-prev {
-        display: flex;
-        justify-content: space-between;
-        width: 37%;
-        margin: auto;
-        padding-top: 16px;
-        font-size: 14px;
-        p.advance-button {
-          // padding: 0;
-          font-weight: 700;
-          &.active {
-            cursor: pointer;
-          }
-          &:not(.active) {
-            color: $dark-gray;
-            .trigger-icon {
-              stroke: $dark-gray;
+  }
+  .content-body {
+    padding: 0 32px 64px 32px;
+    top: 152px;
+    position: relative;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #74757B;
+  }
+  .bottom-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: $intro-next-prev-height;
+    background: white;
+    .next-prev {
+      display: flex;
+      justify-content: space-between;
+      width: 37%;
+      margin: auto;
+      padding-top: 16px;
+      font-size: 14px;
+      p.advance-button {
+        // padding: 0;
+        font-weight: 700;
+        &.active {
+          cursor: pointer;
+        }
+        &:not(.active) {
+          color: $dark-gray;
+          .trigger-icon {
+            stroke: $dark-gray;
+            cursor: unset;
+            line {
               cursor: unset;
-              line {
-                cursor: unset;
-              }
             }
           }
-          .trigger-icon {
-            width: 10px;
-            stroke-width: 2;
-          }
+        }
+        .trigger-icon {
+          width: 10px;
+          stroke-width: 2;
         }
       }
     }
@@ -833,30 +845,62 @@ html, body, #root, .app, .map-container {
 @media (max-width: $mobile-breakpoint) {
   /* INTRO PANEL */
   .intro-panel-wrapper {
-    top: calc(#{$SS-legend-height} + #{$SS-boundary-padding});
+    //top: calc(#{$SS-legend-height} + #{$SS-boundary-padding});
+    top: $SS-boundary-padding;
     bottom: $SS-boundary-padding;
     bottom: 100px;
     right: 0;
-    width: 94%;
+    width: 100%;
     max-height: unset;
 
+   .content {
+      padding: 32px 32px 0px 32px;
+      /* padding-bottom: 60px; */
+      position: absolute;
+      background-color: white;
+      z-index: 4;
+  }
+    
     &:not(.closed) .trigger {
-      right: 10px;
+      right: 0px;
+      top: 4px;
       border: none;
-      padding-right: 0;
+      /* padding-right: 0; */
       box-shadow: none;
+      z-index: 5;
+      width: 42px;
+      height: 48px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     &.closed {
       left: -100%;
       .trigger {
-        right: -54px;
+        right: -32px;
         padding: 8px 11px 8px 32px;
       }
     }
-   .content .bottom-controls {
+    .content-body {
+      position: relative;
+      top: 160px;
+      padding: 32px;
+    }
+   
+   .content-nav .bottom-controls {
       border-top: #d4d4d4 1px solid;
       margin: 0 24px;
+      .next-prev {
+        width: 80%;
+      }
      }
+    .content .nav {
+      text-align: left;
+      margin-bottom: 0;
+      .section-name {
+        white-space: break-spaces;
+      }
+    } 
   }
 
   /* LEGEND */
@@ -865,19 +909,19 @@ html, body, #root, .app, .map-container {
     top: 0;
     right: 0;
     width: 100%;
-    height: $SS-legend-height;
+    //height: $SS-legend-height;
+    height: 112px;
     padding: 0;
     background: white;
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 272px;
+    width: 248px;
     padding: 2px 0 0 0;
     background: white;
+    margin: auto;
+    margin-top: 16px;
   }
   .legend .content {
     padding: 16px;
-    font-size: 14px;
+    font-size: 12px;
     letter-spacing: 0.1em;
   }
   .legend i {
@@ -926,7 +970,9 @@ html, body, #root, .app, .map-container {
 
     .card-dock {
       width: 100%;
-
+      .card-table { 
+        top: -200px;
+      }
       &.card-count-1 .card-table .card {
         // width: 100%;
         max-width: unset;

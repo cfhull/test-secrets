@@ -109,7 +109,7 @@ class IntroPanel extends React.Component {
     );
     return (
       <div className='bottom-controls'>
-        <div class="next-prev">{prevButton} | {nextButton}</div>
+        <div class="next-prev">{prevButton} {nextButton}</div>
       </div>
     );
   }
@@ -143,7 +143,11 @@ class IntroPanel extends React.Component {
           <div className='content'>
             {this.getHeader()}
             {this.getNav()}
+          </div>
+          <div className='content-body'> 
             {this.getSection()}
+          </div> 
+          <div className='content-nav'> 
             {this.getNextPrev()}
           </div>
         </div>
