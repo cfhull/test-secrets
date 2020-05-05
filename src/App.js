@@ -46,6 +46,8 @@ class App extends React.Component {
     this.getTooltip = this.getTooltip.bind(this);
     this.removeCard = this.removeCard.bind(this);
     this.getFeaturesByExperimentId = this.getFeaturesByExperimentId.bind(this);
+    this.resetUSView = this.resetUSView.bind(this);
+    this.resetWorldView = this.resetWorldView.bind(this);
   }
 
   componentDidMount() {
@@ -62,10 +64,7 @@ class App extends React.Component {
 
     if (window.innerWidth < 800) {
       // for smaller screens, initialize view on US
-      this.map.fitBounds([
-        [-128, 24],
-        [-65, 50]
-      ]);
+      this.resetUSView();
     }
 
     this.map.addControl(new mapboxgl.NavigationControl());
@@ -236,17 +235,26 @@ class App extends React.Component {
     );
   }
 
+  resetWorldView() {
+    this.map.flyTo({
+      center: [STARTING_LNG, STARTING_LAT],
+      zoom: STARTING_ZOOM,
+      essential: true
+    });
+  }
+
+  resetUSView() {
+    this.map.fitBounds([
+      [-128, 24],
+      [-65, 50]
+    ]);
+  }
+
   getResetViewButton() {
-    const onClick = () => {
-      this.map.flyTo({
-        center: [STARTING_LNG, STARTING_LAT],
-        zoom: STARTING_ZOOM,
-        essential: true
-      });
-    };
+    const onClick = () => {window.innerWidth > 800 ? this.resetWorldView() : this.resetUSView()}
 
     return (
-      <div class='mapboxgl-ctrl mapboxgl-ctrl-group custom'>
+      <div className='mapboxgl-ctrl mapboxgl-ctrl-group custom'>
         <button
           onClick={onClick}
           class='mapboxgl-ctrl-reset-view'
