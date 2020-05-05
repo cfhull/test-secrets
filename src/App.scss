@@ -85,7 +85,7 @@ html, body, #root, .app, .map-container {
   stroke: black;
   stroke-width: 3;
   //fill: none;
-  &.remove-icon, &.expand-icon, &.collapse-icon, &.stemless {
+  &.remove-icon, &.expand-icon, &.collapse-icon, &.stemless, &.legend {
     cursor: pointer;
     * {
       cursor: pointer;
@@ -413,9 +413,20 @@ html, body, #root, .app, .map-container {
   position: absolute;
   right: 5px;
   top: 5px;
-  width: 16px;
-  stroke-width: 5;
-  stroke: black;
+  &.x-close {
+    width: 16px;
+  }
+  &.legend {
+    width: 40px;
+    height: 40px;
+    // right: 10px;
+    // top: 10px;
+    stroke: black;
+    stroke-width: 1;
+    fill: none;
+    padding: 5px;
+    border-radius: 50%;
+  }
 }
 
 .legend.hidden {
@@ -941,9 +952,8 @@ html, body, #root, .app, .map-container {
     margin-right: 14px;
   }
   .legend .trigger-icon {
-    width: 25px;
     right: 10px;
-    top: 10px;
+    // top: 10px;
   }
 
   /* DOCK */

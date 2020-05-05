@@ -13,6 +13,7 @@ const ICON_TYPE = {
   L_ARROW: 'left-arrow',
   L_ARROW_STEMLESS: 'left-arrow-stemless',
   INFO_ICON: 'info-icon',
+  LEGEND: 'legend',
   XCLOSE: 'x-close'
 };
 
@@ -76,6 +77,16 @@ class TriggerIcon extends React.Component {
         <circle cx="13.5" cy="13.5" r="13.5" fill="#DBEDF2"/>
         <circle cx="13.5" cy="7.5" r="1.5" fill="#709FAC"/>
         <rect x="12" y="11" width="3" height="10" rx="1.5" fill="#709FAC"/>
+      </>
+    )
+  }
+
+  getLegend() {
+    return (
+      <>
+        <path d="M1 1L4.33334 2.01389V9.11111L1 8.09722V1Z" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M7.66602 1L10.9994 2.01389V9.11111L7.66602 8.09722V1Z" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M4.33398 2.01389L7.66733 1V8.09722L4.33398 9.11111V2.01389Z" stroke-linecap="round" stroke-linejoin="round"/>
       </>
     )
   }
@@ -151,6 +162,11 @@ class TriggerIcon extends React.Component {
         icon = this.getInfoIcon();
         classes += 'info-icon';
         viewBox = '0 0 27 27'
+        break;
+      case ICON_TYPE.LEGEND:
+        icon = this.getLegend();
+        classes += 'legend';
+        viewBox = '-1 0 15 10';
         break;
       case ICON_TYPE.XCLOSE:
         icon = this.getXClose(true);
