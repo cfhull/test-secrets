@@ -413,6 +413,9 @@ html, body, #root, .app, .map-container {
   position: absolute;
   right: 5px;
   top: 5px;
+  stroke: black;
+  stroke-width: 1;
+  fill: none;
   &.x-close {
     width: 16px;
   }
@@ -421,9 +424,6 @@ html, body, #root, .app, .map-container {
     height: 40px;
     // right: 10px;
     // top: 10px;
-    stroke: black;
-    stroke-width: 1;
-    fill: none;
     padding: 5px;
     border-radius: 50%;
   }

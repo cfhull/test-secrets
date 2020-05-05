@@ -106,7 +106,7 @@ class IntroPanel extends React.Component {
     );
     return (
       <div className='bottom-controls'>
-        <div class="next-prev">{prevButton} {nextButton}</div>
+        <div className="next-prev">{prevButton} {nextButton}</div>
       </div>
     );
   }

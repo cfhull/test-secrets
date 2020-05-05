@@ -56,8 +56,8 @@ class TriggerIcon extends React.Component {
   getRightArrow(stemless) {
     return (
       <>
-        {!stemless && <path d="M1 5.5H10" stroke-linecap="round" stroke-linejoin="round"/>}
-        <path fill="none" d="M5.5 1L10 5.5L5.5 10" stroke-linecap="round" stroke-linejoin="round"/>
+        {!stemless && <path d="M1 5.5H10" strokeLinecap="round" strokeLinejoin="round"/>}
+        <path fill="none" d="M5.5 1L10 5.5L5.5 10" strokeLinecap="round" strokeLinejoin="round"/>
       </>
     )
   }
@@ -84,9 +84,9 @@ class TriggerIcon extends React.Component {
   getLegend() {
     return (
       <>
-        <path d="M1 1L4.33334 2.01389V9.11111L1 8.09722V1Z" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M7.66602 1L10.9994 2.01389V9.11111L7.66602 8.09722V1Z" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M4.33398 2.01389L7.66733 1V8.09722L4.33398 9.11111V2.01389Z" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M1 1L4.33334 2.01389V9.11111L1 8.09722V1Z" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M7.66602 1L10.9994 2.01389V9.11111L7.66602 8.09722V1Z" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M4.33398 2.01389L7.66733 1V8.09722L4.33398 9.11111V2.01389Z" strokeLinecap="round" strokeLinejoin="round"/>
       </>
     )
   }
