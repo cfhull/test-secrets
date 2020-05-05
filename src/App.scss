@@ -610,8 +610,10 @@ html, body, #root, .app, .map-container {
       width: $max-point-hint-width;
       height: $max-point-hint-height;
       left: calc((#{$FS-dock-width} - #{$max-point-hint-width}) / 2);
+      top: 0;
       &:not(.triggered) {
-        display: none;
+        // display: none;
+        transform: scale(0);
       }
       &.triggered {
         transition: top ease .8s;

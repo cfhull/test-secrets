@@ -5,7 +5,8 @@ class Legend extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { expanded: true };
+    const startExpanded = window.innerWidth > 600;
+    this.state = { expanded: startExpanded };
 
     this.toggleExpand = this.toggleExpand.bind(this);
   }

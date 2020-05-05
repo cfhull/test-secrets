@@ -27,7 +27,8 @@ class IntroPanel extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { open: true, activeSectionIdx: 0 };
+    const startOpen = window.innerWidth > 600;
+    this.state = { open: startOpen, activeSectionIdx: 0 };
 
     this.toggleOpen = this.toggleOpen.bind(this);
     this.setActiveSection = this.setActiveSection.bind(this);
