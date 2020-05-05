@@ -257,12 +257,12 @@ class App extends React.Component {
       <div className='mapboxgl-ctrl mapboxgl-ctrl-group custom'>
         <button
           onClick={onClick}
-          class='mapboxgl-ctrl-reset-view'
+          className='mapboxgl-ctrl-reset-view'
           type='button'
           title='Reset view'
           aria-label='Reset view'
         >
-          <span class='mapboxgl-ctrl-icon' aria-hidden='true' />
+          <span className='mapboxgl-ctrl-icon' aria-hidden='true' />
         </button>
       </div>
     );

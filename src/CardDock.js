@@ -223,7 +223,7 @@ class CardDock extends React.PureComponent {
     if (field === WEBSITE && firstValue.includes('.')) {
       // make sure website is linkified if it's a link. otherwise it'll be caught
       // by the next condition, for all undifferentiated fields
-      return <a href={firstValue} target="_blank">{firstValue}</a>;
+      return <a href={firstValue} target='_blank' rel='noopener noreferrer'>{firstValue}</a>;
     } else if (!this.getIsDifferentiated(experimentCardSet, field)) {
       // for undifferentiated fields, the cell content is the field value
       // for the first (and perhaps only) location
@@ -290,7 +290,7 @@ class CardDock extends React.PureComponent {
         key={`cell-content-links-${experimentCardSet[0][EID.sheetId]}`}
       >
         {orderedLinks.map(({ urlValue, titleValue }) => (
-          <a key={urlValue} href={urlValue} target="_blank">{titleValue}</a>
+          <a key={urlValue} href={urlValue} target='_blank' rel='noopener noreferrer'>{titleValue}</a>
         ))}
       </div>
     );
@@ -391,7 +391,7 @@ class CardDock extends React.PureComponent {
           className={'card-dock-container'}
         >
           <div className={classes}>
-            <div className="card-table">
+            <div className='card-table'>
             {this.getScrollHint()}
             {this.getSelectionHint()}
             {this.getMaxPointHint()}

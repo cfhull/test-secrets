@@ -18,10 +18,6 @@ const ICON_TYPE = {
 };
 
 class TriggerIcon extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   onClick() {
     this.props.onClick();
   }
@@ -65,8 +61,8 @@ class TriggerIcon extends React.Component {
   getXClose() {
     return (
       <>
-        <line x1="5.30326" y1="5.30318" x2="15.9099" y2="15.9098" stroke=""/>
-        <line x1="15.9097" y1="5.30326" x2="5.30311" y2="15.9099" stroke=""/>
+        <line x1="5.30326" y1="5.30318" x2="15.9099" y2="15.9098"/>
+        <line x1="15.9097" y1="5.30326" x2="5.30311" y2="15.9099"/>
       </>  
     )
   }
