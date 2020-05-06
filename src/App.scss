@@ -983,8 +983,9 @@ html, body, #root, .app, .map-container {
           left: calc(50vw - (#{$selection-hint-width}) / 2);
           &.dismissed {
             top: 0;
-            transform: scale(0);
-            transition: top ease .8s, transform ease 0s .8s;
+            width: 0;
+            height: 0;
+            transition: top ease .8s, width ease 0s .8s, height ease 0s .8s;
           }
         }
       }

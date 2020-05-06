@@ -80,7 +80,7 @@ class App extends React.Component {
       console.log('lat: ', this.map.getCenter().lat.toFixed(4));
       console.log('lng: ', this.map.getCenter().lng.toFixed(4));
       console.log('zoom: ', this.map.getZoom().toFixed(2));
-    }, 200, { leading: true, trailing: false }));  
+    }, 800, { leading: true, trailing: false }));  
     
     this.map.on('click', 'experimentSites', this.featuresOnClick.bind(this));
     this.map.on('mouseenter', 'experimentSites', this.featuresOnHover.bind(this));
