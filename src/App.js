@@ -274,7 +274,7 @@ class App extends React.Component {
       queryString = QUERY_STRING_BASE + idString;
     }
     // console.log('UPDATE URL with ', queryString);
-    window.parent.postMessage({ selectedIds: selectedIds, queryString }, 'https://hyperobjekt.github.io/bil-map/');
+    window.parent.postMessage({ selectedIds: selectedIds, queryString }, 'https://map-embed--bil-staging.netlify.app');
   }
   
   render() {
