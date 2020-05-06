@@ -22,7 +22,8 @@ const MAX_SELECTED_POINTS = 3;
 const STARTING_LNG = -30;
 const STARTING_LAT = 29;
 const STARTING_ZOOM = 1.5;
-const CONTROL_QUERY_STRING = false;
+const CONTROL_QUERY_STRING = true;
+const QUERY_STRING_BASE = '?s=';
 
 class App extends React.Component {
   constructor(props) {
@@ -132,8 +133,7 @@ class App extends React.Component {
     }
 
     if (CONTROL_QUERY_STRING) {
-      const queryString = '?s=' + selectedIds.join(',');
-      window.parent.postMessage({ selectedIds: selectedIds, queryString }, 'http://localhost:1313');
+      this.updatePageURL(selectedIds);
     }
 
     // dismiss selection hint once multiple points have been selected
@@ -192,8 +192,7 @@ class App extends React.Component {
     selectedIds.splice(idx, 1);
 
     if (CONTROL_QUERY_STRING) {
-      const queryString = '?selected=' + selectedIds.join(',');
-      window.parent.postMessage({ selectedIds: selectedIds, queryString }, 'http://localhost:1313');
+      this.updatePageURL(selectedIds);
     }
 
     this.setState({ selectedIds });
@@ -267,6 +266,16 @@ class App extends React.Component {
       </div>
     );
   }
+
+  updatePageURL(selectedIds) {
+    let queryString = '';
+    if (selectedIds.length) {
+      const idString = selectedIds.map(numId => numericToStringEidMap[numId]).join(',');
+      queryString = QUERY_STRING_BASE + idString;
+    }
+    // console.log('UPDATE URL with ', queryString);
+    window.parent.postMessage({ selectedIds: selectedIds, queryString }, 'https://hyperobjekt.github.io/bil-map/');
+  }
   
   render() {
     const { dataLoaded, mapLoaded, mapConfigured } = this.state;
@@ -292,7 +301,8 @@ class App extends React.Component {
 }
 
 let nextEidNumber = 1;
-const eidMap = {};
+const stringToNumericEidMap = {};
+const numericToStringEidMap = {};
 
 function load () {
   // startsWith polyfill
@@ -326,8 +336,10 @@ function load () {
         if (p === EID.sheetId) {
           // convert the string eids from the sheet into numeric ids (which mapbox expects)
           const stringEid = row[p];
-          const numericEid = eidMap[stringEid] || nextEidNumber++;
-          eidMap[stringEid] = numericEid;
+          const numericEid = stringToNumericEidMap[stringEid] || nextEidNumber++;
+          stringToNumericEidMap[stringEid] = numericEid;
+          // populate to use for sending query params
+          numericToStringEidMap[numericEid] = stringEid;
           row[p] = numericEid;
         }
         if (p === TYPE.sheetId) {
@@ -354,22 +366,40 @@ function load () {
     this.setState({ mapConfigured: true });
 
     if (CONTROL_QUERY_STRING) {
-      // TODOXXX: use real eids, limit 3?, filter out non-experiments, wrap in try, unique only
-      const queryString = window.location.search;
-      const idString = queryString.slice(queryString.indexOf('=') + 1);
-      if (!idString.length) {
-        return;
-      }
-      const selectedIds = idString.split(',').map(s => Number(s));
-      const selectionHintDismissed = selectedIds.length > 1;
-      this.setState({ selectedIds, selectionHintDismissed });
-      _.each(selectedIds, id => {
-        this.map.setFeatureState({
+      try {
+        const queryString = window.location.search;
+        const idString = queryString.slice(queryString.indexOf('=') + 1);
+        if (!idString.length) {
+          return;
+        }
+        let selectedIds = idString.split(',').map(s => {
+          const numericEid = stringToNumericEidMap[s];
+          if (!numericEid) {
+            console.error(`${s} does not correspond to an experiment id - ignoring.`)
+          }
+          return numericEid;
+        });
+
+        selectedIds = _.compact(selectedIds);
+        selectedIds = _.uniq(selectedIds);
+        selectedIds = selectedIds.slice(0, MAX_SELECTED_POINTS);
+
+        this.updatePageURL(selectedIds);
+        if (!selectedIds.length) {
+          return;
+        }
+
+        const selectionHintDismissed = selectedIds.length > 1;
+        this.setState({ selectedIds, selectionHintDismissed });
+        _.each(selectedIds, id => {
+          this.map.setFeatureState({
             source: 'experiments',
             id,
-          }, { selected: true }
-        );
-      });
+          }, { selected: true });
+        });
+      } catch (error) {
+        console.error('Unable to load experiments.');
+      }
     }
   }
 
