@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "8279d042879fff1c337c97643386c3e7",
+    "revision": "3d77c32e701c03d730857f2d839581dc",
     "url": "/bil-map/index.html"
   },
   {
-    "revision": "02fb8f431e5b00a6da00",
+    "revision": "698939a525bb8333a16a",
     "url": "/bil-map/static/css/main.d82a17a9.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/bil-map/static/js/2.87a3ada5.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "02fb8f431e5b00a6da00",
-    "url": "/bil-map/static/js/main.2cd4d72e.chunk.js"
+    "revision": "698939a525bb8333a16a",
+    "url": "/bil-map/static/js/main.888f043a.chunk.js"
   },
   {
     "revision": "df6d84309ee1ca332b0a",
