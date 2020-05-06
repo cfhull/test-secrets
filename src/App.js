@@ -24,6 +24,9 @@ const STARTING_LAT = 29;
 const STARTING_ZOOM = 1.5;
 const CONTROL_QUERY_STRING = true;
 const QUERY_STRING_BASE = '?s=';
+// KEEP IN SYNC WITH BIL-SITE
+const ORIGIN_PARAM_MARKER = '&o='
+const DEFAULT_APP_ORIGIN = 'https://map-embed--bil-staging.netlify.app';
 
 class App extends React.Component {
   constructor(props) {
@@ -268,13 +271,13 @@ class App extends React.Component {
   }
 
   updatePageURL(selectedIds) {
-    let queryString = '';
+    let queryString = '.'; // functions to clear query param
     if (selectedIds.length) {
       const idString = selectedIds.map(numId => numericToStringEidMap[numId]).join(',');
       queryString = QUERY_STRING_BASE + idString;
     }
     // console.log('UPDATE URL with ', queryString);
-    window.parent.postMessage({ selectedIds: selectedIds, queryString }, 'https://map-embed--bil-staging.netlify.app');
+    window.parent.postMessage({ selectedIds: selectedIds, queryString }, this.appOrigin || DEFAULT_APP_ORIGIN);
   }
   
   render() {
@@ -368,7 +371,10 @@ function load () {
     if (CONTROL_QUERY_STRING) {
       try {
         const queryString = window.location.search;
-        const idString = queryString.slice(queryString.indexOf('=') + 1);
+        const startingIdx = queryString.indexOf(QUERY_STRING_BASE) + QUERY_STRING_BASE.length;
+        const endingIndex = queryString.indexOf(ORIGIN_PARAM_MARKER);
+        const idString = queryString.slice(startingIdx, endingIndex);
+        this.appOrigin = queryString.slice(endingIndex + ORIGIN_PARAM_MARKER.length);
         if (!idString.length) {
           return;
         }
