@@ -23,9 +23,8 @@ const STARTING_LNG = -30;
 const STARTING_LAT = 29;
 const STARTING_ZOOM = 1.5;
 const CONTROL_QUERY_STRING = true;
-const QUERY_STRING_BASE = '?s=';
-// KEEP IN SYNC WITH BIL-SITE
-const ORIGIN_PARAM_MARKER = '&o='
+const QUERY_STRING_BASE = '?s='; // KEEP IN SYNC WITH BIL-SITE
+const ORIGIN_PARAM_MARKER = '&o='; // KEEP IN SYNC WITH BIL-SITE
 const DEFAULT_APP_ORIGIN = 'https://map-embed--bil-staging.netlify.app';
 
 class App extends React.Component {

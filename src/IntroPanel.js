@@ -134,6 +134,9 @@ class IntroPanel extends React.Component {
     const title = this.state.open ? 'Close' : 'Open';
     return (
       <div className={classes}> 
+        <div className='mobile-trigger'>
+          <TriggerIcon className title={title} onClick={this.toggleOpen} iconType={ICON_TYPE.INFO_ICON} />
+        </div>
         <div className='trigger'>
           <TriggerIcon title={title} onClick={this.toggleOpen} iconType={iconType} />
         </div>
