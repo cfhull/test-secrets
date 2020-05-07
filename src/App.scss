@@ -217,6 +217,7 @@ html, body, #root, .app, .map-container {
 
   .trigger {
     position: absolute;
+    z-index: 5;
     right: -32px;
     top: 10px;
     border: solid #fff 1px;
@@ -906,7 +907,7 @@ html, body, #root, .app, .map-container {
       top: 4px;
       border: none;
       box-shadow: none;
-      z-index: 5;
+      // z-index: 5;
       width: 42px;
       height: 48px;
       display: flex;
