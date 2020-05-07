@@ -425,22 +425,23 @@ html, body, #root, .app, .map-container {
   stroke: black;
   stroke-width: 1;
   fill: none;
-  &.x-close {
-    width: 16px;
-  }
-  &.legend {
-    width: 40px;
-    height: 40px;
-    // right: 10px;
-    // top: 10px;
-    padding: 5px;
-    border-radius: 50%;
-  }
+  width: 16px;
 }
 
 .legend.hidden {
   background: transparent;
   box-shadow: none;
+
+  .trigger-icon {
+    position: fixed;
+    top: $FS-boundary-padding;
+    right: $FS-boundary-padding;
+
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+    border-radius: 50%;
+  }
 }
 .legend.hidden .content {
   display: none;
@@ -923,14 +924,14 @@ html, body, #root, .app, .map-container {
       }
     }
     .mobile-trigger {
-      z-index: 1;
       display: block;
       .trigger-icon.info-icon {
         position: fixed;
         left: $SS-boundary-padding;
         top: $SS-boundary-padding;
         stroke-width: 0;
-        width: 25px;
+        width: 40px;
+        padding: 5px;
         cursor: pointer;
         * {
           cursor: pointer;
@@ -990,6 +991,12 @@ html, body, #root, .app, .map-container {
   .legend .trigger-icon {
     right: 10px;
     // top: 10px;
+
+    &.legend {
+      right: $SS-boundary-padding;
+      top: $SS-boundary-padding;
+      margin: 0;
+    }
   }
 
   /* DOCK */
