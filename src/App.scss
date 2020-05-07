@@ -210,9 +210,6 @@ html, body, #root, .app, .map-container {
     height: 100%;
     overflow: scroll;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-    // so panel appears above the mobile info-icon trigger
-    position: relative;
-    z-index: 2;
   }
 
   .trigger {
@@ -248,7 +245,6 @@ html, body, #root, .app, .map-container {
 
   .content {
     padding: 32px;
-    //padding-bottom: $intro-next-prev-height;
     padding-bottom: 0;
     // height: 100%;
     position: absolute;
@@ -944,6 +940,8 @@ html, body, #root, .app, .map-container {
       position: relative;
       top: 160px;
       padding: 32px;
+      // so text isn't obscured by controls
+      padding-bottom: $intro-next-prev-height;
     }
    
    .content-nav .bottom-controls {
