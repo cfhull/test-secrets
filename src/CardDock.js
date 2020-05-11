@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import TriggerIcon, { ICON_TYPE } from './TriggerIcon';
-import { SHEET_FIELDS, ORDERED_CARD_FIELDS, COMPOSITE_FIELDS, LINK_FIELD_PAIRS } from './fields';
+import { SHEET_FIELDS, ORDERED_CARD_FIELDS, ORDERED_CSV_FIELDS, COMPOSITE_FIELDS, LINK_FIELD_PAIRS } from './fields';
 import UserHint from './UserHint';
 
 const { LOCATION, NAME, EID, TYPE, WEBSITE } = SHEET_FIELDS;
@@ -22,19 +22,20 @@ class CardDock extends React.PureComponent {
       scrollHintDismissed: false,  
       maxPointHintDismissed: false,
       mapMaskActive: false,
-      scrollUpButtonActive: false
+      sideButtonsActive: false
     };
 
     this.removeCard = this.removeCard.bind(this);
     this.updateMask = this.updateMask.bind(this);
+    // this.toggleProperty = this.toggleProperty.bind(this);
+    this.dismissMaxPointHint = this.dismissMaxPointHint.bind(this);
+    this.scrollUp = this.scrollUp.bind(this);
+    this.exportCSV = this.exportCSV.bind(this);
     this.throttledUpdateMask = _.throttle(
       this.throttledUpdateMask,
       SCROLL_THROTTLE_DELAY,
       { leading: true, trailing: true }
     ).bind(this);
-    // this.toggleProperty = this.toggleProperty.bind(this);
-    this.dismissMaxPointHint = this.dismissMaxPointHint.bind(this);
-    this.scrollUp = this.scrollUp.bind(this);
   }
 
   UNSAFE_componentWillReceiveProps(newProps) {
@@ -79,9 +80,9 @@ class CardDock extends React.PureComponent {
       mapMaskActive = true;
     }
 
-    const scrollUpButtonActive = scrollTop > window.innerHeight;
+    const sideButtonsActive = scrollTop > 150;
 
-    this.setState({ scrollHintDismissed: true, scrollUpButtonActive, mapMaskActive });
+    this.setState({ scrollHintDismissed: true, sideButtonsActive, mapMaskActive });
   }
 
   // toggleProperty(property, expanded) {
@@ -351,26 +352,59 @@ class CardDock extends React.PureComponent {
     this.setState({ maxPointHintDismissed: true });
   }
 
-  getScrollUpButton() {
-    let classes = 'scroll-up-button';
-    if (this.state.scrollUpButtonActive) {
+  getSideButtons() {
+    let classes = 'side-buttons';
+    if (this.state.sideButtonsActive) {
       classes += ' active';
     }
 
     return (
-      <div className={classes} title='Scroll to top'>
-        <TriggerIcon iconType={ICON_TYPE.U_ARROW_STEMLESS} onClick={this.scrollUp} />
+      <div className={classes}>
+        <div className='scroll-up-button' title='Scroll to top'>
+          <TriggerIcon iconType={ICON_TYPE.U_ARROW_STEMLESS} onClick={this.scrollUp} />
+        </div>
+        <div className='export-csv' onClick={this.exportCSV} >  
+          🍔
+        </div>
       </div>
     )
   }
   
   scrollUp() {
-    this.setState({ mapMaskActive: false, scrollUpButtonActive: false });
+    this.setState({ mapMaskActive: false, sideButtonsActive: false });
     this.props.appRef.current.scroll({
       top: 0,
       behavior: 'smooth'
     });
   };
+
+  exportCSV() {
+    const { cardData } = this.props;
+    const headers = _.map(ORDERED_CSV_FIELDS, 'displayName');
+
+    const valueArrays = [headers];
+    _.each(cardData, experimentCardSet => {
+      _.each(experimentCardSet, locationData => {
+        valueArrays.push(_.map(ORDERED_CSV_FIELDS, f => {
+          let v = locationData[f.sheetId];
+          // v = v.replace(/\n/gm, '');
+          return v ? `"${v}"` : "";
+        }));
+      });
+    });
+
+    let csv = '';
+    _.each(valueArrays, row => {
+      csv += row.join(',');
+      csv += '\n';
+    })
+
+    const hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = 'BILData.csv';
+    hiddenElement.click();
+  }
 
   render() {
     if (!this.props.cardData.length) {
@@ -397,7 +431,7 @@ class CardDock extends React.PureComponent {
             {this.getMaxPointHint()}
             <div className='row header'>{this.getNames()}</div>
             {this.getRows()}
-            {this.getScrollUpButton()}
+            {this.getSideButtons()}
             </div>
           </div>
         </div>

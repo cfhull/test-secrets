@@ -134,7 +134,7 @@ html, body, #root, .app, .map-container {
     background-color: transparent;
     opacity: 0;
     transform: translate(100%, 100%);
-    transition: background-color ease 2s, opacity ease 1s .5s, transform ease 0s 2s;
+    transition: background-color ease 2s, opacity ease .5s .5s, transform ease 0s 2s;
   }
   .content {
     margin: auto;
@@ -531,7 +531,7 @@ html, body, #root, .app, .map-container {
   min-width: 100%; // fixes pesky variable container width bug below
   box-shadow: $very-trans-black 0px 0px 10px 3px;
 
-  .scroll-up-button {
+  .side-buttons {
     position: fixed;
     right: $FS-boundary-padding;
     bottom: -50px;
