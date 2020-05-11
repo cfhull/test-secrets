@@ -372,8 +372,14 @@ function load () {
         const queryString = window.location.search;
         const startingIdx = queryString.indexOf(QUERY_STRING_BASE) + QUERY_STRING_BASE.length;
         const endingIndex = queryString.indexOf(ORIGIN_PARAM_MARKER);
-        const idString = queryString.slice(startingIdx, endingIndex);
-        this.appOrigin = queryString.slice(endingIndex + ORIGIN_PARAM_MARKER.length);
+        let idString = '';
+        if (endingIndex > -1) {
+          this.appOrigin = queryString.slice(endingIndex + ORIGIN_PARAM_MARKER.length);
+          idString = queryString.slice(startingIdx, endingIndex);
+        } else {
+          idString = queryString.slice(startingIdx);
+        }
+
         if (!idString.length) {
           return;
         }
