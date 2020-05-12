@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "fe2085364f022b040e2cad498c9dd3b0",
+    "revision": "d9a86456385c76ae5f9ed6ccd4d8ae18",
     "url": "/bil-map/index.html"
   },
   {
-    "revision": "eb679a7f910ab7fae23a",
-    "url": "/bil-map/static/css/main.d8fb2d2b.chunk.css"
+    "revision": "36139dbca9a8c8b56892",
+    "url": "/bil-map/static/css/main.618203ee.chunk.css"
   },
   {
     "revision": "eb3eacdd69e25fad9363",
@@ -16,12 +16,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/bil-map/static/js/2.87a3ada5.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "eb679a7f910ab7fae23a",
-    "url": "/bil-map/static/js/main.eceb28bc.chunk.js"
+    "revision": "36139dbca9a8c8b56892",
+    "url": "/bil-map/static/js/main.3798208a.chunk.js"
   },
   {
     "revision": "df6d84309ee1ca332b0a",
     "url": "/bil-map/static/js/runtime-main.8860a1e1.js"
+  },
+  {
+    "revision": "b25432b63bb0326362c1fc75a178cdba",
+    "url": "/bil-map/static/media/export-icon.b25432b6.svg"
   },
   {
     "revision": "23bb7377d3992e0b67ad0f719b50f899",
@@ -42,5 +46,13 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "6a52a7aab97b1b05ceb76587ab13f97f",
     "url": "/bil-map/static/media/mapboxgl-ctrl-zoom-out.6a52a7aa.svg"
+  },
+  {
+    "revision": "332b27af954abc7b005d766cebab412f",
+    "url": "/bil-map/static/media/print-icon.332b27af.svg"
+  },
+  {
+    "revision": "deaabe3fd323eda0b3fb3a0f14a558c0",
+    "url": "/bil-map/static/media/share-icon.deaabe3f.svg"
   }
 ]);
