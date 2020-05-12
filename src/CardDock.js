@@ -379,31 +379,40 @@ class CardDock extends React.PureComponent {
   };
 
   exportCSV() {
-    const { cardData } = this.props;
-    const headers = _.map(ORDERED_CSV_FIELDS, 'displayName');
+    try {
+      const { cardData } = this.props;
+      const headers = _.map(ORDERED_CSV_FIELDS, 'displayName');
 
-    const valueArrays = [headers];
-    _.each(cardData, experimentCardSet => {
-      _.each(experimentCardSet, locationData => {
-        valueArrays.push(_.map(ORDERED_CSV_FIELDS, f => {
-          let v = locationData[f.sheetId];
-          // v = v.replace(/\n/gm, '');
-          return v ? `"${v}"` : "";
-        }));
+      const valueArrays = [headers];
+      _.each(cardData, experimentCardSet => {
+        _.each(experimentCardSet, locationData => {
+          valueArrays.push(_.map(ORDERED_CSV_FIELDS, f => {
+            let v = locationData[f.sheetId];
+            // seems new lines are fine
+            // v = v.replace(/\n/gm, ''); 
+            v = v.replace(/"/gm, "'");
+            return v ? `"${v}"` : "";
+          }));
+        });
       });
-    });
 
-    let csv = '';
-    _.each(valueArrays, row => {
-      csv += row.join(',');
-      csv += '\n';
-    })
-
-    const hiddenElement = document.createElement('a');
-    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
-    hiddenElement.target = '_blank';
-    hiddenElement.download = 'BILData.csv';
-    hiddenElement.click();
+      let csv = '';
+      _.each(valueArrays, row => {
+        csv += row.join(',');
+        csv += '\n';
+      })
+      
+      const hiddenElement = document.createElement('a');
+      // encodeURI broke on #:
+      // https://stackoverflow.com/questions/55267116/how-to-download-csv-using-a-href-with-a-number-sign-in-chrome
+      hiddenElement.href = 'data:text/csv;charset=UTF-8,' + encodeURIComponent(csv);
+      hiddenElement.target = '_blank';
+      hiddenElement.download = 'BILData.csv';
+      hiddenElement.click();
+      hiddenElement.remove();
+    } catch (error) {
+      console.error('Unable to export to CSV. Please try again. ' + error);
+    }
   }
 
   render() {
