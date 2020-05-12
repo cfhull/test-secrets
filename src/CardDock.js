@@ -360,12 +360,8 @@ class CardDock extends React.PureComponent {
 
     return (
       <div className={classes}>
-        <div className='scroll-up-button' title='Scroll to top'>
-          <TriggerIcon iconType={ICON_TYPE.U_ARROW_STEMLESS} onClick={this.scrollUp} />
-        </div>
-        <div className='export-csv' onClick={this.exportCSV} >  
-          🍔
-        </div>
+        <div className='scroll-up-button' onClick={this.scrollUp} title='Scroll to top' />
+        <div className='share-export' onClick={this.exportCSV} title='Scroll to export options' />  
       </div>
     )
   }

@@ -533,16 +533,35 @@ html, body, #root, .app, .map-container {
 
   .side-buttons {
     position: fixed;
-    right: $FS-boundary-padding;
-    bottom: -50px;
-    transition: bottom ease .4s;
+    right: $SS-boundary-padding;
+    bottom: -200px;
+    transition: bottom ease .8s;
+    box-shadow: $box-shadow;
     &.active {
       bottom: $FS-boundary-padding;
     }
-    .trigger-icon {
-      width: 24px;
-      stroke: $hint-content;
-    } 
+
+    div {
+      height: 75px;
+      width: 80px;
+      // background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADsAAAAmCAYAAAB6beP2AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAASHSURBVHgB7Vk5dhpBEG0WKcY3QCcQipWIEwhOAD4B8LSFiFAr6ASCyCEodCSUKNX4BJrQjoxSbfj/cbXcbs8mNJpnP89/j9f0Vl3VXVVd1ZNTKaPdbpeKxeI4l8t1jo6OHJUi8ipFUNClpaVLCDpD9XJnZ6eiUkRqwmpBn5+fL3CidTR1VMoCF1QKMAU9OTnZZ9v19bWzvr7+DX8/ofyM+lf1znh3Yf0E1Uhb4HdXYwg69hNUAyo9VKLSe3t7ZfUvgycbZ1zazipDhgwZMmTIkCxyUQO2trY2CoVCCZmKc3Bw4Nr9DBqWl5c3PGLWGAYKiJ5eggqkdm4QDURaNWZDfuswsiIdv5SQ/D09PTmDwWCmIhAaLoJZpmPj+XzewmK3u7u7bau/BQFu0dflGCx6gzF9Y0g/n8+f49flT2jUTBqod0mD8411uuaYx8fHJoqWrwD5/CWKWFFaoLDYMTJVPj4+/oAdrYKJKpkxBG2iaKOtjjFrHAMNWEPbzAoRe+wTGj2M75qCot7kPE0DzK+wzd7YJFCM6C9RhahWCOSnqK8YfS2c+r60exD164XQ49iGrkD4NmhUTbXlf2z0Rwg9RnWgEkTgyUKICZgZUa2oztjphnViFZzAFxUBjClhXpk/CEDNmLKd9gxBlZ8dygZ681SCCLVZLNqmWkHgMzBdgxO5Ub+EmD08PEQ6BYA2eYO5tMsS6HknjzLO3EQRKCx3np5OVHjCpxQyq1Mxek3YWlNFgA9rtEluDn49rbIsUfe8qc/aTRQuPKyrEkSgsHT1tBudUJMpMF7CaboypIN6i05GqzfHUOXtHFbbMj2z2QdhPdukibDOPnp4tPe5SSphhN6zYH6fVwZPhXVsQOf09HSo+7kRuG74LFoR5jmuB8/qORYKjmIkrxH6KnMODw87xho1rMHrqixNDtcxHZ/mw+QNNHNCc2620+MHvYrEQpSj4Im81ZkkQSNDhv8AoQ7KDuQ17IBeriMGCbP7+/tpWFDud9UQpkPS4+CUmAC4dp8fnTjJQGi4iIWaWHBV/Qy0KdCU7QjMGRi4kq2cwwvzWnJ4b6Lex1VyBo/7R6gn2Yv2qmUpXSk92rJxY91HgdHGIOS3sJIJANZz5LsR62XQr/plVRqRKR4hu3wOd2/Gxmp7e3uIxVZx91b1rsp9zEyp7nci5lyMcc1rQjaDXw9GZrtcPQ2ss6bX4ZWD+ooOPISXGXgMTCAW/iJAxkC8ASbqpvpQQAhxZt+LcQCNIaNT+56UugvzaYZMp2athvRHZj2BwO5vgPjUT23A1NBQ19igyYDmRcB6V2JSL0AYygSDpkMz87KwMPoLC0swfFT+jLF9kUA/bA5p3pkN8jCg16Tqj0LmLy4s7GVC56TzXbMPp8M8daJeCcy7wrxNZeWxdIQQatM+OfEVroqJhW2WdgrmOnQo+hogU/Iss6lTudcANjtEUQaNlwSE3pmfPOnM4OFH6g140ydLBvxUH6oTvSOY+o56xX59iAtuIK8Y0LiTRwPIOPe+7WIj6upvgbxGxHr4eg1NlSB+AJ6455GrkrabAAAAAElFTkSuQmCC);
+      background-size: 60%;
+      background-repeat: no-repeat;
+      background-color: white;
+      background-position: center;
+      cursor: pointer;
+
+      &:not(:first-of-type) {
+        border-top: 1px solid $middle-gray
+      }
+    }
+    .scroll-up-button {
+      background-image: url(png/scrollTop.png);
+    }
+    .share-export {
+      background-size: 55%;
+      background-image: url(png/shareExport.png);
+    }
   }
 
   .user-hint {
