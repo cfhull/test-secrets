@@ -31,6 +31,7 @@ class CardDock extends React.PureComponent {
     // this.toggleProperty = this.toggleProperty.bind(this);
     this.dismissMaxPointHint = this.dismissMaxPointHint.bind(this);
     this.scrollUp = this.scrollUp.bind(this);
+    this.scrollDown = this.scrollDown.bind(this);
     this.exportCSV = this.exportCSV.bind(this);
     this.throttledUpdateMask = _.throttle(
       this.throttledUpdateMask,
@@ -362,7 +363,7 @@ class CardDock extends React.PureComponent {
     return (
       <div className={classes}>
         <div className='scroll-up-button' onClick={this.scrollUp} title='Scroll to top' />
-        <div className='share-export' onClick={this.exportCSV} title='Scroll to export options' />  
+        <div className='share-export' onClick={this.scrollDown} title='Scroll to export options' />  
       </div>
     )
   }
@@ -371,6 +372,13 @@ class CardDock extends React.PureComponent {
     this.setState({ mapMaskActive: false, sideButtonsActive: false });
     this.props.appRef.current.scroll({
       top: 0,
+      behavior: 'smooth'
+    });
+  };
+  
+  scrollDown() {
+    this.props.appRef.current.scroll({
+      top: 10000, // big number (scroll all the way down)
       behavior: 'smooth'
     });
   };
