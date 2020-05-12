@@ -14,7 +14,7 @@ class ExportFooter extends React.Component {
     console.log('export');
   }
   
-  share() {
+  copy() {
     console.log('share');
   }
 
@@ -36,7 +36,7 @@ class ExportFooter extends React.Component {
           <div className='description element'>
             Export your selected experiments to CSV
           </div>
-          <div className='button element' onClick={this.export}>EXPORT</div>
+          <div className='button element' onClick={this.props.exportCSV}>EXPORT</div>
         </div>
 
         <div className='share section'>
@@ -45,7 +45,10 @@ class ExportFooter extends React.Component {
           <div className='description element'>
             Share a link to your selected experiments
           </div>
-          <div className='button element' onClick={this.share}>SHARE</div>
+          <div className='button-group element'>
+            <input type='text' value='www.linkvalue.com' readOnly />
+            <div className='button' onClick={this.copy}>COPY</div>
+          </div>
         </div>
       </div>
     )

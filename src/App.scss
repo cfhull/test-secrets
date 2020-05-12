@@ -896,7 +896,7 @@ html, body, #root, .app, .map-container {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  padding-right: 100px; // make room for side-buttons
+  padding-right: 90px; // make room for side-buttons
   padding-top: 15px;
   padding-bottom: 50px;
 
@@ -907,7 +907,7 @@ html, body, #root, .app, .map-container {
     padding-bottom: 25px;
     max-width: 190px;
 
-    .element {
+    .element:not(:last-of-type) {
       padding-bottom: 10px;
     }
 
@@ -924,11 +924,13 @@ html, body, #root, .app, .map-container {
       width: 150px;
       height: 42px;
       padding-top: 9px;
-      background: $linkshover;
+      background: $button-bronze;
       color: white;
       font-size: 15px;
       text-align: center;
       vertical-align: middle;
+      cursor: pointer;
+      display: inline-block;
     }
 
     .icon {
@@ -952,8 +954,26 @@ html, body, #root, .app, .map-container {
       }
     }
     &.share {
+      flex-basis: 184px; //TODO: tie to below vars
+      flex-shrink: 0;
+
       .icon {
         background-image: url(svg/share-icon.svg);
+      }
+
+      .button-group {
+        input {
+          position: relative;
+          top: 2px;
+          height: 43px;
+          width: 100px; //TODO: Variable
+          font-size: 14px;
+          padding: 5px;
+          color: $med-gray;
+        }
+        .button {
+          width: 80px; //TODO: Variable
+        }
       }
     }
   }

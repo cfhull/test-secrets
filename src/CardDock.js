@@ -440,7 +440,7 @@ class CardDock extends React.PureComponent {
             {this.getSideButtons()}
             </div>
           </div>
-          <ExportFooter />
+          <ExportFooter exportCSV={this.exportCSV} />
         </div>
       </div>
     )
