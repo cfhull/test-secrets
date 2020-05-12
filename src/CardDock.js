@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import TriggerIcon, { ICON_TYPE } from './TriggerIcon';
+import ExportFooter from './ExportFooter.js';
 import { SHEET_FIELDS, ORDERED_CARD_FIELDS, ORDERED_CSV_FIELDS, COMPOSITE_FIELDS, LINK_FIELD_PAIRS } from './fields';
 import UserHint from './UserHint';
 
@@ -439,6 +440,7 @@ class CardDock extends React.PureComponent {
             {this.getSideButtons()}
             </div>
           </div>
+          <ExportFooter />
         </div>
       </div>
     )
