@@ -372,10 +372,12 @@ class CardDock extends React.PureComponent {
   }
 
   getExportFooter() {
+    const classes = `card-count-${this.props.cardData.length}`;
     return (
       <ExportFooter
         exportCSV={this.exportCSV}
         siteUrl={this.props.siteUrl}
+        classes={classes}
       />
     )
   }
@@ -391,6 +393,7 @@ class CardDock extends React.PureComponent {
   scrollDown() {
     this.props.appRef.current.scroll({
       top: 10000, // big number (scroll all the way down)
+      left: 0,
       behavior: 'smooth'
     });
   };

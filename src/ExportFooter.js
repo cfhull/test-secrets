@@ -23,8 +23,9 @@ class ExportFooter extends React.Component {
   }
 
   render() {
+    const classes = 'export-footer ' + this.props.classes;
     return (
-      <div className='export-footer'>
+      <div className={classes}>
         <div className='print section'>
           <div className='title element'>Print</div>
           <div className='icon element'></div>

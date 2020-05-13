@@ -967,8 +967,6 @@ html, body, #root, .app, .map-container {
       .button-group {
         width: 100%;
         input {
-          // position: relative;
-          // top: 2px;
           height: 100%;
           width: 100px; //TODO: Variable
           font-size: 14px;
@@ -978,6 +976,8 @@ html, body, #root, .app, .map-container {
         }
         .button {
           width: 80px; //TODO: Variable
+          position: relative;
+          top: -2px;
         }
       }
     }
@@ -1163,7 +1163,7 @@ html, body, #root, .app, .map-container {
     }
   }
 
-  .export-footer {
+  .export-footer.card-count-1 {
     flex-direction: column;
     padding-right: 35px; // smaller gutter for side-buttons on mobile
   }
