@@ -18,14 +18,18 @@ import { SHEET_FIELDS } from './fields';
 const { LONGITUDE, LATITUDE, NAME, LOCATION, TYPE, EID } = SHEET_FIELDS;
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
+const QUERY_STRING_BASE = '?sel='; // KEEP IN SYNC WITH BIL-SITE
+const ORIGIN_PARAM_MARKER = '&origin='; // KEEP IN SYNC WITH BIL-SITE
+const PATH_PARAM_MARKER = '&path='; // KEEP IN SYNC WITH BIL-SITE
+// these defaults should never be used as we expect them to be passed in as query params
+const DEFAULT_SITE_ORIGIN = 'https://basicincome.stanford.edu';
+const DEFAULT_SITE_PATH = '/research/basic-income-experiments/';
+
 const MAX_SELECTED_POINTS = 3;
 const STARTING_LNG = -30;
 const STARTING_LAT = 29;
 const STARTING_ZOOM = 1.5;
 const CONTROL_QUERY_STRING = true;
-const QUERY_STRING_BASE = '?s='; // KEEP IN SYNC WITH BIL-SITE
-const ORIGIN_PARAM_MARKER = '&o='; // KEEP IN SYNC WITH BIL-SITE
-const DEFAULT_APP_ORIGIN = 'https://map-embed--bil-staging.netlify.app';
 
 class App extends React.Component {
   constructor(props) {
@@ -80,9 +84,9 @@ class App extends React.Component {
 
     this.map.on('move', _.debounce(() => {
       this.featuresOnUnhover();
-      console.log('lat: ', this.map.getCenter().lat.toFixed(4));
-      console.log('lng: ', this.map.getCenter().lng.toFixed(4));
-      console.log('zoom: ', this.map.getZoom().toFixed(2));
+      // console.log('lat: ', this.map.getCenter().lat.toFixed(4));
+      // console.log('lng: ', this.map.getCenter().lng.toFixed(4));
+      // console.log('zoom: ', this.map.getZoom().toFixed(2));
     }, 800, { leading: true, trailing: false }));  
     
     this.map.on('click', 'experimentSites', this.featuresOnClick.bind(this));
@@ -135,7 +139,7 @@ class App extends React.Component {
     }
 
     if (CONTROL_QUERY_STRING) {
-      this.updatePageURL(selectedIds);
+      this.updatePageUrl(selectedIds);
     }
 
     // dismiss selection hint once multiple points have been selected
@@ -194,7 +198,7 @@ class App extends React.Component {
     selectedIds.splice(idx, 1);
 
     if (CONTROL_QUERY_STRING) {
-      this.updatePageURL(selectedIds);
+      this.updatePageUrl(selectedIds);
     }
 
     this.setState({ selectedIds });
@@ -224,6 +228,11 @@ class App extends React.Component {
 
     const { selectedIds, isTouchScreen, selectionHintDismissed, maxCardHintTriggered } = this.state;
     const cardData = selectedIds.map(this.getFeaturesByExperimentId);
+
+    const siteUrl =
+      (this.siteOrigin || DEFAULT_SITE_ORIGIN) +
+      (this.sitePath || DEFAULT_SITE_PATH) +
+      this.getQueryString(this.state.selectedIds);
     return (
       <CardDock
         removeCard={this.removeCard}
@@ -232,6 +241,7 @@ class App extends React.Component {
         selectionHintDismissed={selectionHintDismissed}
         maxCardHintTriggered={maxCardHintTriggered}
         appRef={this.appRef}
+        siteUrl={siteUrl}
       />
     );
   }
@@ -269,14 +279,16 @@ class App extends React.Component {
     );
   }
 
-  updatePageURL(selectedIds) {
-    let queryString = '.'; // functions to clear query param
-    if (selectedIds.length) {
-      const idString = selectedIds.map(numId => numericToStringEidMap[numId]).join(',');
-      queryString = QUERY_STRING_BASE + idString;
+  getQueryString(ids) {
+    if (!ids.length) {
+      return '.'; // functions to clear query param
     }
-    // console.log('UPDATE URL with ', queryString);
-    window.parent.postMessage({ selectedIds: selectedIds, queryString }, this.appOrigin || DEFAULT_APP_ORIGIN);
+    return QUERY_STRING_BASE + ids.map(numId => numericToStringEidMap[numId]).join(',');
+  }
+
+  updatePageUrl(selectedIds) {
+    const queryString = this.getQueryString(selectedIds);
+    window.parent.postMessage({ queryString }, this.siteOrigin || DEFAULT_SITE_ORIGIN);
   }
   
   render() {
@@ -286,6 +298,7 @@ class App extends React.Component {
     if (loading) {
       classes += ' loading';
     }
+
     return (
       <div>
         <LoadingMask dataLoaded={dataLoaded} mapLoaded={mapLoaded} mapConfigured={mapConfigured} />
@@ -370,14 +383,29 @@ function load () {
     if (CONTROL_QUERY_STRING) {
       try {
         const queryString = window.location.search;
-        const startingIdx = queryString.indexOf(QUERY_STRING_BASE) + QUERY_STRING_BASE.length;
-        const endingIndex = queryString.indexOf(ORIGIN_PARAM_MARKER);
+        const selectionParamStartIdx = queryString.indexOf(QUERY_STRING_BASE);
+        const selectionValueStartIdx = selectionParamStartIdx + QUERY_STRING_BASE.length;
+        const originParamStartIdx = queryString.indexOf(ORIGIN_PARAM_MARKER);
         let idString = '';
-        if (endingIndex > -1) {
-          this.appOrigin = queryString.slice(endingIndex + ORIGIN_PARAM_MARKER.length);
-          idString = queryString.slice(startingIdx, endingIndex);
+        if (originParamStartIdx < 0) {
+          // there's no origin passed in - perhaps we're running outside of iframe
+          idString = queryString.slice(selectionValueStartIdx);
         } else {
-          idString = queryString.slice(startingIdx);
+          idString = queryString.slice(selectionValueStartIdx, originParamStartIdx);
+
+          const originValueStartIdx = originParamStartIdx + ORIGIN_PARAM_MARKER.length;
+          const pathParamStartIdx = queryString.indexOf(PATH_PARAM_MARKER);
+
+          if (pathParamStartIdx < 0) {
+            this.siteOrigin = queryString.slice(originValueStartIdx);
+            // console.error('Map did not receive a sitePath');
+          } else {
+            this.siteOrigin = queryString.slice(originValueStartIdx, pathParamStartIdx);
+            
+            const pathValueStartIdx = pathParamStartIdx + PATH_PARAM_MARKER.length;
+            this.sitePath = queryString.slice(pathValueStartIdx);
+            // console.log('idString:',idString,' | siteOrigin:',this.siteOrigin,' | sitePath:',this.sitePath);
+          }
         }
 
         if (!idString.length) {
@@ -386,7 +414,7 @@ function load () {
         let selectedIds = idString.split(',').map(s => {
           const numericEid = stringToNumericEidMap[s];
           if (!numericEid) {
-            console.error(`${s} does not correspond to an experiment id - ignoring.`)
+            // console.error(`${s} does not correspond to an experiment id - ignoring.`)
           }
           return numericEid;
         });
@@ -395,7 +423,7 @@ function load () {
         selectedIds = _.uniq(selectedIds);
         selectedIds = selectedIds.slice(0, MAX_SELECTED_POINTS);
 
-        this.updatePageURL(selectedIds);
+        this.updatePageUrl(selectedIds);
         if (!selectedIds.length) {
           return;
         }

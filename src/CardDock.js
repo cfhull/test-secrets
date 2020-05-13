@@ -7,8 +7,11 @@ import UserHint from './UserHint';
 
 const { LOCATION, NAME, EID, TYPE, WEBSITE } = SHEET_FIELDS;
 
+// minimum scroll offset (in px) required to reveal the side buttons (for scroll-up and scroll to export footer)
+const SIDE_BUTTONS_SCROLL_OFFSET = 200;
 // time (in seconds) before the max card user hint auto-dismisses
 const MAX_CARD_HINT_TIMEOUT = 30;
+// delay (in ms) between fires of the scroll handler. 
 const SCROLL_THROTTLE_DELAY = 500;
 
 // pure component? (shallow compare map features?) (perf)
@@ -82,7 +85,7 @@ class CardDock extends React.PureComponent {
       mapMaskActive = true;
     }
 
-    const sideButtonsActive = scrollTop > 150;
+    const sideButtonsActive = scrollTop > SIDE_BUTTONS_SCROLL_OFFSET;
 
     this.setState({ scrollHintDismissed: true, sideButtonsActive, mapMaskActive });
   }
@@ -367,6 +370,15 @@ class CardDock extends React.PureComponent {
       </div>
     )
   }
+
+  getExportFooter() {
+    return (
+      <ExportFooter
+        exportCSV={this.exportCSV}
+        siteUrl={this.props.siteUrl}
+      />
+    )
+  }
   
   scrollUp() {
     this.setState({ mapMaskActive: false, sideButtonsActive: false });
@@ -416,7 +428,7 @@ class CardDock extends React.PureComponent {
       hiddenElement.click();
       hiddenElement.remove();
     } catch (error) {
-      console.error('Unable to export to CSV. Please try again. ' + error);
+      // console.error('Unable to export to CSV. Please try again. ' + error);
     }
   }
 
@@ -448,7 +460,7 @@ class CardDock extends React.PureComponent {
             {this.getSideButtons()}
             </div>
           </div>
-          <ExportFooter exportCSV={this.exportCSV} />
+          {this.getExportFooter()}
         </div>
       </div>
     )

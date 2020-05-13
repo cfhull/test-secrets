@@ -907,31 +907,33 @@ html, body, #root, .app, .map-container {
     align-items: center;
     padding-bottom: 25px;
     max-width: 190px;
-
-    .element:not(:last-of-type) {
-      padding-bottom: 10px;
-    }
-
+    
     .title {
       font-size: 23px;
     }
-
+    
     .description {
       text-align: center;
       font-size: 15px;
+      padding-top: 10px;
+      padding-bottom: 15px;
     }
 
-    .button {
+    .button-group {
       width: 150px;
       height: 42px;
-      padding-top: 9px;
-      background: $button-bronze;
-      color: white;
-      font-size: 15px;
-      text-align: center;
-      vertical-align: middle;
-      cursor: pointer;
-      display: inline-block;
+      .button {
+        width: 100%;
+        height: 100%;
+        padding-top: 9px;
+        background: $button-bronze;
+        color: white;
+        font-size: 15px;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        display: inline-block;
+      }
     }
 
     .icon {
@@ -955,7 +957,7 @@ html, body, #root, .app, .map-container {
       }
     }
     &.share {
-      flex-basis: 184px; //TODO: tie to below vars
+      // flex-basis: 184px; //TODO: tie to below vars
       flex-shrink: 0;
 
       .icon {
@@ -963,14 +965,16 @@ html, body, #root, .app, .map-container {
       }
 
       .button-group {
+        width: 100%;
         input {
-          position: relative;
-          top: 2px;
-          height: 43px;
+          // position: relative;
+          // top: 2px;
+          height: 100%;
           width: 100px; //TODO: Variable
           font-size: 14px;
           padding: 5px;
           color: $med-gray;
+          z-index: 1;
         }
         .button {
           width: 80px; //TODO: Variable
@@ -1161,8 +1165,7 @@ html, body, #root, .app, .map-container {
 
   .export-footer {
     flex-direction: column;
-
-
+    padding-right: 35px; // smaller gutter for side-buttons on mobile
   }
 }
 
