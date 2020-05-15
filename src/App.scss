@@ -404,9 +404,6 @@ html, body, #root, .app, .map-container {
   display: inline-block;
   border-radius: 5px;
   margin-right: 8px;
-  // keeps them in line with text
-  position: relative;
-  top: 2px;
 }
 .legend i.past {
   background: $color-past;
@@ -1102,6 +1099,9 @@ html, body, #root, .app, .map-container {
     height: 14px;
     border-radius: 7px;
     margin-right: 14px;
+    // keeps them in line with text
+    position: relative;
+    top: 2px;
   }
   .legend .trigger-icon {
     right: 10px;

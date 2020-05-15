@@ -55,6 +55,7 @@ class App extends React.Component {
     this.getFeaturesByExperimentId = this.getFeaturesByExperimentId.bind(this);
     this.resetUSView = this.resetUSView.bind(this);
     this.resetWorldView = this.resetWorldView.bind(this);
+    this.resetView = this.resetView.bind(this);
   }
 
   componentDidMount() {
@@ -210,6 +211,9 @@ class App extends React.Component {
   }
 
   getTooltip() {
+    if (this.props.isTouchScreen) {
+      return;
+    }
     const { expId, name, location, type, x, y } = this.state.hovered;
     let otherLocations = [];
     if (expId) {
@@ -261,13 +265,15 @@ class App extends React.Component {
     ]);
   }
 
-  getResetViewButton() {
-    const onClick = () => {window.innerWidth > 800 ? this.resetWorldView() : this.resetUSView()}
+  resetView() {
+    window.innerWidth > 800 ? this.resetWorldView() : this.resetUSView();
+  }
 
+  getResetViewButton() {
     return (
       <div className='mapboxgl-ctrl mapboxgl-ctrl-group custom'>
         <button
-          onClick={onClick}
+          onClick={this.resetView}
           className='mapboxgl-ctrl-reset-view'
           type='button'
           title='Reset view'
