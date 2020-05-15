@@ -107,9 +107,26 @@ class CardDock extends React.PureComponent {
   //   this.setState({ expandedProperties });
   // }
 
+  getTableContent() {
+    if (!this.props.cardData.length) {
+      return null;
+    }
+
+    return (
+      <>
+        {this.getScrollHint()}
+        {this.getSelectionHint()}
+        {this.getMaxPointHint()}
+        {this.getNames()}
+        {this.getRows()}
+        {this.getSideButtons()}
+      </>
+    );
+  }
+
   getNames() {
     // TODO: don't bind in render (perf)
-    return this.props.cardData.map((experimentCardSet, idx) => {
+    const names = this.props.cardData.map((experimentCardSet, idx) => {
       const {
         [EID.sheetId]: eid,
         [NAME.sheetId]: name,
@@ -125,6 +142,7 @@ class CardDock extends React.PureComponent {
           </div>
         </div>
     )});
+    return <div className='row header'>{names}</div>;
   }
 
   getRows() {
@@ -436,9 +454,11 @@ class CardDock extends React.PureComponent {
   }
 
   render() {
-    if (!this.props.cardData.length) {
-      return null;
-    }
+    // always return a card dock (getTableContent will return null if nothing's selected)
+    // this prevents the map from jumping in transitions between 0-1 selections on iOS
+    // if (!this.props.cardData.length) {
+    //   return null;
+    // }
     
     const classes = `card-dock card-count-${this.props.cardData.length}`;
 
@@ -447,20 +467,21 @@ class CardDock extends React.PureComponent {
       maskClass += ` active card-count-${this.props.cardData.length}`;
     }
     return (
-      <div className={maskClass} onWheel={this.updateMask} onTouchMove={this.updateMask}>
+      <div
+        className={maskClass}
+        onWheel={this.updateMask}
+        onTouchMove={this.updateMask}
+        // onScroll={this.updateMask}
+        >
         <div
           onWheel={this.updateMask}
           onTouchMove={this.updateMask}
+          // onScroll={this.updateMask}
           className={'card-dock-container'}
         >
           <div className={classes}>
             <div className='card-table'>
-            {this.getScrollHint()}
-            {this.getSelectionHint()}
-            {this.getMaxPointHint()}
-            <div className='row header'>{this.getNames()}</div>
-            {this.getRows()}
-            {this.getSideButtons()}
+              {this.getTableContent()}
             </div>
           </div>
           {this.getExportFooter()}
