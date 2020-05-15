@@ -13,6 +13,8 @@ const SIDE_BUTTONS_SCROLL_OFFSET = 200;
 const MAX_CARD_HINT_TIMEOUT = 30;
 // delay (in ms) between fires of the scroll handler. 
 const SCROLL_THROTTLE_DELAY = 500;
+// delay (in ms) between fires of a back-up updateScroll handler for mobile.
+const IOS_SCROLL_FIX_INTERVAL = 800;
 
 // pure component? (shallow compare map features?) (perf)
 class CardDock extends React.PureComponent {
@@ -23,6 +25,9 @@ class CardDock extends React.PureComponent {
     // uncomment 'expand' and 'toggle'-related code here & in CSS to reactivate
     this.state = {
       // expandedProperties: {},
+      // duplicates isTouchScreen prop, but if app loads with active experiment and user scrolls
+      // before touching map, we wouldn't know to disable mask without this
+      isMobile: false,
       scrollHintDismissed: false,  
       maxPointHintDismissed: false,
       mapMaskActive: false,
@@ -30,17 +35,21 @@ class CardDock extends React.PureComponent {
     };
 
     this.removeCard = this.removeCard.bind(this);
-    this.updateMask = this.updateMask.bind(this);
+    this.updateScroll = this.updateScroll.bind(this);
+    this.updateScrollMobile = this.updateScrollMobile.bind(this);
+    this.setMobile = this.setMobile.bind(this);
     // this.toggleProperty = this.toggleProperty.bind(this);
     this.dismissMaxPointHint = this.dismissMaxPointHint.bind(this);
     this.scrollUp = this.scrollUp.bind(this);
     this.scrollDown = this.scrollDown.bind(this);
     this.exportCSV = this.exportCSV.bind(this);
-    this.throttledUpdateMask = _.throttle(
-      this.throttledUpdateMask,
+    this.throttledUpdateScroll = _.throttle(
+      this.throttledUpdateScroll,
       SCROLL_THROTTLE_DELAY,
       { leading: true, trailing: true }
     ).bind(this);
+
+    this.scrollInterval = null;
   }
 
   UNSAFE_componentWillReceiveProps(newProps) {
@@ -68,19 +77,32 @@ class CardDock extends React.PureComponent {
     this.props.removeCard(id);
   }
 
-  updateMask(e) {
-    this.throttledUpdateMask(e.deltaY);
+  setMobile() {
+    if (this.state.isMobile) {
+      return;
+    }
+    this.setState({ isMobile: true });
+
+    this.scrollInterval = setInterval(() => {
+      this.throttledUpdateScroll();
+    }, IOS_SCROLL_FIX_INTERVAL);
   }
 
-  throttledUpdateMask(deltaY) {
+  updateScroll(e) {
+    this.throttledUpdateScroll(e.deltaY);
+  }
+  
+  updateScrollMobile(e) {
+    this.setMobile();
+    this.throttledUpdateScroll(e.deltaY);
+  }
+
+  throttledUpdateScroll(deltaY) {
     const { scrollTop } = this.props.appRef.current;
 
     let mapMaskActive = false;
-    if (this.props.isTouchScreen) {
+    if (this.state.isMobile) {
       // no mask on mobile
-    } else if (deltaY > 0) {
-      // not really necessary with app ref but can't hurt
-      mapMaskActive = true;
     } else if (scrollTop > 5) {
       mapMaskActive = true;
     }
@@ -390,6 +412,9 @@ class CardDock extends React.PureComponent {
   }
 
   getExportFooter() {
+    if (!this.props.cardData.length) {
+      return null;
+    }
     const classes = `card-count-${this.props.cardData.length}`;
     return (
       <ExportFooter
@@ -401,7 +426,10 @@ class CardDock extends React.PureComponent {
   }
   
   scrollUp() {
-    this.setState({ mapMaskActive: false, sideButtonsActive: false });
+    // if there's a scrollInterval, let that deal with hint dismissing sidebuttons so it doesn't oscillate off/on
+    const sideButtonsActive = this.scrollInterval;
+
+    this.setState({ mapMaskActive: false, sideButtonsActive });
     this.props.appRef.current.scroll({
       top: 0,
       behavior: 'smooth'
@@ -463,20 +491,20 @@ class CardDock extends React.PureComponent {
     const classes = `card-dock card-count-${this.props.cardData.length}`;
 
     let maskClass = 'card-dock-mask';
-    if (this.state.mapMaskActive) {
+    if (this.state.mapMaskActive && !this.state.isMobile) {
       maskClass += ` active card-count-${this.props.cardData.length}`;
     }
     return (
       <div
         className={maskClass}
-        onWheel={this.updateMask}
-        onTouchMove={this.updateMask}
-        // onScroll={this.updateMask}
+        onWheel={this.updateScroll}
+        onTouchMove={this.updateScrollMobile}
+        // onScroll={this.updateScroll}
         >
         <div
-          onWheel={this.updateMask}
-          onTouchMove={this.updateMask}
-          // onScroll={this.updateMask}
+          onWheel={this.updateScroll}
+          onTouchMove={this.updateScrollMobile}
+          // onScroll={this.updateScroll}
           className={'card-dock-container'}
         >
           <div className={classes}>
