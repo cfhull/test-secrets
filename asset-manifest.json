@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/bil-map/static/css/main.af9196e0.chunk.css",
-    "main.js": "/bil-map/static/js/main.99bd7ad1.chunk.js",
-    "main.js.map": "/bil-map/static/js/main.99bd7ad1.chunk.js.map",
+    "main.css": "/bil-map/static/css/main.eba004bc.chunk.css",
+    "main.js": "/bil-map/static/js/main.7cb02f29.chunk.js",
+    "main.js.map": "/bil-map/static/js/main.7cb02f29.chunk.js.map",
     "runtime-main.js": "/bil-map/static/js/runtime-main.8860a1e1.js",
     "runtime-main.js.map": "/bil-map/static/js/runtime-main.8860a1e1.js.map",
     "static/js/2.dd72bbf8.chunk.js": "/bil-map/static/js/2.dd72bbf8.chunk.js",
     "static/js/2.dd72bbf8.chunk.js.map": "/bil-map/static/js/2.dd72bbf8.chunk.js.map",
     "index.html": "/bil-map/index.html",
-    "precache-manifest.4f1537fb10377f654f4708a560d0025e.js": "/bil-map/precache-manifest.4f1537fb10377f654f4708a560d0025e.js",
+    "precache-manifest.c0ec404df1dd9f34c90f087ad4785fc1.js": "/bil-map/precache-manifest.c0ec404df1dd9f34c90f087ad4785fc1.js",
     "service-worker.js": "/bil-map/service-worker.js",
-    "static/css/main.af9196e0.chunk.css.map": "/bil-map/static/css/main.af9196e0.chunk.css.map",
+    "static/css/main.eba004bc.chunk.css.map": "/bil-map/static/css/main.eba004bc.chunk.css.map",
     "static/js/2.dd72bbf8.chunk.js.LICENSE.txt": "/bil-map/static/js/2.dd72bbf8.chunk.js.LICENSE.txt",
     "static/media/App.scss": "/bil-map/static/media/share-icon.deaabe3f.svg",
     "static/media/mapbox-gl.css": "/bil-map/static/media/mapboxgl-ctrl-zoom-out.6a52a7aa.svg"
@@ -18,7 +18,7 @@
   "entrypoints": [
     "static/js/runtime-main.8860a1e1.js",
     "static/js/2.dd72bbf8.chunk.js",
-    "static/css/main.af9196e0.chunk.css",
-    "static/js/main.99bd7ad1.chunk.js"
+    "static/css/main.eba004bc.chunk.css",
+    "static/js/main.7cb02f29.chunk.js"
   ]
 }
