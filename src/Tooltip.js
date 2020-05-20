@@ -42,10 +42,8 @@ class Tooltip extends React.Component {
   adjustPosition() {
     // 3] after the initial render, we have access to the tooltip's DOM node and can tell it's size
     const { width: tooltipWidth, height: tooltipHeight } = this.ref.current.getBoundingClientRect();
-    // const windowElement = document.getElementById('root');
-    // const { width: windowWidth, height: windowHeight } = windowElement.getBoundingClientRect();
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
+    const windowElement = document.getElementById('root');
+    const { width: windowWidth, height: windowHeight } = windowElement.getBoundingClientRect();
     
     let { left, top } = this.state;
     // by default, tooltip appears above the point

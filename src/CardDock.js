@@ -12,7 +12,7 @@ const SIDE_BUTTONS_SCROLL_OFFSET = 200;
 // time (in seconds) before the max card user hint auto-dismisses
 const MAX_CARD_HINT_TIMEOUT = 30;
 // delay (in ms) between fires of the scroll handler. 
-const SCROLL_THROTTLE_DELAY = 200;
+const SCROLL_THROTTLE_DELAY = 500;
 // delay (in ms) between fires of a back-up updateScroll handler for mobile.
 const IOS_SCROLL_FIX_INTERVAL = 800;
 
@@ -31,7 +31,6 @@ class CardDock extends React.PureComponent {
       scrollHintDismissed: false,  
       maxPointHintDismissed: false,
       mapMaskActive: false,
-      bottomMaskActive: false,
       sideButtonsActive: false
     };
 
@@ -108,15 +107,9 @@ class CardDock extends React.PureComponent {
       mapMaskActive = true;
     }
 
-    /* 
-     * We could pick this value better (e.g. add ref to CardDock to reference for its
-     * height, use that to measure when it's getting close to scrolled all the way up).
-     * For now, we just assume all CardDocks are much taller than any viewport.
-     */
-    const bottomMaskActive = scrollTop > window.outerHeight + 400;
     const sideButtonsActive = scrollTop > SIDE_BUTTONS_SCROLL_OFFSET;
 
-    this.setState({ scrollHintDismissed: true, sideButtonsActive, mapMaskActive, bottomMaskActive });
+    this.setState({ scrollHintDismissed: true, sideButtonsActive, mapMaskActive });
   }
 
   // toggleProperty(property, expanded) {
@@ -502,27 +495,24 @@ class CardDock extends React.PureComponent {
       maskClass += ` active card-count-${this.props.cardData.length}`;
     }
     return (
-      <div>
-        {this.state.bottomMaskActive && <div className='bottom-mask'/>}
+      <div
+        className={maskClass}
+        onWheel={this.updateScroll}
+        onTouchMove={this.updateScrollMobile}
+        // onScroll={this.updateScroll}
+        >
         <div
-          className={maskClass}
           onWheel={this.updateScroll}
           onTouchMove={this.updateScrollMobile}
           // onScroll={this.updateScroll}
-          >
-          <div
-            onWheel={this.updateScroll}
-            onTouchMove={this.updateScrollMobile}
-            // onScroll={this.updateScroll}
-            className={'card-dock-container'}
-            >
-            <div className={classes}>
-              <div className='card-table'>
-                {this.getTableContent()}
-              </div>
+          className={'card-dock-container'}
+        >
+          <div className={classes}>
+            <div className='card-table'>
+              {this.getTableContent()}
             </div>
-            {this.getExportFooter()}
           </div>
+          {this.getExportFooter()}
         </div>
       </div>
     )
