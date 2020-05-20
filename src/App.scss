@@ -1225,3 +1225,26 @@ html, body, #root, .app, .map-container {
     transform: translate(0, -$selection-hint-height);
   }
 }
+
+
+@media print {
+  body{ overflow:visible; }
+ #root {
+  
+    .intro-panel-wrapper, .mapboxgl-ctrl, .map-container.mapboxgl-map, 
+    .legend, .export-footer, .side-buttons, .user-hint {
+      display: none;
+    }
+    .row .card {
+      page-break-after: always; // Gave it this rather extreme setting to test; not working :-/
+    }
+    width: 100%; 
+    margin: 0; 
+    float: none; 
+    * {
+      -webkit-print-color-adjust: exact !important; /*Chrome, Safari */
+      color-adjust: exact !important;  /*Firefox*/
+    }
+
+ }
+}
