@@ -500,6 +500,17 @@ html, body, #root, .app, .map-container {
 }
 
 /* CARD DOCK */
+
+.bottom-mask {
+  background: wheat;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 5;
+}
+
 .card-dock-mask { transition: background-color ease .8s; }
 .card-dock-mask.active {
   position: absolute;
