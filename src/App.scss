@@ -62,6 +62,8 @@ $intro-panel-icon-offset: 8px;
 $standard-border-radius: 4px;
 $zoom-controls-top: 40vh;
 $intro-next-prev-height: 60px;
+$right-caret-padding: 8px 8px 4px 8px;
+$left-caret-padding: 4px 8px 8px 8px;
 
 * {
   margin: 0;
@@ -132,7 +134,7 @@ html, body, #root, .app, .map-container {
     background-color: transparent;
     opacity: 0;
     transform: translate(100%, 100%);
-    transition: background-color ease 2s, opacity ease 1s .5s, transform ease 0s 2s;
+    transition: background-color ease 2s, opacity ease .5s .5s, transform ease 0s 2s;
   }
   .content {
     margin: auto;
@@ -212,6 +214,7 @@ html, body, #root, .app, .map-container {
 
   .trigger {
     position: absolute;
+    z-index: 5;
     right: -32px;
     top: 10px;
     border: solid #fff 1px;
@@ -222,23 +225,26 @@ html, body, #root, .app, .map-container {
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
     .trigger-icon {
       width: 32px;
-      padding: 4px 8px 8px 8px;
+      padding: $left-caret-padding;
       height: 32px;
       stroke-width: .5;
     }
+  }
+  .mobile-trigger {
+    // for use on small screens
+    display: none;
   }
 
 
   &.closed {
     left: -$intro-panel-width;
     .trigger .trigger-icon {
-      padding: 8px 8px 4px 8px;
+      padding: $right-caret-padding;
     }
   }
 
   .content {
     padding: 32px;
-    //padding-bottom: $intro-next-prev-height;
     padding-bottom: 0;
     // height: 100%;
     position: absolute;
@@ -416,22 +422,23 @@ html, body, #root, .app, .map-container {
   stroke: black;
   stroke-width: 1;
   fill: none;
-  &.x-close {
-    width: 16px;
-  }
-  &.legend {
-    width: 40px;
-    height: 40px;
-    // right: 10px;
-    // top: 10px;
-    padding: 5px;
-    border-radius: 50%;
-  }
+  width: 16px;
 }
 
 .legend.hidden {
   background: transparent;
   box-shadow: none;
+
+  .trigger-icon {
+    position: fixed;
+    top: $FS-boundary-padding;
+    right: $FS-boundary-padding;
+
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+    border-radius: 50%;
+  }
 }
 .legend.hidden .content {
   display: none;
@@ -524,18 +531,37 @@ html, body, #root, .app, .map-container {
   min-width: 100%; // fixes pesky variable container width bug below
   box-shadow: $very-trans-black 0px 0px 10px 3px;
 
-  .scroll-up-button {
+  .side-buttons {
     position: fixed;
-    right: $FS-boundary-padding;
-    bottom: -50px;
-    transition: bottom ease .4s;
+    right: $SS-boundary-padding;
+    bottom: -200px;
+    transition: bottom ease .8s;
+    box-shadow: $box-shadow;
+    z-index: 5;
     &.active {
       bottom: $FS-boundary-padding;
     }
-    .trigger-icon {
-      width: 24px;
-      stroke: $hint-content;
-    } 
+
+    div {
+      height: 75px; //60px
+      width: 75px; //64px
+      background-repeat: no-repeat;
+      background-color: white;
+      background-position: center;
+      cursor: pointer;
+      
+      &:not(:first-of-type) {
+        border-top: 1px solid $middle-gray
+      }
+    }
+    .scroll-up-button {
+      background-size: 70%;
+      background-image: url(png/scrollTop.png);
+    }
+    .share-export {
+      background-size: 62%;
+      background-image: url(png/shareExport.png);
+    }
   }
 
   .user-hint {
@@ -867,7 +893,106 @@ html, body, #root, .app, .map-container {
   }
 }
 
+.export-footer {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding-right: 90px; // make room for side-buttons
+  padding-top: 15px;
+  padding-bottom: 50px;
+
+  .section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 25px;
+    max-width: 190px;
+    
+    .title {
+      font-size: 23px;
+    }
+    
+    .description {
+      text-align: center;
+      font-size: 15px;
+      padding-top: 10px;
+      padding-bottom: 15px;
+    }
+
+    .button-group {
+      width: 150px;
+      height: 42px;
+      .button {
+        width: 100%;
+        height: 100%;
+        padding-top: 9px;
+        background: $button-bronze;
+        color: white;
+        font-size: 15px;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        display: inline-block;
+      }
+    }
+
+    .icon {
+      width: 100px;
+      height: 100px;
+      background-repeat: no-repeat;
+      background-color: white;
+      background-position: center;
+      background-size: 70%;
+    }
+
+    &.print {
+      .icon {
+        background-size: 90%;
+        background-image: url(svg/print-icon.svg);
+      }
+    }
+    &.export {
+      .icon {
+        background-image: url(svg/export-icon.svg);
+      }
+    }
+    &.share {
+      // flex-basis: 184px;
+      flex-shrink: 0;
+
+      .icon {
+        background-image: url(svg/share-icon.svg);
+      }
+
+      .button-group {
+        width: 100%;
+        input {
+          height: 100%;
+          width: 100px;
+          font-size: 14px;
+          padding: 5px;
+          color: $med-gray;
+          z-index: 1;
+        }
+        .button {
+          width: 80px;
+          // keeps it in line with text input
+          position: relative;
+          top: -2px;
+        }
+      }
+    }
+  }
+}
+
+/* ~~~~~~~ END FS STYLES | BEGIN MOBILE STYLES ~~~~~~~ */
+
 @media (max-width: $mobile-breakpoint) {
+  /* MAPBOX CONTROLS */
+  .mapboxgl-ctrl-top-right, .mapboxgl-ctrl-group.custom {
+    right: $SS-boundary-padding;
+  }
+
   /* INTRO PANEL */
   .intro-panel-wrapper {
     //top: calc(#{$SS-legend-height} + #{$SS-boundary-padding});
@@ -886,12 +1011,12 @@ html, body, #root, .app, .map-container {
       z-index: 4;
   }
     
-    &:not(.closed) .trigger {
+    .trigger {
       right: 0px;
       top: 4px;
       border: none;
       box-shadow: none;
-      z-index: 5;
+      // z-index: 5;
       width: 42px;
       height: 48px;
       display: flex;
@@ -901,13 +1026,35 @@ html, body, #root, .app, .map-container {
     &.closed {
       left: -100%;
       .trigger {
-        right: -32px;
+        .right.arrow {
+          // HACK treat like it's still a left arrow - small screens use the info-icon to open
+          transform: rotate(180deg);
+          padding: $left-caret-padding;
+        }
       }
     }
+    .mobile-trigger {
+      display: block;
+      .trigger-icon.info-icon {
+        position: fixed;
+        left: $SS-boundary-padding;
+        top: $SS-boundary-padding;
+        stroke-width: 0;
+        width: 40px;
+        padding: 5px;
+        cursor: pointer;
+        * {
+          cursor: pointer;
+        }
+      }
+    }
+
     .content-body {
       position: relative;
       top: 160px;
       padding: 32px;
+      // so text isn't obscured by controls
+      padding-bottom: $intro-next-prev-height;
     }
    
    .content-nav .bottom-controls {
@@ -952,10 +1099,19 @@ html, body, #root, .app, .map-container {
     height: 14px;
     border-radius: 7px;
     margin-right: 14px;
+    // keeps them in line with text
+    position: relative;
+    top: 2px;
   }
   .legend .trigger-icon {
     right: 10px;
     // top: 10px;
+
+    &.legend {
+      right: $SS-boundary-padding;
+      top: $SS-boundary-padding;
+      margin: 0;
+    }
   }
 
   /* DOCK */
@@ -983,8 +1139,9 @@ html, body, #root, .app, .map-container {
           left: calc(50vw - (#{$selection-hint-width}) / 2);
           &.dismissed {
             top: 0;
-            transform: scale(0);
-            transition: top ease .8s, transform ease 0s .8s;
+            width: 0;
+            height: 0;
+            transition: top ease .8s, width ease 0s .8s, height ease 0s .8s;
           }
         }
       }
@@ -997,7 +1154,9 @@ html, body, #root, .app, .map-container {
       }
       &.card-count-1 .card-table .card {
         // width: 100%;
-        max-width: unset;
+        // allow a single card on mobile to take up the screen width rather than just $FS-card-width
+        // (but don't unset because we still don't want long place names to cause overflow)
+        max-width: 100vw;
       }
       &.card-count-1 .card-table,
       &.card-count-2 .card-table,
@@ -1008,6 +1167,11 @@ html, body, #root, .app, .map-container {
         }
       }
     }
+  }
+
+  .export-footer.card-count-1 {
+    flex-direction: column;
+    padding-right: 35px; // smaller gutter for side-buttons on mobile
   }
 }
 

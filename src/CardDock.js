@@ -1,14 +1,20 @@
 import React from 'react';
 import _ from 'lodash';
 import TriggerIcon, { ICON_TYPE } from './TriggerIcon';
-import { SHEET_FIELDS, ORDERED_CARD_FIELDS, COMPOSITE_FIELDS, LINK_FIELD_PAIRS } from './fields';
+import ExportFooter from './ExportFooter.js';
+import { SHEET_FIELDS, ORDERED_CARD_FIELDS, ORDERED_CSV_FIELDS, COMPOSITE_FIELDS, LINK_FIELD_PAIRS } from './fields';
 import UserHint from './UserHint';
 
 const { LOCATION, NAME, EID, TYPE, WEBSITE } = SHEET_FIELDS;
 
+// minimum scroll offset (in px) required to reveal the side buttons (for scroll-up and scroll to export footer)
+const SIDE_BUTTONS_SCROLL_OFFSET = 200;
 // time (in seconds) before the max card user hint auto-dismisses
 const MAX_CARD_HINT_TIMEOUT = 30;
+// delay (in ms) between fires of the scroll handler. 
 const SCROLL_THROTTLE_DELAY = 500;
+// delay (in ms) between fires of a back-up updateScroll handler for mobile.
+const IOS_SCROLL_FIX_INTERVAL = 800;
 
 // pure component? (shallow compare map features?) (perf)
 class CardDock extends React.PureComponent {
@@ -19,22 +25,31 @@ class CardDock extends React.PureComponent {
     // uncomment 'expand' and 'toggle'-related code here & in CSS to reactivate
     this.state = {
       // expandedProperties: {},
+      // duplicates isTouchScreen prop, but if app loads with active experiment and user scrolls
+      // before touching map, we wouldn't know to disable mask without this
+      isMobile: false,
       scrollHintDismissed: false,  
       maxPointHintDismissed: false,
       mapMaskActive: false,
-      scrollUpButtonActive: false
+      sideButtonsActive: false
     };
 
     this.removeCard = this.removeCard.bind(this);
-    this.updateMask = this.updateMask.bind(this);
-    this.throttledUpdateMask = _.throttle(
-      this.throttledUpdateMask,
-      SCROLL_THROTTLE_DELAY,
-      { leading: true, trailing: true }
-    ).bind(this);
+    this.updateScroll = this.updateScroll.bind(this);
+    this.updateScrollMobile = this.updateScrollMobile.bind(this);
+    this.setMobile = this.setMobile.bind(this);
     // this.toggleProperty = this.toggleProperty.bind(this);
     this.dismissMaxPointHint = this.dismissMaxPointHint.bind(this);
     this.scrollUp = this.scrollUp.bind(this);
+    this.scrollDown = this.scrollDown.bind(this);
+    this.exportCSV = this.exportCSV.bind(this);
+    this.throttledUpdateScroll = _.throttle(
+      this.throttledUpdateScroll,
+      SCROLL_THROTTLE_DELAY,
+      { leading: true, trailing: true }
+    ).bind(this);
+
+    this.scrollInterval = null;
   }
 
   UNSAFE_componentWillReceiveProps(newProps) {
@@ -62,26 +77,39 @@ class CardDock extends React.PureComponent {
     this.props.removeCard(id);
   }
 
-  updateMask(e) {
-    this.throttledUpdateMask(e.deltaY);
+  setMobile() {
+    if (this.state.isMobile) {
+      return;
+    }
+    this.setState({ isMobile: true });
+
+    this.scrollInterval = setInterval(() => {
+      this.throttledUpdateScroll();
+    }, IOS_SCROLL_FIX_INTERVAL);
   }
 
-  throttledUpdateMask(deltaY) {
+  updateScroll(e) {
+    this.throttledUpdateScroll(e.deltaY);
+  }
+  
+  updateScrollMobile(e) {
+    this.setMobile();
+    this.throttledUpdateScroll(e.deltaY);
+  }
+
+  throttledUpdateScroll(deltaY) {
     const { scrollTop } = this.props.appRef.current;
 
     let mapMaskActive = false;
-    if (this.props.isTouchScreen) {
+    if (this.state.isMobile) {
       // no mask on mobile
-    } else if (deltaY > 0) {
-      // not really necessary with app ref but can't hurt
-      mapMaskActive = true;
     } else if (scrollTop > 5) {
       mapMaskActive = true;
     }
 
-    const scrollUpButtonActive = scrollTop > window.innerHeight;
+    const sideButtonsActive = scrollTop > SIDE_BUTTONS_SCROLL_OFFSET;
 
-    this.setState({ scrollHintDismissed: true, scrollUpButtonActive, mapMaskActive });
+    this.setState({ scrollHintDismissed: true, sideButtonsActive, mapMaskActive });
   }
 
   // toggleProperty(property, expanded) {
@@ -101,9 +129,26 @@ class CardDock extends React.PureComponent {
   //   this.setState({ expandedProperties });
   // }
 
+  getTableContent() {
+    if (!this.props.cardData.length) {
+      return null;
+    }
+
+    return (
+      <>
+        {this.getScrollHint()}
+        {this.getSelectionHint()}
+        {this.getMaxPointHint()}
+        {this.getNames()}
+        {this.getRows()}
+        {this.getSideButtons()}
+      </>
+    );
+  }
+
   getNames() {
     // TODO: don't bind in render (perf)
-    return this.props.cardData.map((experimentCardSet, idx) => {
+    const names = this.props.cardData.map((experimentCardSet, idx) => {
       const {
         [EID.sheetId]: eid,
         [NAME.sheetId]: name,
@@ -119,6 +164,7 @@ class CardDock extends React.PureComponent {
           </div>
         </div>
     )});
+    return <div className='row header'>{names}</div>;
   }
 
   getRows() {
@@ -351,55 +397,122 @@ class CardDock extends React.PureComponent {
     this.setState({ maxPointHintDismissed: true });
   }
 
-  getScrollUpButton() {
-    let classes = 'scroll-up-button';
-    if (this.state.scrollUpButtonActive) {
+  getSideButtons() {
+    let classes = 'side-buttons';
+    if (this.state.sideButtonsActive) {
       classes += ' active';
     }
 
     return (
-      <div className={classes} title='Scroll to top'>
-        <TriggerIcon iconType={ICON_TYPE.U_ARROW_STEMLESS} onClick={this.scrollUp} />
+      <div className={classes}>
+        <div className='scroll-up-button' onClick={this.scrollUp} title='Scroll to top' />
+        <div className='share-export' onClick={this.scrollDown} title='Scroll to export options' />  
       </div>
+    )
+  }
+
+  getExportFooter() {
+    if (!this.props.cardData.length) {
+      return null;
+    }
+    const classes = `card-count-${this.props.cardData.length}`;
+    return (
+      <ExportFooter
+        exportCSV={this.exportCSV}
+        siteUrl={this.props.siteUrl}
+        classes={classes}
+      />
     )
   }
   
   scrollUp() {
-    this.setState({ mapMaskActive: false, scrollUpButtonActive: false });
+    // if there's a scrollInterval, let that deal with hint dismissing sidebuttons so it doesn't oscillate off/on
+    const sideButtonsActive = this.scrollInterval;
+
+    this.setState({ mapMaskActive: false, sideButtonsActive });
     this.props.appRef.current.scroll({
       top: 0,
       behavior: 'smooth'
     });
   };
+  
+  scrollDown() {
+    this.props.appRef.current.scroll({
+      top: 10000, // big number (scroll all the way down)
+      left: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  exportCSV() {
+    try {
+      const { cardData } = this.props;
+      const headers = _.map(ORDERED_CSV_FIELDS, 'displayName');
+
+      const valueArrays = [headers];
+      _.each(cardData, experimentCardSet => {
+        _.each(experimentCardSet, locationData => {
+          valueArrays.push(_.map(ORDERED_CSV_FIELDS, f => {
+            let v = locationData[f.sheetId];
+            // seems new lines are fine
+            // v = v.replace(/\n/gm, ''); 
+            v = v.replace(/"/gm, "'");
+            return v ? `"${v}"` : "";
+          }));
+        });
+      });
+
+      let csv = '';
+      _.each(valueArrays, row => {
+        csv += row.join(',');
+        csv += '\n';
+      })
+      
+      const hiddenElement = document.createElement('a');
+      // encodeURI broke on #:
+      // https://stackoverflow.com/questions/55267116/how-to-download-csv-using-a-href-with-a-number-sign-in-chrome
+      hiddenElement.href = 'data:text/csv;charset=UTF-8,' + encodeURIComponent(csv);
+      hiddenElement.target = '_blank';
+      hiddenElement.download = 'BILData.csv';
+      hiddenElement.click();
+      hiddenElement.remove();
+    } catch (error) {
+      // console.error('Unable to export to CSV. Please try again. ' + error);
+    }
+  }
 
   render() {
-    if (!this.props.cardData.length) {
-      return null;
-    }
+    // always return a card dock (getTableContent will return null if nothing's selected)
+    // this prevents the map from jumping in transitions between 0-1 selections on iOS
+    // if (!this.props.cardData.length) {
+    //   return null;
+    // }
     
     const classes = `card-dock card-count-${this.props.cardData.length}`;
 
     let maskClass = 'card-dock-mask';
-    if (this.state.mapMaskActive) {
+    if (this.state.mapMaskActive && !this.state.isMobile) {
       maskClass += ` active card-count-${this.props.cardData.length}`;
     }
     return (
-      <div className={maskClass} onWheel={this.updateMask} onTouchMove={this.updateMask}>
+      <div
+        className={maskClass}
+        onWheel={this.updateScroll}
+        onTouchMove={this.updateScrollMobile}
+        // onScroll={this.updateScroll}
+        >
         <div
-          onWheel={this.updateMask}
-          onTouchMove={this.updateMask}
+          onWheel={this.updateScroll}
+          onTouchMove={this.updateScrollMobile}
+          // onScroll={this.updateScroll}
           className={'card-dock-container'}
         >
           <div className={classes}>
             <div className='card-table'>
-            {this.getScrollHint()}
-            {this.getSelectionHint()}
-            {this.getMaxPointHint()}
-            <div className='row header'>{this.getNames()}</div>
-            {this.getRows()}
-            {this.getScrollUpButton()}
+              {this.getTableContent()}
             </div>
           </div>
+          {this.getExportFooter()}
         </div>
       </div>
     )

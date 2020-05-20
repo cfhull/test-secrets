@@ -18,11 +18,18 @@ import { SHEET_FIELDS } from './fields';
 const { LONGITUDE, LATITUDE, NAME, LOCATION, TYPE, EID } = SHEET_FIELDS;
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
+const QUERY_STRING_BASE = '?sel='; // KEEP IN SYNC WITH BIL-SITE
+const ORIGIN_PARAM_MARKER = '&origin='; // KEEP IN SYNC WITH BIL-SITE
+const PATH_PARAM_MARKER = '&path='; // KEEP IN SYNC WITH BIL-SITE
+// these defaults should never be used as we expect them to be passed in as query params
+const DEFAULT_SITE_ORIGIN = 'https://basicincome.stanford.edu';
+const DEFAULT_SITE_PATH = '/research/basic-income-experiments/';
+
 const MAX_SELECTED_POINTS = 3;
 const STARTING_LNG = -30;
 const STARTING_LAT = 29;
 const STARTING_ZOOM = 1.5;
-const CONTROL_QUERY_STRING = false;
+const CONTROL_QUERY_STRING = true;
 
 class App extends React.Component {
   constructor(props) {
@@ -48,6 +55,7 @@ class App extends React.Component {
     this.getFeaturesByExperimentId = this.getFeaturesByExperimentId.bind(this);
     this.resetUSView = this.resetUSView.bind(this);
     this.resetWorldView = this.resetWorldView.bind(this);
+    this.resetView = this.resetView.bind(this);
   }
 
   componentDidMount() {
@@ -77,10 +85,10 @@ class App extends React.Component {
 
     this.map.on('move', _.debounce(() => {
       this.featuresOnUnhover();
-      console.log('lat: ', this.map.getCenter().lat.toFixed(4));
-      console.log('lng: ', this.map.getCenter().lng.toFixed(4));
-      console.log('zoom: ', this.map.getZoom().toFixed(2));
-    }, 200, { leading: true, trailing: false }));  
+      // console.log('lat: ', this.map.getCenter().lat.toFixed(4));
+      // console.log('lng: ', this.map.getCenter().lng.toFixed(4));
+      // console.log('zoom: ', this.map.getZoom().toFixed(2));
+    }, 800, { leading: true, trailing: false }));  
     
     this.map.on('click', 'experimentSites', this.featuresOnClick.bind(this));
     this.map.on('mouseenter', 'experimentSites', this.featuresOnHover.bind(this));
@@ -132,8 +140,7 @@ class App extends React.Component {
     }
 
     if (CONTROL_QUERY_STRING) {
-      const queryString = '?s=' + selectedIds.join(',');
-      window.parent.postMessage({ selectedIds: selectedIds, queryString }, 'http://localhost:1313');
+      this.updatePageUrl(selectedIds);
     }
 
     // dismiss selection hint once multiple points have been selected
@@ -192,8 +199,7 @@ class App extends React.Component {
     selectedIds.splice(idx, 1);
 
     if (CONTROL_QUERY_STRING) {
-      const queryString = '?selected=' + selectedIds.join(',');
-      window.parent.postMessage({ selectedIds: selectedIds, queryString }, 'http://localhost:1313');
+      this.updatePageUrl(selectedIds);
     }
 
     this.setState({ selectedIds });
@@ -205,6 +211,9 @@ class App extends React.Component {
   }
 
   getTooltip() {
+    if (this.props.isTouchScreen) {
+      return;
+    }
     const { expId, name, location, type, x, y } = this.state.hovered;
     let otherLocations = [];
     if (expId) {
@@ -223,6 +232,11 @@ class App extends React.Component {
 
     const { selectedIds, isTouchScreen, selectionHintDismissed, maxCardHintTriggered } = this.state;
     const cardData = selectedIds.map(this.getFeaturesByExperimentId);
+
+    const siteUrl =
+      (this.siteOrigin || DEFAULT_SITE_ORIGIN) +
+      (this.sitePath || DEFAULT_SITE_PATH) +
+      this.getQueryString(this.state.selectedIds);
     return (
       <CardDock
         removeCard={this.removeCard}
@@ -231,6 +245,7 @@ class App extends React.Component {
         selectionHintDismissed={selectionHintDismissed}
         maxCardHintTriggered={maxCardHintTriggered}
         appRef={this.appRef}
+        siteUrl={siteUrl}
       />
     );
   }
@@ -250,13 +265,15 @@ class App extends React.Component {
     ]);
   }
 
-  getResetViewButton() {
-    const onClick = () => {window.innerWidth > 800 ? this.resetWorldView() : this.resetUSView()}
+  resetView() {
+    window.innerWidth > 800 ? this.resetWorldView() : this.resetUSView();
+  }
 
+  getResetViewButton() {
     return (
       <div className='mapboxgl-ctrl mapboxgl-ctrl-group custom'>
         <button
-          onClick={onClick}
+          onClick={this.resetView}
           className='mapboxgl-ctrl-reset-view'
           type='button'
           title='Reset view'
@@ -267,6 +284,18 @@ class App extends React.Component {
       </div>
     );
   }
+
+  getQueryString(ids) {
+    if (!ids.length) {
+      return '.'; // functions to clear query param
+    }
+    return QUERY_STRING_BASE + ids.map(numId => numericToStringEidMap[numId]).join(',');
+  }
+
+  updatePageUrl(selectedIds) {
+    const queryString = this.getQueryString(selectedIds);
+    window.parent.postMessage({ queryString }, this.siteOrigin || DEFAULT_SITE_ORIGIN);
+  }
   
   render() {
     const { dataLoaded, mapLoaded, mapConfigured } = this.state;
@@ -275,6 +304,7 @@ class App extends React.Component {
     if (loading) {
       classes += ' loading';
     }
+
     return (
       <div>
         <LoadingMask dataLoaded={dataLoaded} mapLoaded={mapLoaded} mapConfigured={mapConfigured} />
@@ -292,7 +322,8 @@ class App extends React.Component {
 }
 
 let nextEidNumber = 1;
-const eidMap = {};
+const stringToNumericEidMap = {};
+const numericToStringEidMap = {};
 
 function load () {
   // startsWith polyfill
@@ -326,8 +357,10 @@ function load () {
         if (p === EID.sheetId) {
           // convert the string eids from the sheet into numeric ids (which mapbox expects)
           const stringEid = row[p];
-          const numericEid = eidMap[stringEid] || nextEidNumber++;
-          eidMap[stringEid] = numericEid;
+          const numericEid = stringToNumericEidMap[stringEid] || nextEidNumber++;
+          stringToNumericEidMap[stringEid] = numericEid;
+          // populate to use for sending query params
+          numericToStringEidMap[numericEid] = stringEid;
           row[p] = numericEid;
         }
         if (p === TYPE.sheetId) {
@@ -354,22 +387,64 @@ function load () {
     this.setState({ mapConfigured: true });
 
     if (CONTROL_QUERY_STRING) {
-      // TODOXXX: use real eids, limit 3?, filter out non-experiments, wrap in try, unique only
-      const queryString = window.location.search;
-      const idString = queryString.slice(queryString.indexOf('=') + 1);
-      if (!idString.length) {
-        return;
-      }
-      const selectedIds = idString.split(',').map(s => Number(s));
-      const selectionHintDismissed = selectedIds.length > 1;
-      this.setState({ selectedIds, selectionHintDismissed });
-      _.each(selectedIds, id => {
-        this.map.setFeatureState({
+      try {
+        const queryString = window.location.search;
+        const selectionParamStartIdx = queryString.indexOf(QUERY_STRING_BASE);
+        const selectionValueStartIdx = selectionParamStartIdx + QUERY_STRING_BASE.length;
+        const originParamStartIdx = queryString.indexOf(ORIGIN_PARAM_MARKER);
+        let idString = '';
+        if (originParamStartIdx < 0) {
+          // there's no origin passed in - perhaps we're running outside of iframe
+          idString = queryString.slice(selectionValueStartIdx);
+        } else {
+          idString = queryString.slice(selectionValueStartIdx, originParamStartIdx);
+
+          const originValueStartIdx = originParamStartIdx + ORIGIN_PARAM_MARKER.length;
+          const pathParamStartIdx = queryString.indexOf(PATH_PARAM_MARKER);
+
+          if (pathParamStartIdx < 0) {
+            this.siteOrigin = queryString.slice(originValueStartIdx);
+            // console.error('Map did not receive a sitePath');
+          } else {
+            this.siteOrigin = queryString.slice(originValueStartIdx, pathParamStartIdx);
+            
+            const pathValueStartIdx = pathParamStartIdx + PATH_PARAM_MARKER.length;
+            this.sitePath = queryString.slice(pathValueStartIdx);
+            // console.log('idString:',idString,' | siteOrigin:',this.siteOrigin,' | sitePath:',this.sitePath);
+          }
+        }
+
+        if (!idString.length) {
+          return;
+        }
+        let selectedIds = idString.split(',').map(s => {
+          const numericEid = stringToNumericEidMap[s];
+          if (!numericEid) {
+            // console.error(`${s} does not correspond to an experiment id - ignoring.`)
+          }
+          return numericEid;
+        });
+
+        selectedIds = _.compact(selectedIds);
+        selectedIds = _.uniq(selectedIds);
+        selectedIds = selectedIds.slice(0, MAX_SELECTED_POINTS);
+
+        this.updatePageUrl(selectedIds);
+        if (!selectedIds.length) {
+          return;
+        }
+
+        const selectionHintDismissed = selectedIds.length > 1;
+        this.setState({ selectedIds, selectionHintDismissed });
+        _.each(selectedIds, id => {
+          this.map.setFeatureState({
             source: 'experiments',
             id,
-          }, { selected: true }
-        );
-      });
+          }, { selected: true });
+        });
+      } catch (error) {
+        console.error('Unable to load experiments.');
+      }
     }
   }
 
