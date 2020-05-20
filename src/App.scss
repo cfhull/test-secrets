@@ -507,6 +507,9 @@ html, body, #root, .app, .map-container {
   right: 0;
   top: 0;
   bottom: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
   background-color: $trans-black;
   z-index: 5;
 
@@ -524,7 +527,7 @@ html, body, #root, .app, .map-container {
 .card-dock-container {
  // background-color: $middle-gray;
   background-color: #fff;
-
+  flex: 1 0 auto;
   z-index: 5;
   position: absolute;
   /* dock background initially just off-screen, appears when user scrolls up */
