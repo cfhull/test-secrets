@@ -17,7 +17,8 @@ const SECTIONS = [
   },
   { 
     name: 'Citation',
-    text: 'Please cite as follows: Stanford Basic Income Lab [cartographer]. (2020). Global Map of Basic Income Experiments [map]. Retrieved from https://basicincome.stanford.edu/research/basic-income-experiments/'
+    text: 'Please cite as follows:',
+    text2: 'Stanford Basic Income Lab [cartographer]. (2020). Global Map of Basic Income Experiments [map]. Retrieved from https://basicincome.stanford.edu/research/basic-income-experiments/'
   }
 ];
 
