@@ -33,7 +33,7 @@ class ExportFooter extends React.Component {
             Print or save your experiments as a PDF
           </div>
           <div className='button-group element'>
-            <div className='button' onClick={this.print}>PRINT</div>
+            <div className='button' onClick={window.print}>PRINT</div>
           </div>
         </div>
 
