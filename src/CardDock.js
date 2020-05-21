@@ -16,6 +16,9 @@ const SCROLL_THROTTLE_DELAY = 200;
 // delay (in ms) between fires of a back-up updateScroll handler for mobile.
 const IOS_SCROLL_FIX_INTERVAL = 800;
 
+let SCROLL_GAP_FIX = navigator.userAgent.indexOf('AppleWebKit') > 0;
+alert(SCROLL_GAP_FIX + navigator.userAgent);
+
 // pure component? (shallow compare map features?) (perf)
 class CardDock extends React.PureComponent {
   constructor(props) {
@@ -34,6 +37,10 @@ class CardDock extends React.PureComponent {
       bottomMaskActive: false,
       sideButtonsActive: false
     };
+
+    // for fixing iPad CardDock scrolls too far bug
+    this.cardDockContainerRef = React.createRef();
+    this.cardDockContainerHeight = 0;
 
     this.removeCard = this.removeCard.bind(this);
     this.updateScroll = this.updateScroll.bind(this);
@@ -74,6 +81,14 @@ class CardDock extends React.PureComponent {
     }
   }
 
+  componentDidUpdate() {
+    // for fixing iPad CardDock scrolls too far bug
+    if (!SCROLL_GAP_FIX || !_.get(this, 'cardDockContainerRef.current')) {
+      return;
+    }
+    this.cardDockContainerHeight = this.cardDockContainerRef.current.getBoundingClientRect().height;
+  }
+
   removeCard(id) {
     this.props.removeCard(id);
   }
@@ -95,7 +110,7 @@ class CardDock extends React.PureComponent {
   
   updateScrollMobile(e) {
     this.setMobile();
-    this.throttledUpdateScroll(e.deltaY);
+    this.updateScroll(e);
   }
 
   throttledUpdateScroll(deltaY) {
@@ -113,7 +128,14 @@ class CardDock extends React.PureComponent {
      * height, use that to measure when it's getting close to scrolled all the way up).
      * For now, we just assume all CardDocks are much taller than any viewport.
      */
-    const bottomMaskActive = scrollTop > window.outerHeight + 400;
+    let bottomMaskActive = false;
+    if (SCROLL_GAP_FIX &&
+        this.cardDockContainerHeight &&
+        scrollTop > window.outerHeight + 400 &&
+        (scrollTop + window.innerHeight/2) > this.cardDockContainerHeight) {
+      bottomMaskActive = true;
+    }
+    console.log(scrollTop, ' | ', this.cardDockContainerHeight, ' active? ', bottomMaskActive);
     const sideButtonsActive = scrollTop > SIDE_BUTTONS_SCROLL_OFFSET;
 
     this.setState({ scrollHintDismissed: true, sideButtonsActive, mapMaskActive, bottomMaskActive });
@@ -515,7 +537,8 @@ class CardDock extends React.PureComponent {
             onTouchMove={this.updateScrollMobile}
             // onScroll={this.updateScroll}
             className={'card-dock-container'}
-            >
+            ref={this.cardDockContainerRef}
+          >
             <div className={classes}>
               <div className='card-table'>
                 {this.getTableContent()}
