@@ -344,6 +344,7 @@ html, body, #root, .app, .map-container {
       margin: auto;
       padding-top: 16px;
       font-size: 14px;
+      user-select: none;
       p.advance-button {
         // padding: 0;
         font-weight: 700;
@@ -500,6 +501,17 @@ html, body, #root, .app, .map-container {
 }
 
 /* CARD DOCK */
+
+.bottom-mask {
+  background: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 5;
+}
+
 .card-dock-mask { transition: background-color ease .8s; }
 .card-dock-mask.active {
   position: absolute;
