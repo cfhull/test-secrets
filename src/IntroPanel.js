@@ -32,7 +32,11 @@ class IntroPanel extends React.Component {
     super(props);
 
     const startOpen = window.innerWidth > 600;
-    this.state = { open: startOpen, activeSectionIdx: 0 };
+    this.state = {
+      open: startOpen,
+      activeSectionIdx: 0,
+      citeCopied: ['', '', '']
+    };
 
     this.toggleOpen = this.toggleOpen.bind(this);
     this.setActiveSection = this.setActiveSection.bind(this);
@@ -69,20 +73,24 @@ class IntroPanel extends React.Component {
     )
   }
 
-  getCitationButton() {
+  getCitationButton = () => {
     const { activeSectionIdx } = this.state;
-    let classes = 'citation-button'
+    let classes = 'citation-button ';
     const copyCitation = (citation) => {
       navigator.clipboard.writeText(citation);
+      let cite_copied = this.state.citeCopied;
+      cite_copied[activeSectionIdx] = 'copied';
+      this.setState(state => ({ citeCopied: cite_copied }));
     }
     if (SECTIONS[activeSectionIdx].citationButton) {
       if (SECTIONS[activeSectionIdx].citationButton.use === true) {
         const citation = SECTIONS[activeSectionIdx][SECTIONS[activeSectionIdx].citationButton.copies];
         const prompt = SECTIONS[activeSectionIdx].citationButton.prompt;
         return (
-          <p className={classes} onClick={() => { copyCitation(citation) }}>
-            {prompt}
-          </p>
+          <div className={classes + this.state.citeCopied[activeSectionIdx]}>
+            <p class="prompt" onClick={() => { copyCitation(citation) }}>{prompt}</p>
+            <p class="confirmation"><i>Citation copied</i></p>
+          </div>
         );
       }
     }

@@ -328,14 +328,30 @@ html, body, #root, .app, .map-container {
       }
     }
   }
-  p.citation-button {
-    text-transform: uppercase;
-    font-weight: 700;
-    white-space: nowrap;
-    cursor: pointer;
-    color: $black; // $dark-gray;
-    &.active {
+  .citation-button {
+    .prompt {
+      text-transform: uppercase;
+      font-weight: 700;
+      white-space: nowrap;
       cursor: pointer;
+      color: $black; // $dark-gray;
+      &.active {
+        cursor: pointer;
+      }
+    }
+    .confirmation {
+      display: none;
+    }
+    &.copied {
+      .confirmation {
+        display: inherit;
+      }
+    }
+  }
+  @media screen and (min-width:0\0) and (min-resolution: +72dpi) {
+    // IE9+, hide the button as navigator.clipboard is not available.
+    p.citation-button {
+      display: none;
     }
   }
   .bottom-controls {
