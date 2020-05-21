@@ -328,6 +328,16 @@ html, body, #root, .app, .map-container {
       }
     }
   }
+  p.citation-button {
+    text-transform: uppercase;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    color: $black; // $dark-gray;
+    &.active {
+      cursor: pointer;
+    }
+  }
   .bottom-controls {
     position: absolute;
     bottom: 0;

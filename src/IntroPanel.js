@@ -18,7 +18,12 @@ const SECTIONS = [
   { 
     name: 'Citation',
     text: 'Please cite as follows:',
-    text2: 'Stanford Basic Income Lab [cartographer]. (2020). Global Map of Basic Income Experiments [map]. Retrieved from https://basicincome.stanford.edu/research/basic-income-experiments/'
+    text2: 'Stanford Basic Income Lab [cartographer]. (2020). Global Map of Basic Income Experiments [map]. Retrieved from https://basicincome.stanford.edu/research/basic-income-experiments/',
+    citationButton: {
+      use: true,
+      prompt: 'Copy Citation',
+      copies: 'text2'
+    }
   }
 ];
 
@@ -62,6 +67,25 @@ class IntroPanel extends React.Component {
         {sections}
       </div>
     )
+  }
+
+  getCitationButton() {
+    const { activeSectionIdx } = this.state;
+    let classes = 'citation-button'
+    const copyCitation = (citation) => {
+      navigator.clipboard.writeText(citation);
+    }
+    if (SECTIONS[activeSectionIdx].citationButton) {
+      if (SECTIONS[activeSectionIdx].citationButton.use === true) {
+        const citation = SECTIONS[activeSectionIdx][SECTIONS[activeSectionIdx].citationButton.copies];
+        const prompt = SECTIONS[activeSectionIdx].citationButton.prompt;
+        return (
+          <p className={classes} onClick={() => { copyCitation(citation) }}>
+            {prompt}
+          </p>
+        );
+      }
+    }
   }
 
   getSection() {
@@ -146,6 +170,7 @@ class IntroPanel extends React.Component {
           </div>
           <div className='content-body'> 
             {this.getSection()}
+            {this.getCitationButton()}
           </div> 
           <div className='content-nav'> 
             {this.getNextPrev()}
