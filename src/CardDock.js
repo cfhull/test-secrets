@@ -1,12 +1,9 @@
 import React from 'react';
-import * as smoothscroll from 'smoothscroll-polyfill';
 import _ from 'lodash';
 import TriggerIcon, { ICON_TYPE } from './TriggerIcon';
 import ExportFooter from './ExportFooter.js';
 import { SHEET_FIELDS, ORDERED_CARD_FIELDS, ORDERED_CSV_FIELDS, COMPOSITE_FIELDS, LINK_FIELD_PAIRS } from './fields';
 import UserHint from './UserHint';
-
-smoothscroll.polyfill();
 
 const { LOCATION, NAME, EID, TYPE, WEBSITE } = SHEET_FIELDS;
 
@@ -17,11 +14,7 @@ const MAX_CARD_HINT_TIMEOUT = 30;
 // delay (in ms) between fires of the scroll handler. 
 const SCROLL_THROTTLE_DELAY = 500;
 // delay (in ms) between fires of a back-up updateScroll handler for mobile.
-const IOS_SCROLL_FIX_INTERVAL = 600;
-
-// this will catch many other cases (including Chrome Android...), really only necessary for iPad
-const SCROLL_GAP_FIX = navigator.userAgent.indexOf('AppleWebKit') > 0
-  && navigator.userAgent.indexOf('Safari') > 0;
+const IOS_SCROLL_FIX_INTERVAL = 800;
 
 // pure component? (shallow compare map features?) (perf)
 class CardDock extends React.PureComponent {
@@ -40,9 +33,6 @@ class CardDock extends React.PureComponent {
       mapMaskActive: false,
       sideButtonsActive: false
     };
-
-    this.cardDockContainerRef = React.createRef();
-    this.cardDockContainerHeight = 0;
 
     this.removeCard = this.removeCard.bind(this);
     this.updateScroll = this.updateScroll.bind(this);
@@ -83,14 +73,6 @@ class CardDock extends React.PureComponent {
     }
   }
 
-  componentDidUpdate() {
-    // for fixing iPad CardDock scrolls too far bug
-    if (!SCROLL_GAP_FIX || !_.get(this, 'cardDockContainerRef.current')) {
-      return;
-    }
-    this.cardDockContainerHeight = this.cardDockContainerRef.current.getBoundingClientRect().height;
-  }
-
   removeCard(id) {
     this.props.removeCard(id);
   }
@@ -112,7 +94,7 @@ class CardDock extends React.PureComponent {
   
   updateScrollMobile(e) {
     this.setMobile();
-    this.updateScroll(e);
+    this.throttledUpdateScroll(e.deltaY);
   }
 
   throttledUpdateScroll(deltaY) {
@@ -123,24 +105,6 @@ class CardDock extends React.PureComponent {
       // no mask on mobile
     } else if (scrollTop > 5) {
       mapMaskActive = true;
-    }
-
-    const SCROLL_BUFFER = 800;
-    let bottomMaskActive = false;
-    if (SCROLL_GAP_FIX && // ensure we want to use fix
-        this.cardDockContainerHeight && // ensure we want to use fix
-        scrollTop > window.innerHeight + SCROLL_BUFFER && // we've scrolled down a safe amount (won't mask map above)
-        (scrollTop + SCROLL_BUFFER) > this.cardDockContainerHeight // approaching bottom of CardDock
-    ) {
-      bottomMaskActive = true; // all true, so show mask to cover space below CardDock
-
-      if (scrollTop > this.cardDockContainerHeight) {
-        // we've *passed* CardDock bottom - gently pull it back down
-        this.props.appRef.current.scroll({
-          top: this.cardDockContainerHeight,
-          behavior: 'smooth'
-        });
-      }
     }
 
     const sideButtonsActive = scrollTop > SIDE_BUTTONS_SCROLL_OFFSET;
@@ -465,7 +429,7 @@ class CardDock extends React.PureComponent {
     // if there's a scrollInterval, let that deal with hint dismissing sidebuttons so it doesn't oscillate off/on
     const sideButtonsActive = this.scrollInterval;
 
-    this.setState({ mapMaskActive: false, bottomMaskActive: false, sideButtonsActive });
+    this.setState({ mapMaskActive: false, sideButtonsActive });
     this.props.appRef.current.scroll({
       top: 0,
       behavior: 'smooth'
@@ -473,9 +437,9 @@ class CardDock extends React.PureComponent {
   };
   
   scrollDown() {
-    this.setState({ bottomMaskActive: true });
     this.props.appRef.current.scroll({
-      top: this.cardDockContainerHeight || 10000, // height if we have it, else big number (scroll all the way down)
+      top: 10000, // big number (scroll all the way down)
+      left: 0,
       behavior: 'smooth'
     });
   };
@@ -541,18 +505,11 @@ class CardDock extends React.PureComponent {
           onWheel={this.updateScroll}
           onTouchMove={this.updateScrollMobile}
           // onScroll={this.updateScroll}
-          >
-          <div
-            onWheel={this.updateScroll}
-            onTouchMove={this.updateScrollMobile}
-            // onScroll={this.updateScroll}
-            className={'card-dock-container'}
-            ref={this.cardDockContainerRef}
-          >
-            <div className={classes}>
-              <div className='card-table'>
-                {this.getTableContent()}
-              </div>
+          className={'card-dock-container'}
+        >
+          <div className={classes}>
+            <div className='card-table'>
+              {this.getTableContent()}
             </div>
           </div>
           {this.getExportFooter()}
