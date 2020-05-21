@@ -1,9 +1,12 @@
 import React from 'react';
+import * as smoothscroll from 'smoothscroll-polyfill';
 import _ from 'lodash';
 import TriggerIcon, { ICON_TYPE } from './TriggerIcon';
 import ExportFooter from './ExportFooter.js';
 import { SHEET_FIELDS, ORDERED_CARD_FIELDS, ORDERED_CSV_FIELDS, COMPOSITE_FIELDS, LINK_FIELD_PAIRS } from './fields';
 import UserHint from './UserHint';
+
+smoothscroll.polyfill();
 
 const { LOCATION, NAME, EID, TYPE, WEBSITE } = SHEET_FIELDS;
 
@@ -14,10 +17,11 @@ const MAX_CARD_HINT_TIMEOUT = 30;
 // delay (in ms) between fires of the scroll handler. 
 const SCROLL_THROTTLE_DELAY = 200;
 // delay (in ms) between fires of a back-up updateScroll handler for mobile.
-const IOS_SCROLL_FIX_INTERVAL = 800;
+const IOS_SCROLL_FIX_INTERVAL = 600;
 
-let SCROLL_GAP_FIX = navigator.userAgent.indexOf('AppleWebKit') > 0;
-alert(SCROLL_GAP_FIX + navigator.userAgent);
+// this will catch many other cases (including Chrome Android...), really only necessary for iPad
+const SCROLL_GAP_FIX = navigator.userAgent.indexOf('AppleWebKit') > 0
+  && navigator.userAgent.indexOf('Safari') > 0;
 
 // pure component? (shallow compare map features?) (perf)
 class CardDock extends React.PureComponent {
@@ -38,7 +42,6 @@ class CardDock extends React.PureComponent {
       sideButtonsActive: false
     };
 
-    // for fixing iPad CardDock scrolls too far bug
     this.cardDockContainerRef = React.createRef();
     this.cardDockContainerHeight = 0;
 
@@ -123,19 +126,24 @@ class CardDock extends React.PureComponent {
       mapMaskActive = true;
     }
 
-    /* 
-     * We could pick this value better (e.g. add ref to CardDock to reference for its
-     * height, use that to measure when it's getting close to scrolled all the way up).
-     * For now, we just assume all CardDocks are much taller than any viewport.
-     */
+    const SCROLL_BUFFER = 800;
     let bottomMaskActive = false;
-    if (SCROLL_GAP_FIX &&
-        this.cardDockContainerHeight &&
-        scrollTop > window.outerHeight + 400 &&
-        (scrollTop + window.innerHeight/2) > this.cardDockContainerHeight) {
-      bottomMaskActive = true;
+    if (SCROLL_GAP_FIX && // ensure we want to use fix
+        this.cardDockContainerHeight && // ensure we want to use fix
+        scrollTop > window.innerHeight + SCROLL_BUFFER && // we've scrolled down a safe amount (won't mask map above)
+        (scrollTop + SCROLL_BUFFER) > this.cardDockContainerHeight // approaching bottom of CardDock
+    ) {
+      bottomMaskActive = true; // all true, so show mask to cover space below CardDock
+
+      if (scrollTop > this.cardDockContainerHeight) {
+        // we've *passed* CardDock bottom - gently pull it back down
+        this.props.appRef.current.scroll({
+          top: this.cardDockContainerHeight,
+          behavior: 'smooth'
+        });
+      }
     }
-    console.log(scrollTop, ' | ', this.cardDockContainerHeight, ' active? ', bottomMaskActive);
+
     const sideButtonsActive = scrollTop > SIDE_BUTTONS_SCROLL_OFFSET;
 
     this.setState({ scrollHintDismissed: true, sideButtonsActive, mapMaskActive, bottomMaskActive });
@@ -458,7 +466,7 @@ class CardDock extends React.PureComponent {
     // if there's a scrollInterval, let that deal with hint dismissing sidebuttons so it doesn't oscillate off/on
     const sideButtonsActive = this.scrollInterval;
 
-    this.setState({ mapMaskActive: false, sideButtonsActive });
+    this.setState({ mapMaskActive: false, bottomMaskActive: false, sideButtonsActive });
     this.props.appRef.current.scroll({
       top: 0,
       behavior: 'smooth'
@@ -466,9 +474,9 @@ class CardDock extends React.PureComponent {
   };
   
   scrollDown() {
+    this.setState({ bottomMaskActive: true });
     this.props.appRef.current.scroll({
-      top: 10000, // big number (scroll all the way down)
-      left: 0,
+      top: this.cardDockContainerHeight || 10000, // height if we have it, else big number (scroll all the way down)
       behavior: 'smooth'
     });
   };
