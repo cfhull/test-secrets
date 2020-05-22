@@ -31,21 +31,14 @@ class IntroPanel extends React.Component {
   constructor(props) {
     super(props);
 
-    const startOpen = window.innerWidth > 600;
     this.state = {
-      open: startOpen,
       activeSectionIdx: 0,
       citeCopied: ['', '', '']
     };
 
-    this.toggleOpen = this.toggleOpen.bind(this);
     this.setActiveSection = this.setActiveSection.bind(this);
     this.advanceActiveSection = this.advanceActiveSection.bind(this);
     this.prevActiveSection = this.prevActiveSection.bind(this);
-  }
-
-  toggleOpen() {
-    this.setState(state => ({ open: !state.open }));
   }
 
   getHeader() {
@@ -88,8 +81,8 @@ class IntroPanel extends React.Component {
         const prompt = SECTIONS[activeSectionIdx].citationButton.prompt;
         return (
           <div className={classes + this.state.citeCopied[activeSectionIdx]}>
-            <p class="prompt" onClick={() => { copyCitation(citation) }}>{prompt}</p>
-            <p class="confirmation"><i>Citation copied</i></p>
+            <p className='prompt' onClick={() => { copyCitation(citation) }}>{prompt}</p>
+            <p className='confirmation'><i>Citation copied</i></p>
           </div>
         );
       }
@@ -157,19 +150,19 @@ class IntroPanel extends React.Component {
 
   render() {
     let classes = 'intro-panel-wrapper';
-    if (!this.state.open) {
+    if (!this.props.open) {
       classes += ' closed';
     }
 
-    const iconType = this.state.open ? ICON_TYPE.L_ARROW_STEMLESS : ICON_TYPE.R_ARROW_STEMLESS;
-    const title = this.state.open ? 'Close' : 'Open';
+    const iconType = this.props.open ? ICON_TYPE.L_ARROW_STEMLESS : ICON_TYPE.R_ARROW_STEMLESS;
+    const title = this.props.open ? 'Close' : 'Open';
     return (
       <div className={classes}> 
         <div className='mobile-trigger'>
-          <TriggerIcon className title={title} onClick={this.toggleOpen} iconType={ICON_TYPE.INFO_ICON} />
+          <TriggerIcon className title={title} onClick={this.props.toggleOpen} iconType={ICON_TYPE.INFO_ICON} />
         </div>
         <div className='trigger'>
-          <TriggerIcon title={title} onClick={this.toggleOpen} iconType={iconType} />
+          <TriggerIcon title={title} onClick={this.props.toggleOpen} iconType={iconType} />
         </div>
         <div className='intro-panel'>
           <div className='content'>

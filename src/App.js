@@ -39,6 +39,7 @@ class App extends React.Component {
       mapLoaded: false,
       mapConfigured: false,
       isTouchScreen: false,
+      introPanelOpen: false,
       selectionHintDismissed: false,
       maxCardHintTriggered: false,
       hovered: {},
@@ -52,6 +53,7 @@ class App extends React.Component {
     this.getCardDock = this.getCardDock.bind(this);
     this.getTooltip = this.getTooltip.bind(this);
     this.removeCard = this.removeCard.bind(this);
+    this.toggleIntroPanelOpen = this.toggleIntroPanelOpen.bind(this);
     this.getFeaturesByExperimentId = this.getFeaturesByExperimentId.bind(this);
     this.resetUSView = this.resetUSView.bind(this);
     this.resetWorldView = this.resetWorldView.bind(this);
@@ -106,6 +108,12 @@ class App extends React.Component {
   
   markMapLoaded() {
     this.setState({ mapLoaded: true });
+
+    if (window.innerWidth > 600) {
+      setTimeout(() => {
+        this.setState({ introPanelOpen: true });
+      }, 1000);
+    }
   }
 
   registerTouchScreen() {
@@ -192,6 +200,10 @@ class App extends React.Component {
     );
 
     this.setState({ hovered: {} });
+  }
+
+  toggleIntroPanelOpen() {
+    this.setState(state => ({ introPanelOpen: !state.introPanelOpen }));
   }
 
   removeCard(expId) {
@@ -299,7 +311,7 @@ class App extends React.Component {
   }
   
   render() {
-    const { dataLoaded, mapLoaded, mapConfigured } = this.state;
+    const { dataLoaded, mapLoaded, mapConfigured, introPanelOpen } = this.state;
     const loading = !dataLoaded || !mapLoaded || !mapConfigured;
     let classes = 'app';
     if (loading) {
@@ -310,7 +322,7 @@ class App extends React.Component {
       <div>
         <LoadingMask dataLoaded={dataLoaded} mapLoaded={mapLoaded} mapConfigured={mapConfigured} />
         <div className={classes} ref={this.appRef}>
-          <IntroPanel />
+          <IntroPanel open={introPanelOpen} toggleOpen={this.toggleIntroPanelOpen} />
           {this.getCardDock()}
           {this.getTooltip()}
           {this.getResetViewButton()}
