@@ -39,7 +39,9 @@ class CardDock extends React.PureComponent {
       maxPointHintDismissed: false,
       mapMaskActive: false,
       bottomMaskActive: false,
-      sideButtonsActive: false
+      sideButtonsActive: false,
+      printHeading: `Test print heading`,
+      printText: `<p>test para number 1</p><p>test para number 2</p>`
     };
 
     this.cardDockContainerRef = React.createRef();
@@ -176,6 +178,7 @@ class CardDock extends React.PureComponent {
         {this.getScrollHint()}
         {this.getSelectionHint()}
         {this.getMaxPointHint()}
+        {this.getPrintIntro()}
         {this.getNames()}
         {this.getRows()}
         {this.getSideButtons()}
@@ -387,6 +390,17 @@ class CardDock extends React.PureComponent {
         classes={'scroll-hint'}
         dismissed={this.state.scrollHintDismissed || this.props.maxCardHintTriggered}
       />
+    );
+  }
+  
+  getPrintIntro() {
+    const heading = this.state.printHeading;
+    const text = this.state.printText;
+    return (
+      <div className="print-intro">
+        <h1>{heading}</h1>
+        <div className="intro-text" dangerouslySetInnerHTML={{ __html: text }}></div>
+      </div>
     );
   }
 
