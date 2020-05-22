@@ -196,7 +196,7 @@ html, body, #root, .app, .map-container {
   // won't stretch to bottom unless screen height is minimal (then scroll activates)
   top: $FS-boundary-padding;
   bottom: $FS-boundary-padding;
-  max-height: 540px;
+  max-height: 510px;
   min-height: 200px;
   width: $intro-panel-width;
   background: white;
@@ -263,7 +263,7 @@ html, body, #root, .app, .map-container {
       p {
         display: inline;
         font-size: 14px;
-        padding-right: 24px;
+        padding-right: 14px;
         user-select: text;
         &.active {
           font-weight: 700;
@@ -1047,7 +1047,7 @@ html, body, #root, .app, .map-container {
     bottom: 100px;
     right: 0;
     width: 100%;
-    max-height: unset;
+    max-height: 510px;
 
    .content {
       padding: 32px 32px 0px 32px;
@@ -1115,6 +1115,7 @@ html, body, #root, .app, .map-container {
       margin-bottom: 0;
       .section-name {
         white-space: break-spaces;
+        display: inline-block;
       }
     } 
   }
