@@ -196,7 +196,7 @@ html, body, #root, .app, .map-container {
   // won't stretch to bottom unless screen height is minimal (then scroll activates)
   top: $FS-boundary-padding;
   bottom: $FS-boundary-padding;
-  max-height: 540px;
+  max-height: 510px;
   min-height: 200px;
   width: $intro-panel-width;
   background: white;
@@ -263,7 +263,7 @@ html, body, #root, .app, .map-container {
       p {
         display: inline;
         font-size: 14px;
-        padding-right: 24px;
+        padding-right: 14px;
         user-select: text;
         &.active {
           font-weight: 700;
@@ -747,6 +747,10 @@ html, body, #root, .app, .map-container {
       box-shadow: $box-shadow;
       // box-shadow: $very-trans-black -2px -4px 10px 2px;
 
+      .print-intro {
+        display: none;
+      }
+
       .row {
         height: 100%; //?
         display: flex;
@@ -1043,7 +1047,7 @@ html, body, #root, .app, .map-container {
     bottom: 100px;
     right: 0;
     width: 100%;
-    max-height: unset;
+    max-height: 510px;
 
    .content {
       padding: 32px 32px 0px 32px;
@@ -1111,6 +1115,7 @@ html, body, #root, .app, .map-container {
       margin-bottom: 0;
       .section-name {
         white-space: break-spaces;
+        display: inline-block;
       }
     } 
   }
@@ -1273,16 +1278,102 @@ html, body, #root, .app, .map-container {
     .legend, .export-footer, .side-buttons, .user-hint {
       display: none;
     }
-    .row .card {
-      page-break-after: always; // Gave it this rather extreme setting to test; not working :-/
-    }
     width: 100%; 
+    height: auto;
     margin: 0; 
     float: none; 
     * {
       -webkit-print-color-adjust: exact !important; /*Chrome, Safari */
       color-adjust: exact !important;  /*Firefox*/
     }
-
- }
+    .app {
+      position: relative;
+      overflow: visible;
+      height: 100%;
+    }
+    .card-dock-mask {
+      position: relative;
+      min-width: 100%;
+      background: transparent;
+      &.active {
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+        bottom: auto;
+        height: 100%;
+        min-width: 100%;
+        &.card-count-3 {
+          min-width: 100%;
+        }
+      }
+      .card-dock-container {
+        position: relative;
+        top: 220px !important; // Chrome
+        @-moz-document url-prefix() {
+          top: 120px !important; // Firefox
+        }
+        _::-webkit-full-page-media, _:future, :root .safari_only {
+          top: 120px !important; // Safari
+        }
+        display: inline;
+        height: 100%;
+        box-shadow: none !important;
+        .card-dock {
+          margin-left: auto !important;
+          margin-right: auto !important;
+          height: 100% !important;
+          width: 100% !important;
+          .card-table {
+            width: 100% !important;
+            box-shadow: none !important;
+            .print-intro {
+              display: block;
+              width: 100%;
+              padding-bottom: 1rem;
+            }
+            .user-hint {
+              display: none;
+            }
+            .card {
+              max-width: auto;
+            }
+            .row {
+              .cell.website {
+                a {
+                  word-break: break-all;
+                }
+              }
+            }
+          }
+          &.card-count-2 {
+            .card {
+              max-width: 50% !important;
+            }
+          }
+          // &.card-count-3 {
+          //   .row:nth-of-type(10) {
+          //     page-break-after: always;
+          //   }
+          //   .row:nth-of-type(17) {
+          //     page-break-after: always;
+          //   }
+          // }
+          // &.card-count-2 {
+          //   .row:nth-of-type(11) {
+          //     page-break-after: always;
+          //   }
+          //   .row:nth-of-type(18) {
+          //     page-break-after: always;
+          //   }
+          // }
+          // &.card-count-1 {
+          //   .row:nth-of-type(14) {
+          //     page-break-after: always;
+          //   }
+          // }
+        }
+      }
+    }
+  }
 }
