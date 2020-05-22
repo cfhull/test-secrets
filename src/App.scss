@@ -1319,27 +1319,32 @@ html, body, #root, .app, .map-container {
               }
             }
           }
-          &.card-count-3 {
-            .row:nth-of-type(10) {
-              page-break-after: always;
-            }
-            .row:nth-of-type(17) {
-              page-break-after: always;
-            }
-          }
           &.card-count-2 {
-            .row:nth-of-type(11) {
-              page-break-after: always;
-            }
-            .row:nth-of-type(18) {
-              page-break-after: always;
+            .card {
+              max-width: 50% !important;
             }
           }
-          &.card-count-1 {
-            .row:nth-of-type(14) {
-              page-break-after: always;
-            }
-          }
+          // &.card-count-3 {
+          //   .row:nth-of-type(10) {
+          //     page-break-after: always;
+          //   }
+          //   .row:nth-of-type(17) {
+          //     page-break-after: always;
+          //   }
+          // }
+          // &.card-count-2 {
+          //   .row:nth-of-type(11) {
+          //     page-break-after: always;
+          //   }
+          //   .row:nth-of-type(18) {
+          //     page-break-after: always;
+          //   }
+          // }
+          // &.card-count-1 {
+          //   .row:nth-of-type(14) {
+          //     page-break-after: always;
+          //   }
+          // }
         }
       }
     }
