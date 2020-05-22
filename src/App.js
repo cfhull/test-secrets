@@ -64,6 +64,7 @@ class App extends React.Component {
       style: styleData,
       center: [STARTING_LNG, STARTING_LAT],
       zoom: STARTING_ZOOM,
+      maxZoom: 12.5,
       maxBounds: [
         [-170.99, -80], // SW coordinates
         [189, 85] // NE coordinates
