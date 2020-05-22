@@ -15,9 +15,11 @@ import mapboxgl from 'mapbox-gl';
 import styleData from './style.json';
 import { SHEET_FIELDS } from './fields';
 
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
+
 const { LONGITUDE, LATITUDE, NAME, LOCATION, TYPE, EID } = SHEET_FIELDS;
 
-mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
+const CONTROL_QUERY_STRING = true;
 const QUERY_STRING_BASE = '?sel='; // KEEP IN SYNC WITH BIL-SITE
 const ORIGIN_PARAM_MARKER = '&origin='; // KEEP IN SYNC WITH BIL-SITE
 const PATH_PARAM_MARKER = '&path='; // KEEP IN SYNC WITH BIL-SITE
@@ -29,15 +31,20 @@ const MAX_SELECTED_POINTS = 3;
 const STARTING_LNG = -30;
 const STARTING_LAT = 29;
 const STARTING_ZOOM = 1.5;
-const CONTROL_QUERY_STRING = true;
+
+// keep off this.state because when one loads we immediately need to know the state of the others
+// (which, if they were being set by asynchronous this.setState, we might misread)
+const loadState = {
+  dataLoaded: false,
+  mapLoaded: false,
+  mapConfigured: false,
+};
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataLoaded: false,
-      mapLoaded: false,
-      mapConfigured: false,
+      loaded: false,
       isTouchScreen: false,
       introPanelOpen: false,
       selectionHintDismissed: false,
@@ -53,6 +60,7 @@ class App extends React.Component {
     this.getCardDock = this.getCardDock.bind(this);
     this.getTooltip = this.getTooltip.bind(this);
     this.removeCard = this.removeCard.bind(this);
+    this.finalizeLoad = this.finalizeLoad.bind(this);
     this.toggleIntroPanelOpen = this.toggleIntroPanelOpen.bind(this);
     this.getFeaturesByExperimentId = this.getFeaturesByExperimentId.bind(this);
     this.resetUSView = this.resetUSView.bind(this);
@@ -107,12 +115,19 @@ class App extends React.Component {
   }
   
   markMapLoaded() {
-    this.setState({ mapLoaded: true });
+    loadState.mapLoaded = true;
+    this.finalizeLoad();
+  }
 
-    if (window.innerWidth > 600) {
+  finalizeLoad() {
+    const { dataLoaded, mapLoaded, mapConfigured } = loadState;
+    const loaded = dataLoaded && mapLoaded && mapConfigured;
+    // trigger the state change that will tell loading mask to disappear
+    this.setState({ loaded });
+    if (loaded && window.innerWidth > 600) {
       setTimeout(() => {
         this.setState({ introPanelOpen: true });
-      }, 1000);
+      }, 1200);
     }
   }
 
@@ -311,16 +326,15 @@ class App extends React.Component {
   }
   
   render() {
-    const { dataLoaded, mapLoaded, mapConfigured, introPanelOpen } = this.state;
-    const loading = !dataLoaded || !mapLoaded || !mapConfigured;
+    const { loaded, introPanelOpen } = this.state;
     let classes = 'app';
-    if (loading) {
+    if (!loaded) {
       classes += ' loading';
     }
-
+    
     return (
       <div>
-        <LoadingMask dataLoaded={dataLoaded} mapLoaded={mapLoaded} mapConfigured={mapConfigured} />
+        <LoadingMask loaded={loaded} />
         <div className={classes} ref={this.appRef}>
           <IntroPanel open={introPanelOpen} toggleOpen={this.toggleIntroPanelOpen} />
           {this.getCardDock()}
@@ -338,7 +352,7 @@ let nextEidNumber = 1;
 const stringToNumericEidMap = {};
 const numericToStringEidMap = {};
 
-function load () {
+function load() {
   // startsWith polyfill
   if (!String.prototype.startsWith) {
     Object.defineProperty(String.prototype, 'startsWith', {
@@ -397,9 +411,11 @@ function load () {
     
     experimentsData.features.push(...items);
     this.map.getSource('experiments').setData(experimentsData);
-    this.setState({ mapConfigured: true });
+    loadState.mapConfigured = true;
+    this.finalizeLoad();
 
     if (CONTROL_QUERY_STRING) {
+      // extract query params and open experiment cards accordingly
       try {
         const queryString = window.location.search;
         const selectionParamStartIdx = queryString.indexOf(QUERY_STRING_BASE);
@@ -463,7 +479,8 @@ function load () {
 
   // Fetch Local Article Data
   const experimentsReq = new XMLHttpRequest();
-  this.setState({ dataLoaded: true });
+  loadState.dataLoaded = true;
+  // this.finalizeLoad(); // don't need to call here, as map is not configured yet
   experimentsReq.addEventListener('load',  () => { reqHandler('experiments', experimentsReq) });
   experimentsReq.open('GET', process.env.REACT_APP_SHEET_URL);
   experimentsReq.send();

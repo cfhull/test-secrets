@@ -2,9 +2,8 @@ import React from 'react';
 
 class LoadingMask extends React.Component {
   render() {
-    const { dataLoaded, mapLoaded, mapConfigured } = this.props;
     let classes = 'mask';
-    if (dataLoaded && mapLoaded && mapConfigured) {
+    if (this.props.loaded) {
       classes += ' loaded'
     }
     
