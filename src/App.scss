@@ -1275,7 +1275,7 @@ html, body, #root, .app, .map-container {
  #root {
   
     .intro-panel-wrapper, .mapboxgl-ctrl, .map-container.mapboxgl-map, 
-    .legend, .export-footer, .side-buttons, .user-hint {
+    .legend, .export-footer, .side-buttons, .user-hint, svg.x-close {
       display: none;
     }
     width: 100%; 
@@ -1331,6 +1331,9 @@ html, body, #root, .app, .map-container {
               display: block;
               width: 100%;
               padding-bottom: 1rem;
+              p {
+                font-weight: 300;
+              }
             }
             .user-hint {
               display: none;
@@ -1348,7 +1351,7 @@ html, body, #root, .app, .map-container {
           }
           &.card-count-2 {
             .card {
-              max-width: 50% !important;
+              //max-width: 50% !important; -- Does not work on Safari; cuts off 2nd card --JM
             }
           }
           // &.card-count-3 {

@@ -89,7 +89,7 @@ class IntroPanel extends React.Component {
         return (
           <div className={classes + this.state.citeCopied[activeSectionIdx]}>
             <p className='prompt' onClick={() => { copyCitation(citation) }}>{prompt}</p>
-            <p className='confirmation'><i>Citation copied</i></p>
+            <p className='confirmation'><i>Citation copied.</i></p>
           </div>
         );
       }
