@@ -137,7 +137,7 @@ class CardDock extends React.PureComponent {
     ) {
       bottomMaskActive = true; // all true, so show mask to cover space below CardDock
 
-      if (scrollTop > this.cardDockContainerHeight) {
+      if ((scrollTop > this.cardDockContainerHeight) && (window.innerWidth > 600)) {
         // we've *passed* CardDock bottom - gently pull it back down
         this.props.appRef.current.scroll({
           top: this.cardDockContainerHeight,
