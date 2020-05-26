@@ -946,6 +946,7 @@ html, body, #root, .app, .map-container {
   padding-right: 90px; // make room for side-buttons
   padding-top: 15px;
   padding-bottom: 50px;
+  
 
   .section {
     display: flex;
@@ -1197,7 +1198,7 @@ html, body, #root, .app, .map-container {
     .card-dock {
       width: 100%;
       .card-table { 
-        top: -200px;
+        top: -240px;
       }
       &.card-count-1 .card-table .card {
         // width: 100%;
@@ -1216,6 +1217,10 @@ html, body, #root, .app, .map-container {
     }
   }
 
+  .export-footer {
+    position: relative;
+    top: -200px;
+  }
   .export-footer.card-count-1 {
     flex-direction: column;
     padding-right: 35px; // smaller gutter for side-buttons on mobile
