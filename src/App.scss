@@ -1166,7 +1166,9 @@ html, body, #root, .app, .map-container {
   .card-dock-container {
     width: unset;
     min-width: 100vw;
-
+    .side-buttons.active {
+      bottom: 80px;
+    }
     .user-hint{
       &.scroll-hint {
         left: calc(50vw - (#{$scroll-hint-width} / 2));
