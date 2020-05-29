@@ -41,7 +41,8 @@ class CardDock extends React.PureComponent {
       bottomMaskActive: false,
       sideButtonsActive: false,
       printHeading: `Basic Income Experiments Report`,
-      printText: `<p>Generated from <a href="https://basicincome.stanford.edu/experiments-map/">https://basicincome.stanford.edu/experiments-map/</a></p><p>Data compiled by the Stanford Basic Income Lab</p>`
+      printText: `Data compiled by the Stanford Basic Income Lab`,
+      footerText: `Generated from https://basicincome.stanford.edu/experiments-map/`
     };
 
     this.cardDockContainerRef = React.createRef();
@@ -469,6 +470,10 @@ class CardDock extends React.PureComponent {
     const classes = `card-count-${this.props.cardData.length}`;
     return (
       <ExportFooter
+        cardData={this.props.cardData}
+        printHeading={this.state.printHeading}
+        printText={this.state.printText}
+        footerText={this.state.footerText}
         exportCSV={this.exportCSV}
         siteUrl={this.props.siteUrl}
         classes={classes}
@@ -562,7 +567,7 @@ class CardDock extends React.PureComponent {
             ref={this.cardDockContainerRef}
           >
             <div className={classes}>
-              <div className='card-table'>
+              <div className='card-table' id='card_table'>
                 {this.getTableContent()}
               </div>
             </div>
