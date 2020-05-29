@@ -1,4 +1,3 @@
-import React from 'react';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
@@ -8,26 +7,42 @@ import sofiaProLight from './fonts/Sofia-Pro-Light.js';
 import sofiaProBold from './fonts/Sofia-Pro-Bold.js';
 
 const printPDF = (cardData, printHeading, printText, footerText) => {
-  // console.log('printPDF()', _cardData);
-  console.log('printPDF()', cardData, footerText);
+  // console.log('printPDF()', cardData, footerText);
+
   /**
    * Returns array of table headers based on contents of cardData
    * @param  Object cardData
    * @return Array
    */
   const getTableHeaders = (cardData) => {
-    // let cardArr = Object.values(cardData);
     // console.log(cardArr);
-    let arr = [''];
+    const hStyles = {
+      font: 'helvetica',
+      fillColor: '#f9f9f9',
+      textColor: '#000',
+    };
+    let arr = [{
+      content: '',
+      styles: hStyles
+    }];
     cardData.forEach(el => {
       // console.log(el[0].name);
-      arr.push(el[0].name);
+      arr.push({
+        content: el[0].name,
+        styles: hStyles
+      });
     })
     // console.log(arr);
     return [arr];
   }
 
-  // todo: make this iterative over all elements
+  /**
+   * Fetches a table row based on row type
+   * @param  String label    Row label
+   * @param  Array cardData  Array of cards
+   * @param  String item     Type of row
+   * @return Array
+   */
   const getTableRow = (label, cardData, item) => {
     let arr = [label];
 
@@ -79,28 +94,47 @@ const printPDF = (cardData, printHeading, printText, footerText) => {
     return arr;
   }
 
+  /**
+   * Builds an array of lists of "related links"
+   * @param  String label    Label of row
+   * @param  Array cardData  Array of arrays for each location
+   * @return Array           Returns an array with an item for each cell in the row
+   */
   const getTableLinksRow = (label, cardData) => {
-    let linkCount = 6;
-    // cardData.forEach(el => {
-    //   for (let i = 1; i++; i <= linkCount) {
-    //     if (el[0].)
-    //   }
-    // })
-    return [label, '', '', ''];
+    // console.log('getTableLinksRow')
+    let arr = [label];
+    cardData.forEach(el => {
+      let list = '';
+      const item = el[0];
+      const linkCount = 6;
+      for (var i = 1; i <= linkCount; i++) {
+        // console.log('linkurl' + i + ': ' + item['linkurl' + i])
+        if (item['linkurl' + i]) {
+          if (item['linkurl' + i].length > 0) {
+            list = list + item['linktitle' + i] + ': ' + item['linkurl' + i] + '\n\n';
+          }
+        }
+      }
+      arr.push(list)
+    })
+    // console.log(arr);
+    return arr;
   }
 
+  /**
+   * Fetches special row for in-table heading dividers
+   * @param  String label   Row label
+   * @param  Array cardData Array of cards for each location
+   * @return Array          Array with one item for each cell in the row
+   */
   const getHeadingRow = (label, cardData) => {
-    // let arr = [''];
-    // cardData.forEach(() => {
-    //   arr.push(label);
-    // })
     let arr = [{
       content: label,
       colSpan: 4,
       styles: {
         valign: 'middle',
         halign: 'center',
-        font: 'Sofia Pro Light',
+        font: 'SofiaProLight',
         fontSize: 11,
         fontColor: '#757575'
       }
@@ -108,15 +142,24 @@ const printPDF = (cardData, printHeading, printText, footerText) => {
     return arr;
   }
 
+  /**
+   * Builds columns based on number of items in cardData
+   * @param  Array cardData Array of cards for each location/project selected
+   * @return Array          Array of columns
+   */
   const getColumns = (cardData) => {
     let arr = [{dataKey: 0}];
     cardData.forEach((i, el) => {
       arr.push({datakey: i + 1});
     })
-    console.log('getColumns, ', arr);
     return arr;
   }
 
+  /**
+   * Sets column styling for all columns based on number of cards.
+   * @param  Array cardData Array of location cards
+   * @return Object         Styles object (mostly for column width)
+   */
   const getColumnStyle = (cardData) => {
     if (cardData.length === 1) {
       return {
@@ -133,14 +176,19 @@ const printPDF = (cardData, printHeading, printText, footerText) => {
     }
     if (cardData.length === 3) {
       return {
-        0: {minCellWidth: '40'},
-        1: {minCellWidth: '20'},
-        2: {minCellWidth: '20'},
-        3: {minCellWidth: '20'},
+        0: {minCellWidth: '60'},
+        1: {minCellWidth: '60'},
+        2: {minCellWidth: '60'},
+        3: {minCellWidth: '60'},
       };
     }
   }
 
+  /**
+   * Fetches table contents by calling row-building functions.
+   * @param  Array cardData Array of cards for each location
+   * @return Array
+   */
   const getTableContents = (cardData) => {
     var body = [
       getTableRow('LOCATION', cardData, 'location'),
@@ -158,23 +206,25 @@ const printPDF = (cardData, printHeading, printText, footerText) => {
       getTableRow('METHOD OF EVALUATION', cardData, 'evaluation'),
       getTableRow('ADDITIONAL NOTES OF INTEREST', cardData, 'notes'),
       getTableRow('LINK TO WEBSITE', cardData, 'website'),
-      getTableLinksRow('LINKS TO RELATED RESOURCES', cardData, 'website'),
+      getTableLinksRow('LINKS TO RELATED RESOURCES', cardData),
     ]
     return body;
   }
 
+  // Init jsPDF doc
   const doc = new jsPDF({
     orientation: 'landscape',
-    format: 'letter'
+    format: 'letter',
+    filters: ["ASCIIHexEncode"]
   });
 
   // Add fonts
   doc.addFileToVFS('sofia-pro-regular.ttf', sofiaProRegular);
-  doc.addFont('sofia-pro-regular.ttf', 'Sofia Pro Regular', 'normal');
+  doc.addFont('sofia-pro-regular.ttf', 'SofiaProRegular', 'normal');
   doc.addFileToVFS('sofia-pro-light.ttf', sofiaProLight);
-  doc.addFont('sofia-pro-light.ttf', 'Sofia Pro Light', 'normal');
+  doc.addFont('sofia-pro-light.ttf', 'SofiaProLight', 'normal');
   doc.addFileToVFS('sofia-pro-bold.ttf', sofiaProBold);
-  doc.addFont('sofia-pro-bold.ttf', 'Sofia Pro Bold', 'normal');
+  doc.addFont('sofia-pro-bold.ttf', 'SofiaProBold', 'normal');
 
   // Set metadata
   doc.setProperties({
@@ -191,52 +241,52 @@ const printPDF = (cardData, printHeading, printText, footerText) => {
     body: getTableContents(cardData),
     columns: getColumns(cardData),
     columnStyles: getColumnStyle(cardData),
-    showHead: 'firstPage',
+    showHead: 'everyPage',
     showFoot: 'everyPage',
     styles: {
       fillColor: '#fff',
       textColor: '#000',
-      font: 'Sofia Pro Regular',
+      font: 'SofiaProRegular',
       overflow: 'linebreak'
     },
     headStyles: {
       fillColor: '#f9f9f9',
       textColor: '#000',
-      font: 'Sofia Pro Bold'
+      font: 'helvetica'
     },
     cellWidth: 'auto',
     startY: 35,
     didDrawPage: function (data) {
-      // var totalPagesExp = '{total_pages_count_string}'
       // Header
       if (doc.internal.getNumberOfPages() === 1) {
         // Heading
-        doc.setFont('Sofia Pro Bold');
+        doc.setFont('SofiaProBold');
         doc.setFontSize(20)
         doc.text(printHeading, data.settings.margin.left, 22)
         // Intro text
-        doc.setFont('Sofia Pro Regular');
+        doc.setFont('SofiaProLight');
         doc.setFontSize(12)
         doc.setFontStyle('normal')
-        doc.text(printText, data.settings.margin.left, 28)
+        doc.text(printText, data.settings.margin.left, 29)
       }
 
       // Footer page number and source info
       var pageNum = 'Page ' + doc.internal.getNumberOfPages();
 
       // Total page number plugin only available in jspdf v1.0+
+      // var totalPagesExp = '{total_pages_count_string}'
       // if (typeof doc.putTotalPages === 'function') {
       //   str = str + ' of ' + doc.putTotalPages(totalPagesExp)
       //   console.log('total pages obj ', doc.putTotalPages(totalPagesExp));
       // }
-      doc.setFontSize(10)
+      doc.setFont('SofiaProLight');
+      doc.setFontSize(9)
 
       // jsPDF 1.4+ uses getWidth, <1.4 uses .width
       var pageSize = doc.internal.pageSize
       var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight()
       var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth()
       doc.text(pageNum, data.settings.margin.left, pageHeight - 10)
-      // doc.text(footerText, data.settings.margin.right , pageHeight - 10)
       doc.text(footerText, pageWidth - data.settings.margin.right, pageHeight - 10, 'right');
     }
   })
