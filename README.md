@@ -39,7 +39,7 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 ### Github Pages Deployment
 
-This repo deploys to branch `gh-pages` with the command `npm run deploy`.
+This repo deploys to branch `gh-pages` with the command `npm run deploy`. Merge your changes to master and then run `npm run deploy`. Commits to `gh-pages` are made automatically.
 
 ## Learn More
 
