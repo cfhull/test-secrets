@@ -42,7 +42,7 @@ class CardDock extends React.PureComponent {
       sideButtonsActive: false,
       printHeading: `Basic Income Experiments Report`,
       printText: `Data compiled by the Stanford Basic Income Lab`,
-      footerText: `Generated from https://basicincome.stanford.edu/experiments-map/`
+      footerText: `Generated from`
     };
 
     this.cardDockContainerRef = React.createRef();

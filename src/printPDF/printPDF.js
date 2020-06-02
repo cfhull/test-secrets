@@ -5,8 +5,11 @@ import 'jspdf-autotable';
 import sofiaProRegular from './fonts/Sofia-Pro-Regular.js';
 import sofiaProLight from './fonts/Sofia-Pro-Light.js';
 import sofiaProBold from './fonts/Sofia-Pro-Bold.js';
+import bullet from './images/bullet.js';
 
-const printPDF = (cardData, printHeading, printText, footerText) => {
+const { maxCharEllipsis } = require('max-char-ellipsis');
+
+const printPDF = (cardData, printHeading, printText, footerText, location) => {
   // console.log('printPDF()', cardData, footerText);
 
   /**
@@ -77,6 +80,10 @@ const printPDF = (cardData, printHeading, printText, footerText) => {
           }
         }
       })
+    } else if (item === 'related') {
+      cardData.forEach(el => {
+        arr.push('');
+      });
     } else {
       // Regular, no fancy formatting.
       cardData.forEach(el => {
@@ -94,30 +101,52 @@ const printPDF = (cardData, printHeading, printText, footerText) => {
     return arr;
   }
 
+  const trimString = (text, length) => {
+    if (text.length > length) {
+      return maxCharEllipsis(text, length);
+    } else {
+      return text;
+    }
+  }
   /**
-   * Builds an array of lists of "related links"
+   * Builds an array of "related links" objects with title and url
    * @param  String label    Label of row
    * @param  Array cardData  Array of arrays for each location
-   * @return Array           Returns an array with an item for each cell in the row
+   * @return Array           Returns an array of objects, one for each link
    */
-  const getTableLinksRow = (label, cardData) => {
-    // console.log('getTableLinksRow')
-    let arr = [label];
-    cardData.forEach(el => {
-      let list = '';
-      const item = el[0];
-      const linkCount = 6;
-      for (var i = 1; i <= linkCount; i++) {
-        // console.log('linkurl' + i + ': ' + item['linkurl' + i])
-        if (item['linkurl' + i]) {
-          if (item['linkurl' + i].length > 0) {
-            list = list + item['linktitle' + i] + ': ' + item['linkurl' + i] + '\n\n';
+  const getRelatedLinksList = (index, cardData) => {
+    // console.log('getRelatedLinksList');
+    let maxTitleLength = 27;
+    if (cardData.length === 2) {
+      maxTitleLength = 35;
+    }
+    if (cardData.length === 1) {
+      maxTitleLength = 86;
+    }
+    let arr = [];
+    const item = cardData[index - 1][0];
+    const linkCount = 6;
+    for (var i = 1; i <= linkCount; i++) {
+      if (item['linkurl' + i]) {
+        if (item['linkurl' + i].length > 0) {
+          if (item['linktitle' + i]) {
+            // If there's a title, use that for display, else use link url.
+            let title = trimString(item['linktitle' + i], maxTitleLength);
+            arr.push({
+              title: title,
+              url: item['linkurl' + i]
+            })
+          } else {
+            // No title, use link url for display.
+            let title = trimString(item['linkurl' + i], maxTitleLength);
+            arr.push({
+              title: title,
+              url: item['linkurl' + i]
+            })
           }
         }
       }
-      arr.push(list)
-    })
-    // console.log(arr);
+    }
     return arr;
   }
 
@@ -189,7 +218,7 @@ const printPDF = (cardData, printHeading, printText, footerText) => {
    * @param  Array cardData Array of cards for each location
    * @return Array
    */
-  const getTableContents = (cardData) => {
+  const getTableContents = (cardData, doc) => {
     var body = [
       getTableRow('LOCATION', cardData, 'location'),
       getTableRow('IMPLEMENTATION DATES', cardData, 'dates'),
@@ -206,7 +235,7 @@ const printPDF = (cardData, printHeading, printText, footerText) => {
       getTableRow('METHOD OF EVALUATION', cardData, 'evaluation'),
       getTableRow('ADDITIONAL NOTES OF INTEREST', cardData, 'notes'),
       getTableRow('LINK TO WEBSITE', cardData, 'website'),
-      getTableLinksRow('LINKS TO RELATED RESOURCES', cardData),
+      getTableRow('LINKS TO RELATED RESOURCES', cardData, 'related')
     ]
     return body;
   }
@@ -256,6 +285,27 @@ const printPDF = (cardData, printHeading, printText, footerText) => {
     },
     cellWidth: 'auto',
     startY: 35,
+    // Use for adding content to the cells after they are drawn. This could be images or links.
+   // You can also use this to draw other custom jspdf content to cells with doc.text or doc.rect
+   // for example.
+   didDrawCell: function (data) {
+     // console.log('didDrawCell()');
+     if (data.row.index === 15) {
+       if (data.column.index > 0) {
+         const links = getRelatedLinksList(data.column.index, cardData);
+         const x = data.cell.textPos.x + 1;
+         const y = data.cell.textPos.y + 2;
+         links.forEach((el, i) => {
+           // Insert image for bullet point.
+           doc.addImage(bullet, 'PNG', x + 0.5, y + (5*i), 1, 1)
+           // Insert bullet item.
+           doc.textWithLink(el.title, x + 3, y + 1.5 + (5*i), {
+             url: el.url
+           });
+         })
+       }
+     }
+   },
     didDrawPage: function (data) {
       // Header
       if (doc.internal.getNumberOfPages() === 1) {
@@ -287,7 +337,7 @@ const printPDF = (cardData, printHeading, printText, footerText) => {
       var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight()
       var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth()
       doc.text(pageNum, data.settings.margin.left, pageHeight - 10)
-      doc.text(footerText, pageWidth - data.settings.margin.right, pageHeight - 10, 'right');
+      doc.text(footerText + ' ' + location, pageWidth - data.settings.margin.right, pageHeight - 10, 'right');
     }
   })
   doc.save('Basic-Income__Experiments-and-Related-Projects.pdf');

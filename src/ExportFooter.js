@@ -11,7 +11,7 @@ class ExportFooter extends React.Component {
 
   print(cardData, printHeading, printText, footerText) {
     // console.log('print selected');
-    printPDF(cardData, printHeading, printText, footerText);
+    printPDF(cardData, printHeading, printText, footerText, window.top.location);
   }
 
   export() {
