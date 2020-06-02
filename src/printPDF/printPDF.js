@@ -9,8 +9,8 @@ import bullet from './images/bullet.js';
 
 const { maxCharEllipsis } = require('max-char-ellipsis');
 
-const printPDF = (cardData, printHeading, printText, footerText, location) => {
-  // console.log('printPDF()', cardData, footerText);
+const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
+  // console.log('printPDF()', cardData);
 
   /**
    * Returns array of table headers based on contents of cardData
@@ -285,10 +285,7 @@ const printPDF = (cardData, printHeading, printText, footerText, location) => {
     },
     cellWidth: 'auto',
     startY: 35,
-    // Use for adding content to the cells after they are drawn. This could be images or links.
-   // You can also use this to draw other custom jspdf content to cells with doc.text or doc.rect
-   // for example.
-   didDrawCell: function (data) {
+    didDrawCell: function (data) {
      // console.log('didDrawCell()');
      if (data.row.index === 15) {
        if (data.column.index > 0) {
@@ -305,7 +302,7 @@ const printPDF = (cardData, printHeading, printText, footerText, location) => {
          })
        }
      }
-   },
+    },
     didDrawPage: function (data) {
       // Header
       if (doc.internal.getNumberOfPages() === 1) {
@@ -337,7 +334,7 @@ const printPDF = (cardData, printHeading, printText, footerText, location) => {
       var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight()
       var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth()
       doc.text(pageNum, data.settings.margin.left, pageHeight - 10)
-      doc.text(footerText + ' ' + location, pageWidth - data.settings.margin.right, pageHeight - 10, 'right');
+      doc.text(footerText + ' ' + siteUrl, pageWidth - data.settings.margin.right, pageHeight - 10, 'right');
     }
   })
   doc.save('Basic-Income__Experiments-and-Related-Projects.pdf');

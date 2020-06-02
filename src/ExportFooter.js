@@ -9,9 +9,9 @@ class ExportFooter extends React.Component {
     super(props);
   }
 
-  print(cardData, printHeading, printText, footerText) {
+  print(cardData, printHeading, printText, footerText, siteUrl) {
     // console.log('print selected');
-    printPDF(cardData, printHeading, printText, footerText, window.top.location);
+    printPDF(cardData, printHeading, printText, footerText, siteUrl);
   }
 
   export() {
@@ -42,7 +42,8 @@ class ExportFooter extends React.Component {
                   this.props.cardData,
                   this.props.printHeading,
                   this.props.printText,
-                  this.props.footerText)
+                  this.props.footerText,
+                  this.props.siteUrl)
               }}>PRINT</div>
           </div>
         </div>
