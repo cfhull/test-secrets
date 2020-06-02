@@ -21,7 +21,7 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
     // console.log(cardArr);
     const hStyles = {
       font: 'helvetica',
-      fillColor: '#f9f9f9',
+      fillColor: '#e3e3e3',
       textColor: '#000',
     };
     let arr = [{
@@ -276,7 +276,8 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
       fillColor: '#fff',
       textColor: '#000',
       font: 'SofiaProRegular',
-      overflow: 'linebreak'
+      overflow: 'linebreak',
+      cellPadding: 3,
     },
     headStyles: {
       fillColor: '#f9f9f9',
