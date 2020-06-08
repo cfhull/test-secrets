@@ -28,6 +28,8 @@ class ExportFooter extends React.Component {
 
   render() {
     const classes = 'export-footer ' + this.props.classes;
+    const facebook = 'https://www.facebook.com/sharer/sharer.php?u=' + this.props.siteUrl;
+    //const twitter = "https://twitter.com/share?ref_src=twsrc%5Etfw ";
     return (
       <div className={classes}>
         <div className='print section'>
@@ -68,6 +70,10 @@ class ExportFooter extends React.Component {
           <div className='button-group element'>
             <input id='url-text' type='text' value={this.props.siteUrl} onChange={_.noop} />
             <div className='button' onClick={this.copy}>COPY</div>
+          </div>
+          <div className='socialshare'>
+            <a className="twitter-share-button twittershare" data-url={this.props.siteUrl} data-text="Stanford Basic Income Lab's Global Map of Basic Income Experiments" href="#"><div className='twitter'></div></a>
+            <a target="_blank" href={facebook}><div className='fb'></div></a>
           </div>
         </div>
       </div>

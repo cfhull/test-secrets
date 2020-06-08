@@ -942,7 +942,7 @@ html, body, #root, .app, .map-container {
 .export-footer {
   display: flex;
   justify-content: space-evenly;
-  align-items: center;
+  align-items: flex-start;
   padding-right: 90px; // make room for side-buttons
   padding-top: 15px;
   padding-bottom: 50px;
@@ -1026,6 +1026,36 @@ html, body, #root, .app, .map-container {
           // keeps it in line with text input
           position: relative;
           top: -2px;
+        }
+      }
+      .socialshare {
+        display: flex;
+        width: 80px;
+        justify-content: space-between;
+        margin-top: 24px;
+        a div {
+          cursor: pointer;
+        }
+        .twitter, .fb {
+          width: 27px;
+          background-repeat: no-repeat;
+          background-size: contain;
+          svg path {
+            fill: #74757B;
+          }
+          &:hover {
+            svg path {
+              fill: #00505C;
+            }
+          }
+        }
+        .fb {
+          background-image: url(svg/fb-icon.svg);
+          height: 22px;
+        }
+        .twitter {
+          background-image: url(svg/tw-icon.svg);
+          height: 23px;
         }
       }
     }
