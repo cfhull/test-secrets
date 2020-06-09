@@ -7,6 +7,8 @@ import printPDF from './printPDF/printPDF.js'
 class ExportFooter extends React.Component {
   constructor(props) {
     super(props);
+
+    this.tweet = this.tweet.bind(this);
   }
 
   print(cardData, printHeading, printText, footerText, siteUrl) {
@@ -24,6 +26,11 @@ class ExportFooter extends React.Component {
     urlText.select(); /* Select the text field */
     urlText.setSelectionRange(0, 99999); /*For mobile devices*/
     document.execCommand('copy'); /* Copy the text inside the text field */
+  }
+
+  tweet() {
+    const tweetText = `Stanford Basic Income Lab's Global Map of Basic Income Experiments`;
+    window.open(`https://twitter.com/share?text=${tweetText}&url=${this.props.siteUrl}`, '_blank', 'width=550,height=420').focus();
   }
 
   render() {
@@ -72,7 +79,7 @@ class ExportFooter extends React.Component {
             <div className='button' onClick={this.copy}>COPY</div>
           </div>
           <div className='socialshare'>
-            <a className="twitter-share-button twittershare" data-url={this.props.siteUrl} data-text="Stanford Basic Income Lab's Global Map of Basic Income Experiments" href="#"><div className='twitter'></div></a>
+            <a className="twitter-share-button twittershare" onClick={this.tweet} href="#"><div className='twitter'></div></a>
             <a target="_blank" href={facebook}><div className='fb'></div></a>
           </div>
         </div>
