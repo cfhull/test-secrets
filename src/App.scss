@@ -1052,10 +1052,18 @@ html, body, #root, .app, .map-container {
         .fb {
           background-image: url(svg/fb-icon.svg);
           height: 22px;
+          &:hover {
+            background-image: url(svg/fb-icon-active.svg);
+            transition: .3s ease;
+          }
         }
         .twitter {
           background-image: url(svg/tw-icon.svg);
           height: 23px;
+          &:hover {
+            background-image: url(svg/tw-icon-active.svg);
+            transition: .3s ease;
+          }
         }
       }
     }

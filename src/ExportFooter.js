@@ -9,6 +9,7 @@ class ExportFooter extends React.Component {
     super(props);
 
     this.tweet = this.tweet.bind(this);
+    this.post = this.post.bind(this);
   }
 
   print(cardData, printHeading, printText, footerText, siteUrl) {
@@ -33,10 +34,13 @@ class ExportFooter extends React.Component {
     window.open(`https://twitter.com/share?text=${tweetText}&url=${this.props.siteUrl}`, '_blank', 'width=550,height=420').focus();
   }
 
+  post() {
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${this.props.siteUrl}`, '_blank', 'width=550,height=420').focus();
+  }
+ 
+
   render() {
     const classes = 'export-footer ' + this.props.classes;
-    const facebook = 'https://www.facebook.com/sharer/sharer.php?u=' + this.props.siteUrl;
-    //const twitter = "https://twitter.com/share?ref_src=twsrc%5Etfw ";
     return (
       <div className={classes}>
         <div className='print section'>
@@ -80,7 +84,7 @@ class ExportFooter extends React.Component {
           </div>
           <div className='socialshare'>
             <a className="twitter-share-button twittershare" onClick={this.tweet} href="#"><div className='twitter'></div></a>
-            <a target="_blank" href={facebook}><div className='fb'></div></a>
+            <a onClick={this.post} href="#"><div className='fb'></div></a>
           </div>
         </div>
       </div>
