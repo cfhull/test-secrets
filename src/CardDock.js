@@ -129,7 +129,7 @@ class CardDock extends React.PureComponent {
       mapMaskActive = true;
     }
 
-    const SCROLL_BUFFER = 800;
+    const SCROLL_BUFFER = 850;
     let bottomMaskActive = false;
     if (SCROLL_GAP_FIX && // ensure we want to use fix
         this.cardDockContainerHeight && // ensure we want to use fix

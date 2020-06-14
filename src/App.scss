@@ -945,7 +945,7 @@ html, body, #root, .app, .map-container {
   align-items: flex-start;
   padding-right: 90px; // make room for side-buttons
   padding-top: 15px;
-  padding-bottom: 50px;
+  padding-bottom: 100px;
   
 
   .section {
@@ -1033,35 +1033,41 @@ html, body, #root, .app, .map-container {
         width: 80px;
         justify-content: space-between;
         margin-top: 24px;
-        a div {
+        a {
           cursor: pointer;
         }
         .twitter, .fb {
+          cursor: pointer;
           width: 27px;
+          height: 30px;
           background-repeat: no-repeat;
           background-size: contain;
-          svg path {
-            fill: #74757B;
-          }
-          &:hover {
-            svg path {
-              fill: #00505C;
+          svg { 
+            cursor: pointer;
+            path {
+              cursor: pointer;
+              fill: #74757B;
+            }
+            &:hover {
+              path {
+                fill: #B26F16;
+              }
             }
           }
         }
         .fb {
-          background-image: url(svg/fb-icon.svg);
+         // background-image: url(svg/fb-icon.svg);
           height: 22px;
           &:hover {
-            background-image: url(svg/fb-icon-active.svg);
+            //background-image: url(svg/fb-icon-active.svg);
             transition: .3s ease;
           }
         }
         .twitter {
-          background-image: url(svg/tw-icon.svg);
+         // background-image: url(svg/tw-icon.svg);
           height: 23px;
           &:hover {
-            background-image: url(svg/tw-icon-active.svg);
+            //background-image: url(svg/tw-icon-active.svg);
             transition: .3s ease;
           }
         }
