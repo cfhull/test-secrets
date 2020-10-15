@@ -49,7 +49,6 @@ class App extends React.Component {
       loaded: false,
       isTouchScreen: false,
       introPanelOpen: false,
-      clickHintDismissed: false,
       selectionHintDismissed: false,
       maxCardHintTriggered: false,
       hovered: {},
@@ -61,7 +60,6 @@ class App extends React.Component {
     this.map = null;
 
     this.getCardDock = this.getCardDock.bind(this);
-    this.getClickHint = this.getClickHint.bind(this);
     this.getTooltip = this.getTooltip.bind(this);
     this.removeCard = this.removeCard.bind(this);
     this.finalizeLoad = this.finalizeLoad.bind(this);
@@ -120,23 +118,30 @@ class App extends React.Component {
   
   markMapLoaded() {
     loadState.mapLoaded = true;
+    
+    // add the click point hint
+
+    // Duplin, North Carolina
+    let lng = -76.6; // places it right of intro panel but still on screen
+    let lat = 34.8;
+    if (window.innerWidth > MIN_WIDTH_WORLD_VIEW) {
+      // Barcelona, Spain
+      lng = 2.1;
+      lat = 41.2;
+    }
+
+    this.hintEl = document.createElement('div');
+    this.hintEl.innerHTML = 'Click a point<br />to get started';
+    this.hintEl.className = 'click-point-hint';
+
+    this.hint = new mapboxgl.Marker(this.hintEl)
+      .setLngLat([lng, lat])
+      .addTo(this.map);
+
     this.finalizeLoad();
   }
   
   finalizeLoad() {
-    // const NCLat = 35
-    // const NCLng = -78
-    // const clickHintCoords = this.map.project([NCLng, NCLat])
-    // console.log('clickHintCoords: ', clickHintCoords)
-
-    // const el = document.createElement('div')
-    // el.innerHTML = 'Click a point<br />to get started'
-    // el.className = 'click-point-hint'
-    
-    // new mapboxgl.Marker(el)
-    //   .setLngLat([NCLng, NCLat])
-    //   .addTo(this.map)
-    
     const { dataLoaded, mapLoaded, mapConfigured } = loadState;
     const loaded = dataLoaded && mapLoaded && mapConfigured;
     
@@ -165,6 +170,11 @@ class App extends React.Component {
   }
   
   featuresOnClick(e) {
+    this.hintEl.classList.add('dismissed');
+    setTimeout(() => {
+      this.hint.remove();
+    }, 1000);
+    
     const { id: expId } = e.features[0];
     const selectedIds = [...this.state.selectedIds];
     const idx = selectedIds.indexOf(expId);
@@ -200,15 +210,10 @@ class App extends React.Component {
       // devices with touch screens shouldn't have tooltips
       return;
     }
-    // const NCLat = 35
-    // const NCLng = -78
-    // const clickHintCoords = this.map.project([NCLat, NCLng])
-    // console.log('clickHintCoords: ', clickHintCoords)
     
     this.map.getCanvas().style.cursor = 'pointer';
     const { id: expId, properties } = e.features[0];    
     const { x, y } = e.point;
-    // console.log('ACTUAL X, Y: ', x, ' , ', y)
 
     this.setState({ 
       hovered: {
@@ -275,16 +280,6 @@ class App extends React.Component {
         .filter(l => l !== location);
     }
     return <Tooltip expId={expId} name={name} location={location} otherLocations={otherLocations} type={type} x={x} y={y}/>;
-  }
-
-  getClickHint() {
-    if (this.state.clickHintDismissed) {
-      return
-    }
-    // const { x, y } = this.state.clickHintCoords
-    // console.log('x', x, 'y', y)
-    // const style = { x, y, position: 'absolute' }
-    return <div className='click-point-hint'>Click a point<br />to get started</div>
   }
   
   getCardDock() {
@@ -371,7 +366,6 @@ class App extends React.Component {
         <LoadingMask loaded={loaded} />
         <div className={classes} ref={this.appRef}>
           <IntroPanel open={introPanelOpen} toggleOpen={this.toggleIntroPanelOpen} />
-          {this.getClickHint()}
           {this.getCardDock()}
           {this.getTooltip()}
           {this.getResetViewButton()}
