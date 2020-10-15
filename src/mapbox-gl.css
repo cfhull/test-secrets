@@ -121,7 +121,7 @@ a.mapboxgl-ctrl-logo {
   margin: 0;
 }
 
-/* KEEP IN SYNC WITH $mobile-breakpoint / $FS-card-width */
+/* KEEP IN SYNC WITH $mobile-breakpoint and $FS-card-width */
 @media (max-width: 600px) {
   /* removed .mapboxgl-compact (generated class) selector as it wasn't being given to logo */
   a.mapboxgl-ctrl-logo {

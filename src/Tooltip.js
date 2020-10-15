@@ -3,8 +3,8 @@ import React from 'react';
 const POINT_BUFFER = 7;
 
 class Tooltip extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       left: 0,
       top: 0,

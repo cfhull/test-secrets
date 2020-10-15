@@ -14,23 +14,25 @@ import _ from 'lodash';
 import mapboxgl from 'mapbox-gl';
 import styleData from './style.json';
 import { SHEET_FIELDS } from './fields';
+import {
+  CONTROL_QUERY_STRING,
+  QUERY_STRING_BASE,
+  ORIGIN_PARAM_MARKER,
+  PATH_PARAM_MARKER,
+  DEFAULT_SITE_ORIGIN,
+  DEFAULT_SITE_PATH,
+  MAX_SELECTED_POINTS,
+  STARTING_LNG,
+  STARTING_LAT,
+  STARTING_ZOOM,
+  MIN_WIDTH_WORLD_VIEW,
+  MOBILE_BREAKPOINT,
+} from './consts'
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
 const { LONGITUDE, LATITUDE, NAME, LOCATION, TYPE, EID } = SHEET_FIELDS;
 
-const CONTROL_QUERY_STRING = true;
-const QUERY_STRING_BASE = '?sel='; // KEEP IN SYNC WITH BIL-SITE
-const ORIGIN_PARAM_MARKER = '&origin='; // KEEP IN SYNC WITH BIL-SITE
-const PATH_PARAM_MARKER = '&path='; // KEEP IN SYNC WITH BIL-SITE
-// these defaults should never be used as we expect them to be passed in as query params
-const DEFAULT_SITE_ORIGIN = 'https://basicincome.stanford.edu';
-const DEFAULT_SITE_PATH = '/research/basic-income-experiments/';
-
-const MAX_SELECTED_POINTS = 3;
-const STARTING_LNG = -30;
-const STARTING_LAT = 29;
-const STARTING_ZOOM = 1.5;
 
 // keep off this.state because when one loads we immediately need to know the state of the others
 // (which, if they were being set by asynchronous this.setState, we might misread)
@@ -41,12 +43,13 @@ const loadState = {
 };
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       loaded: false,
       isTouchScreen: false,
       introPanelOpen: false,
+      clickHintDismissed: false,
       selectionHintDismissed: false,
       maxCardHintTriggered: false,
       hovered: {},
@@ -58,6 +61,7 @@ class App extends React.Component {
     this.map = null;
 
     this.getCardDock = this.getCardDock.bind(this);
+    this.getClickHint = this.getClickHint.bind(this);
     this.getTooltip = this.getTooltip.bind(this);
     this.removeCard = this.removeCard.bind(this);
     this.finalizeLoad = this.finalizeLoad.bind(this);
@@ -81,7 +85,7 @@ class App extends React.Component {
       ]
     });
 
-    if (window.innerWidth < 800) {
+    if (window.innerWidth < MIN_WIDTH_WORLD_VIEW) {
       // for smaller screens, initialize view on US
       this.resetUSView();
     }
@@ -118,13 +122,27 @@ class App extends React.Component {
     loadState.mapLoaded = true;
     this.finalizeLoad();
   }
-
+  
   finalizeLoad() {
+    // const NCLat = 35
+    // const NCLng = -78
+    // const clickHintCoords = this.map.project([NCLng, NCLat])
+    // console.log('clickHintCoords: ', clickHintCoords)
+
+    // const el = document.createElement('div')
+    // el.innerHTML = 'Click a point<br />to get started'
+    // el.className = 'click-point-hint'
+    
+    // new mapboxgl.Marker(el)
+    //   .setLngLat([NCLng, NCLat])
+    //   .addTo(this.map)
+    
     const { dataLoaded, mapLoaded, mapConfigured } = loadState;
     const loaded = dataLoaded && mapLoaded && mapConfigured;
+    
     // trigger the state change that will tell loading mask to disappear
     this.setState({ loaded });
-    if (loaded && window.innerWidth > 600) {
+    if (loaded && window.innerWidth > MOBILE_BREAKPOINT) {
       setTimeout(() => {
         this.setState({ introPanelOpen: true });
       }, 1200);
@@ -182,9 +200,15 @@ class App extends React.Component {
       // devices with touch screens shouldn't have tooltips
       return;
     }
+    // const NCLat = 35
+    // const NCLng = -78
+    // const clickHintCoords = this.map.project([NCLat, NCLng])
+    // console.log('clickHintCoords: ', clickHintCoords)
+    
     this.map.getCanvas().style.cursor = 'pointer';
     const { id: expId, properties } = e.features[0];    
     const { x, y } = e.point;
+    // console.log('ACTUAL X, Y: ', x, ' , ', y)
 
     this.setState({ 
       hovered: {
@@ -253,6 +277,16 @@ class App extends React.Component {
     return <Tooltip expId={expId} name={name} location={location} otherLocations={otherLocations} type={type} x={x} y={y}/>;
   }
 
+  getClickHint() {
+    if (this.state.clickHintDismissed) {
+      return
+    }
+    // const { x, y } = this.state.clickHintCoords
+    // console.log('x', x, 'y', y)
+    // const style = { x, y, position: 'absolute' }
+    return <div className='click-point-hint'>Click a point<br />to get started</div>
+  }
+  
   getCardDock() {
     if (!this.map) {
       return null;
@@ -337,6 +371,7 @@ class App extends React.Component {
         <LoadingMask loaded={loaded} />
         <div className={classes} ref={this.appRef}>
           <IntroPanel open={introPanelOpen} toggleOpen={this.toggleIntroPanelOpen} />
+          {this.getClickHint()}
           {this.getCardDock()}
           {this.getTooltip()}
           {this.getResetViewButton()}

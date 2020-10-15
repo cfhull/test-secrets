@@ -1,11 +1,12 @@
 import React from 'react';
+import { MOBILE_BREAKPOINT } from './consts';
 import TriggerIcon, { ICON_TYPE } from './TriggerIcon';
 
 class Legend extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
 
-    const startExpanded = window.innerWidth > 600;
+    const startExpanded = window.innerWidth > MOBILE_BREAKPOINT;
     this.state = { expanded: startExpanded };
 
     this.toggleExpand = this.toggleExpand.bind(this);

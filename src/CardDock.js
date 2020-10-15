@@ -5,6 +5,7 @@ import TriggerIcon, { ICON_TYPE } from './TriggerIcon';
 import ExportFooter from './ExportFooter.js';
 import { SHEET_FIELDS, ORDERED_CARD_FIELDS, ORDERED_CSV_FIELDS, COMPOSITE_FIELDS, LINK_FIELD_PAIRS } from './fields';
 import UserHint from './UserHint';
+import { MOBILE_BREAKPOINT } from './consts';
 
 smoothscroll.polyfill();
 
@@ -138,7 +139,7 @@ class CardDock extends React.PureComponent {
     ) {
       bottomMaskActive = true; // all true, so show mask to cover space below CardDock
 
-      if ((scrollTop > this.cardDockContainerHeight) && (window.innerWidth > 600)) {
+      if ((scrollTop > this.cardDockContainerHeight) && (window.innerWidth > MOBILE_BREAKPOINT)) {
         // we've *passed* CardDock bottom - gently pull it back down
         this.props.appRef.current.scroll({
           top: this.cardDockContainerHeight,
