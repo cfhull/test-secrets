@@ -192,7 +192,7 @@ html, body, #root, .app, .map-container {
   background-color: $hint-background;
   color: $hint-content;
   padding: 15px;
-  text-align: center;
+  text-align: left;
   display: inline;
   font-size: 14px;
   line-height: 1.3;
@@ -203,6 +203,7 @@ html, body, #root, .app, .map-container {
   // z-index: 2;
   position: absolute;
   top: 50px; // to move the hint just below the point
+  left: 48px; // to move the hint just to the right of the point
   &.dismissed {
     opacity: 0;
     transition: opacity ease 1s;
@@ -601,8 +602,9 @@ html, body, #root, .app, .map-container {
     right: $SS-boundary-padding;
     bottom: -200px;
     transition: bottom ease .8s;
-    box-shadow: $box-shadow;
+    //box-shadow: $box-shadow;
     z-index: 5;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
     &.active {
       bottom: $FS-boundary-padding;
     }
@@ -619,13 +621,20 @@ html, body, #root, .app, .map-container {
         border-top: 1px solid $middle-gray
       }
     }
+    .scroll-up-button, .share-export {
+      transition: background-color .3s ease, color .3s ease;
+      background-color: $button-bronze;
+      &:hover {
+        background-color: $button-bronze-active;
+      }
+    }
     .scroll-up-button {
-      background-size: 70%;
-      background-image: url(png/scrollTop.png);
+      background-size: 100%;
+      background-image: url(png/scrollTop.svg);
     }
     .share-export {
-      background-size: 62%;
-      background-image: url(png/shareExport.png);
+      background-size: 100%;
+      background-image: url(png/shareExport.svg);
     }
   }
 

@@ -131,7 +131,7 @@ class App extends React.Component {
     }
 
     this.hintEl = document.createElement('div');
-    this.hintEl.innerHTML = 'Click a point<br />to get started';
+    this.hintEl.innerHTML = 'Click a point<br />to learn more';
     this.hintEl.className = 'click-point-hint';
 
     this.hint = new mapboxgl.Marker(this.hintEl)
