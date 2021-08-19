@@ -28,11 +28,11 @@ import {
   MIN_WIDTH_WORLD_VIEW,
   MOBILE_BREAKPOINT,
 } from './consts'
+const data = require("./experiments.json")
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
 const { LONGITUDE, LATITUDE, NAME, LOCATION, TYPE, EID } = SHEET_FIELDS;
-
 
 // keep off this.state because when one loads we immediately need to know the state of the others
 // (which, if they were being set by asynchronous this.setState, we might misread)
@@ -395,7 +395,9 @@ function load() {
   const experimentsData = { type: 'FeatureCollection', features: [] };
 
   const reqHandler = (source, req) => {
-    const [ columnHeaderRow, ...rows ] = JSON.parse(req.responseText).feed.entry;
+    // temp fix for breaking Google Sheets API update
+    const [ columnHeaderRow, ...rows ] = data.feed.entry;
+    // const [ columnHeaderRow, ...rows ] = JSON.parse(req.responseText).feed.entry;
     const properties = Object.keys(rows[0])
       .filter(function (p) { 
         return p.startsWith('gsx$') & !p.endsWith('_db1zf');
@@ -507,12 +509,15 @@ function load() {
   }
 
   // Fetch Local Article Data
-  const experimentsReq = new XMLHttpRequest();
+  // const experimentsReq = new XMLHttpRequest();
   loadState.dataLoaded = true;
   // this.finalizeLoad(); // don't need to call here, as map is not configured yet
-  experimentsReq.addEventListener('load',  () => { reqHandler('experiments', experimentsReq) });
-  experimentsReq.open('GET', process.env.REACT_APP_SHEET_URL);
-  experimentsReq.send();
+
+  // temp fix for breaking Google Sheets API update
+  setTimeout(reqHandler.bind(this));
+  // experimentsReq.addEventListener('load',  () => { reqHandler('experiments', experimentsReq) });
+  // experimentsReq.open("GET", process.env.REACT_APP_SHEET_URL);
+  // experimentsReq.send();
 }
 
 export default App;
