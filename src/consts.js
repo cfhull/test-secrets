@@ -6,6 +6,9 @@ const PATH_PARAM_MARKER = '&path='; // KEEP IN SYNC WITH BIL-SITE
 const DEFAULT_SITE_ORIGIN = 'https://basicincome.stanford.edu';
 const DEFAULT_SITE_PATH = '/research/basic-income-experiments/';
 
+const SHEET_URL =
+  'https://sheets.googleapis.com/v4/spreadsheets/1R2n9m-yA37LOIcUnBT5ZVu2LZyhKl5j46YTqkZMZzyM/values/Sheet1?alt=json&key=AIzaSyD1qajG1iNe_ISqbiCNY3mbrkTTo7v3j4U';
+
 const MAX_SELECTED_POINTS = 3;
 const STARTING_LNG = -30;
 const STARTING_LAT = 29;
@@ -21,10 +24,11 @@ export {
   PATH_PARAM_MARKER,
   DEFAULT_SITE_ORIGIN,
   DEFAULT_SITE_PATH,
+  SHEET_URL,
   MAX_SELECTED_POINTS,
   STARTING_LNG,
   STARTING_LAT,
   STARTING_ZOOM,
   MOBILE_BREAKPOINT,
   MIN_WIDTH_WORLD_VIEW,
-}
+};

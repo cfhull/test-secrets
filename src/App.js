@@ -21,6 +21,7 @@ import {
   PATH_PARAM_MARKER,
   DEFAULT_SITE_ORIGIN,
   DEFAULT_SITE_PATH,
+  SHEET_URL,
   MAX_SELECTED_POINTS,
   STARTING_LNG,
   STARTING_LAT,
@@ -28,7 +29,7 @@ import {
   MIN_WIDTH_WORLD_VIEW,
   MOBILE_BREAKPOINT,
 } from './consts'
-const data = require("./experiments.json")
+// const data = require("./experiments.json")
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
@@ -395,19 +396,14 @@ function load() {
   const experimentsData = { type: 'FeatureCollection', features: [] };
 
   const reqHandler = (source, req) => {
-    // temp fix for breaking Google Sheets API update
-    const [ columnHeaderRow, ...rows ] = data.feed.entry;
-    // const [ columnHeaderRow, ...rows ] = JSON.parse(req.responseText).feed.entry;
-    const properties = Object.keys(rows[0])
-      .filter(function (p) { 
-        return p.startsWith('gsx$') & !p.endsWith('_db1zf');
-      })
-      .map(function (p) { return p.substr(4); });
-    
-    const items = rows.map(function (r, ri) {
+    const [properties, humanReadableProperties, ...rows] = JSON.parse(
+      req.responseText
+    ).values;
+
+    const items = rows.map(function (r) {
       const row = {};
-      properties.forEach(function (p) {
-        row[p] = r['gsx$' + p].$t === '' ? null : r['gsx$' + p].$t;
+      properties.forEach(function (p, pIdx) {
+        row[p] = r[pIdx];
         if ([LATITUDE.sheetId, LONGITUDE.sheetId].indexOf(p) !== -1) {
           // mapbox wants numeric lat/long
           row[p] = +row[p];
@@ -509,15 +505,14 @@ function load() {
   }
 
   // Fetch Local Article Data
-  // const experimentsReq = new XMLHttpRequest();
+  const experimentsReq = new XMLHttpRequest();
   loadState.dataLoaded = true;
   // this.finalizeLoad(); // don't need to call here, as map is not configured yet
-
-  // temp fix for breaking Google Sheets API update
-  setTimeout(reqHandler.bind(this));
-  // experimentsReq.addEventListener('load',  () => { reqHandler('experiments', experimentsReq) });
-  // experimentsReq.open("GET", process.env.REACT_APP_SHEET_URL);
-  // experimentsReq.send();
+  experimentsReq.addEventListener('load', () => {
+    reqHandler('experiments', experimentsReq);
+  });
+  experimentsReq.open('GET', SHEET_URL);
+  experimentsReq.send();
 }
 
 export default App;
