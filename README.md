@@ -1,5 +1,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Maps experiments from [this sheet](https://docs.google.com/spreadsheets/d/1R2n9m-yA37LOIcUnBT5ZVu2LZyhKl5j46YTqkZMZzyM/edit#gid=0). The map deployed to Github Pages is embedded in the [live site](https://basicincome.stanford.edu/experiments-map/) (see Github Pages Deployment below for instructions on deploying).
+
+**Note: this app currently suports node versions <= 13.x if you experience issues with node-sass try adjusting your node version (e.g. `nvm use 13`)**
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -39,7 +43,7 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 ### Github Pages Deployment
 
-This repo deploys to branch `gh-pages` with the command `npm run deploy`. Merge your changes to master and then run `npm run deploy`. Commits to `gh-pages` are made automatically.
+This repo deploys to branch `gh-pages` with the command `npm run deploy`. Merge your changes to master and then run `npm run deploy`. Commits to the `gh-pages` branch are made automatically.
 
 ## Learn More
 

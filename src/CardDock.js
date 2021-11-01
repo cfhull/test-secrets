@@ -308,7 +308,7 @@ class CardDock extends React.PureComponent {
     const { sheetId } = field;
     const firstValue = experimentCardSet[0][sheetId];
 
-    if (field === WEBSITE && firstValue.includes('.')) {
+    if (field === WEBSITE && firstValue && firstValue.includes('.')) {
       // make sure website is linkified if it's a link. otherwise it'll be caught
       // by the next condition, for all undifferentiated fields
       return <a href={firstValue} target='_blank' rel='noopener noreferrer'>{firstValue}</a>;
