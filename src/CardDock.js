@@ -511,10 +511,12 @@ class CardDock extends React.PureComponent {
         _.each(experimentCardSet, locationData => {
           valueArrays.push(_.map(ORDERED_CSV_FIELDS, f => {
             let v = locationData[f.sheetId];
+            // new API returns undefined rather than "" for empty cells
+            if (!v) return '';
             // seems new lines are fine
-            // v = v.replace(/\n/gm, ''); 
+            // v = v.replace(/\n/gm, '');
             v = v.replace(/"/gm, "'");
-            return v ? `"${v}"` : "";
+            return v ? `"${v}"` : '';
           }));
         });
       });
