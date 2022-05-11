@@ -12,7 +12,6 @@
     "jspdf-autotable": "^3.5.3",
     "mapbox-gl": "^1.8.1",
     "max-char-ellipsis": "^1.0.2",
-    "node-sass": "^7.0.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-scripts": "3.4.0",
@@ -40,5 +39,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "sass": "^1.51.0"
   }
 }
