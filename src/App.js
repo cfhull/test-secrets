@@ -396,10 +396,11 @@ function load() {
   const experimentsData = { type: 'FeatureCollection', features: [] };
 
   const reqHandler = (source, req) => {
-    const [sectHeaders, colHeaders, notes1, properties, notes2, ...rows] = JSON.parse(
+    const rows = JSON.parse(
       req.responseText
     ).values;
-
+    rows.splice(0, 4);
+    const properties = rows.shift();
     const items = rows.map(function (r) {
       const row = {};
       properties.forEach(function (p, pIdx) {
@@ -425,7 +426,6 @@ function load() {
           row[p] = '';
         }
       });
-
       return {
         type: 'Feature',
         id: row[EID.sheetId],

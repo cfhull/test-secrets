@@ -25,13 +25,14 @@ const SHEET_FIELDS = {
     displayName: 'Location',
     sheetId: 'location'
   },
-
-
+  DATES: {
+    displayName: 'Implementation Dates',
+    sheetId: 'dates'
+  },
   STATUS: {
     displayName: 'Implementation Status',
     sheetId: 'status'
   },
-
   MANAGER: {
     displayName: 'Managing Organizations/Agencies',
     sheetId: 'org'
@@ -68,31 +69,10 @@ const SHEET_FIELDS = {
     displayName: 'Is the pilot a Randomized Control Trial (RCT)',
     sheetId: 'rct'
   },
-
-
-  // DATES: {
-  //   displayName: 'Implementation Dates',
-  //   sheetId: 'dates'
-  // },
   RECIPIENTS: {
     displayName: 'Number of Recipients',
     sheetId: 'recipients'
   },
-  // IMPLEMENTER: {
-  //   displayName: 'Implementing Agency',
-  //   sheetId: 'implementer',
-  //   // isExpandible: true
-  // },
-  // RESEARCHER: {
-  //   displayName: 'Research Agency',
-  //   sheetId: 'researcher',
-  //   // isExpandible: true
-  // },
-  // FUNDER: {
-  //   displayName: 'Funding Agency',
-  //   sheetId: 'funder',
-  //   // isExpandible: true
-  // },
   TARGETING: {
     displayName: 'Type of Targeting',
     sheetId: 'targeting',
@@ -111,68 +91,6 @@ const SHEET_FIELDS = {
     displayName: 'Frequency of Payment',
     sheetId: 'frequency'
   },
-  // EVALUATION: {
-  //   displayName: 'Method of Evaluation',
-  //   sheetId: 'evaluation'
-  // },
-  // NOTES: {
-  //   displayName: 'Additional Notes of Interest',
-  //   sheetId: 'notes',
-  //   // isExpandible: true
-  // },
-  // WEBSITE: {
-  //   displayName: 'Link to Website',
-  //   sheetId: 'website',
-  //   forceUniformValue: true
-  // },
-  // LINKURL1: {
-  //   displayName: 'Link to Related Resource 1',
-  //   sheetId: 'linkurl1'
-  // },
-  // LINKTITLE1: {
-  //   displayName: 'Link title 1',
-  //   sheetId: 'linktitle1'
-  // },
-  // LINKURL2: {
-  //   displayName: 'Link to Related Resource 2',
-  //   sheetId: 'linkurl2'
-  // },
-  // LINKTITLE2: {
-  //   displayName: 'Link title 2',
-  //   sheetId: 'linktitle2'
-  // },
-  // LINKURL3: {
-  //   displayName: 'Link to Related Resource 3',
-  //   sheetId: 'linkurl3'
-  // },
-  // LINKTITLE3: {
-  //   displayName: 'Link title 3',
-  //   sheetId: 'linktitle3'
-  // },
-  // LINKURL4: {
-  //   displayName: 'Link to Related Resource 4',
-  //   sheetId: 'linkurl4'
-  // },
-  // LINKTITLE4: {
-  //   displayName: 'Link title 4',
-  //   sheetId: 'linktitle4'
-  // },
-  // LINKURL5: {
-  //   displayName: 'Link to Related Resource 5',
-  //   sheetId: 'linkurl5'
-  // },
-  // LINKTITLE5: {
-  //   displayName: 'Link title 5',
-  //   sheetId: 'linktitle5'
-  // },
-  // LINKURL6: {
-  //   displayName: 'Link to Related Resource 6',
-  //   sheetId: 'linkurl6'
-  // },
-  // LINKTITLE6: {
-  //   displayName: 'Link title 6',
-  //   sheetId: 'linktitle6'
-  // }
 };
 
 const LINK_FIELD_PAIRS = [
@@ -208,6 +126,7 @@ const COMPOSITE_FIELDS = {
 
 const ORDERED_CARD_FIELDS = [
   SHEET_FIELDS.LOCATION,
+  SHEET_FIELDS.DATES,
   SHEET_FIELDS.STATUS,
   SHEET_FIELDS.NEIGHBORHOOD,
   FEATURE_HEADERS.ORGANIZATIONAL,
@@ -230,6 +149,7 @@ const ORDERED_CARD_FIELDS = [
 const ORDERED_CSV_FIELDS = [
   SHEET_FIELDS.NAME,
   SHEET_FIELDS.LOCATION,
+  SHEET_FIELDS.DATES,
   SHEET_FIELDS.STATUS,
   SHEET_FIELDS.NEIGHBORHOOD,
   SHEET_FIELDS.MANAGER,
