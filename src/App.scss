@@ -1,10 +1,10 @@
 // COLORS
-$color-past: rgb(25,96,107);
-$color-ongoing: rgb(182,119,35);
-$color-proposed: rgb(225,87,90);
+$color-concluded: rgb(25,96,107);
+$color-active: rgb(182,119,35);
+// $color-proposed: rgb(225,87,90);
 // mapbox values (equivalent in hue to above, but semi-transparent to reveal ovelrap etc)
-// $color-past: rgba(0,80,92,.9);
-// $color-ongoing: rgba(175,105,12,.9);
+// $color-concluded: rgba(0,80,92,.9);
+// $color-active: rgba(175,105,12,.9);
 // $color-proposed: rgba(223,70,73,.9);
 $light-gray: #f7f7f7;
 $semi-trans-light-gray: transparentize($light-gray, .2);
@@ -140,7 +140,7 @@ html, body, #root, .app, .map-container {
     margin: auto;
     font-size: 22px;
     text-transform: uppercase;
-    color: $color-past;
+    color: $color-concluded;
     transform: translate(0, 16px);
     .loading-dots {
       display: flex;
@@ -151,17 +151,19 @@ html, body, #root, .app, .map-container {
         height: 18px;
         border-radius: 9px;
         animation: ball-pulse 1s ease infinite;
-        &:nth-child(1) {
+        // &:nth-child(1) {
+        &:nth-child(odd) {
           animation-delay: -.2s;
-          background-color: $color-past;
+          background-color: $color-concluded;
         }
-        &:nth-child(2) {
+        // &:nth-child(2) {
+        &:nth-child(even) {
           animation-delay: -.1s;
-          background-color: $color-ongoing;
+          background-color: $color-active;
         }
-        &:nth-child(3) {
-          background-color: $color-proposed;
-        }
+        // &:nth-child(3) {
+        //   background-color: $color-proposed;
+        // }
       }
     }
   }
@@ -457,15 +459,15 @@ html, body, #root, .app, .map-container {
   border-radius: 5px;
   margin-right: 8px;
 }
-.legend i.past {
-  background: $color-past;
+.legend i.concluded {
+  background: $color-concluded;
 }
-.legend i.ongoing {
-  background: $color-ongoing;
+.legend i.active {
+  background: $color-active;
 }
-.legend i.proposed {
-  background: $color-proposed;
-}
+// .legend i.proposed {
+//   background: $color-proposed;
+// }
 
 .legend .trigger-icon {
   position: absolute;
@@ -509,15 +511,15 @@ html, body, #root, .app, .map-container {
   border-radius: $standard-border-radius;
 }
 
-.tooltip.past {
-  border-top-color: $color-past;
+.tooltip.concluded {
+  border-top-color: $color-concluded;
 }
-.tooltip.ongoing {
-  border-top-color: $color-ongoing;
+.tooltip.active {
+  border-top-color: $color-active;
 }
-.tooltip.proposed {
-  border-top-color: $color-proposed;
-}
+// .tooltip.proposed {
+//   border-top-color: $color-proposed;
+// }
 
 .tooltip .detail {
   font-size: 14px;
@@ -901,15 +903,15 @@ html, body, #root, .app, .map-container {
         .card {
           border-top-width: 8px;
           border-top-style: solid;
-          &.past {
-            border-top-color: $color-past;
+          &.concluded {
+            border-top-color: $color-concluded;
           }
-          &.ongoing {
-            border-top-color: $color-ongoing;
+          &.active {
+            border-top-color: $color-active;
           }
-          &.proposed {
-            border-top-color: $color-proposed;
-          }
+          // &.proposed {
+          //   border-top-color: $color-proposed;
+          // }
           &:first-child {
             border-top-left-radius: 3px;
           }

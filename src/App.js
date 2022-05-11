@@ -33,7 +33,7 @@ import {
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
-const { LONGITUDE, LATITUDE, NAME, LOCATION, TYPE, EID } = SHEET_FIELDS;
+const { LONGITUDE, LATITUDE, NAME, LOCATION, STATUS, EID } = SHEET_FIELDS;
 
 // keep off this.state because when one loads we immediately need to know the state of the others
 // (which, if they were being set by asynchronous this.setState, we might misread)
@@ -220,7 +220,7 @@ class App extends React.Component {
       hovered: {
         name: properties[NAME.sheetId],
         location: properties[LOCATION.sheetId],
-        type: properties[TYPE.sheetId],
+        status: properties[STATUS.sheetId],
         expId,
         x,
         y 
@@ -272,7 +272,7 @@ class App extends React.Component {
     if (this.props.isTouchScreen) {
       return;
     }
-    const { expId, name, location, type, x, y } = this.state.hovered;
+    const { expId, name, location, status, x, y } = this.state.hovered;
     let otherLocations = [];
     if (expId) {
       const features = this.getFeaturesByExperimentId(expId);
@@ -280,7 +280,7 @@ class App extends React.Component {
         .map(f => f.location)
         .filter(l => l !== location);
     }
-    return <Tooltip expId={expId} name={name} location={location} otherLocations={otherLocations} type={type} x={x} y={y}/>;
+    return <Tooltip expId={expId} name={name} location={location} otherLocations={otherLocations} status={status} x={x} y={y}/>;
   }
   
   getCardDock() {
@@ -396,7 +396,7 @@ function load() {
   const experimentsData = { type: 'FeatureCollection', features: [] };
 
   const reqHandler = (source, req) => {
-    const [properties, humanReadableProperties, ...rows] = JSON.parse(
+    const [sectHeaders, colHeaders, notes1, properties, notes2, ...rows] = JSON.parse(
       req.responseText
     ).values;
 
@@ -417,7 +417,7 @@ function load() {
           numericToStringEidMap[numericEid] = stringEid;
           row[p] = numericEid;
         }
-        if (p === TYPE.sheetId) {
+        if (p === STATUS.sheetId) {
           // force lower case to simplify equality comparisons
           row[p] = row[p].toLowerCase();
         }
@@ -425,6 +425,7 @@ function load() {
           row[p] = '';
         }
       });
+
       return {
         type: 'Feature',
         id: row[EID.sheetId],

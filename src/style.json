@@ -3035,9 +3035,8 @@
             "paint": {
               "circle-color": [
                 "case",
-                ["==", ["get", "type"], "past"], "rgb(0,80,92)",
-                ["==", ["get", "type"], "proposed"], "rgb(223,70,73)",
-                ["==", ["get", "type"], "ongoing"], "rgb(175,105,12)",
+                ["==", ["get", "status"], "concluded"], "rgb(0,80,92)",
+                ["==", ["get", "status"], "active"], "rgb(175,105,12)",
                 "gray"
               ],
               "circle-stroke-width": 0,

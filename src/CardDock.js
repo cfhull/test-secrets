@@ -9,7 +9,7 @@ import { MOBILE_BREAKPOINT } from './consts';
 
 smoothscroll.polyfill();
 
-const { LOCATION, NAME, EID, TYPE, WEBSITE } = SHEET_FIELDS;
+const { LOCATION, NAME, EID, STATUS, WEBSITE } = SHEET_FIELDS;
 
 // minimum scroll offset (in px) required to reveal the side buttons (for scroll-up and scroll to export footer)
 const SIDE_BUTTONS_SCROLL_OFFSET = 200;
@@ -194,10 +194,10 @@ class CardDock extends React.PureComponent {
       const {
         [EID.sheetId]: eid,
         [NAME.sheetId]: name,
-        [TYPE.sheetId]: type
+        [STATUS.sheetId]: status
       } = experimentCardSet[0];
-      // add type to class so we can color-code
-      const classes = `card card-${idx} ${type}`;
+      // add status to class so we can color-code
+      const classes = `card card-${idx} ${status}`;
       return (
         <div className={classes} key={'header'+eid} >
           <div className='cell'>
@@ -249,7 +249,7 @@ class CardDock extends React.PureComponent {
           <div className={`card card-${idx}`} key={displayName+eid}>
             <div className={cellClass}>
               <div className='property-name'>{displayName}{expandIcon}</div>
-              <div className={'value'}>{this.getCellContent(experimentCardSet, field)}</div>
+              <div className='value'>{this.getCellContent(experimentCardSet, field)}</div>
             </div>
           </div>
       )});
@@ -307,11 +307,12 @@ class CardDock extends React.PureComponent {
 
     const { sheetId } = field;
     const firstValue = experimentCardSet[0][sheetId];
-
     if (field === WEBSITE && firstValue && firstValue.includes('.')) {
       // make sure website is linkified if it's a link. otherwise it'll be caught
       // by the next condition, for all undifferentiated fields
       return <a href={firstValue} target='_blank' rel='noopener noreferrer'>{firstValue}</a>;
+    } else if (sheetId === STATUS.sheetId) {
+      return firstValue[0].toUpperCase() + firstValue.slice(1).toLowerCase();
     } else if (!this.getIsDifferentiated(experimentCardSet, field)) {
       // for undifferentiated fields, the cell content is the field value
       // for the first (and perhaps only) location

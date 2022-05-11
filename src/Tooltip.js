@@ -94,7 +94,7 @@ class Tooltip extends React.Component {
   }
 
   render() {
-    const { expId, name, type } = this.props;
+    const { expId, name, status } = this.props;
     if (!expId) {
       return null;
     }
@@ -108,7 +108,7 @@ class Tooltip extends React.Component {
       style = { left: this.state.left + 'px', top: this.state.top + 'px' };
     }
 
-    const classes = 'tooltip ' + type;
+    const classes = 'tooltip ' + status;
     return (
       <div className={classes} style={style} ref={this.ref}>
         <div className='name'>{name||'(none)'}</div>

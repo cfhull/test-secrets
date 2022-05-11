@@ -31,9 +31,8 @@ class Legend extends React.Component {
       <div className={classes}>
           <TriggerIcon title={title} onClick={this.toggleExpand} iconType={iconType} />
           <div className='content'>
-            <div><i className='past' />Past Experiments</div>
-            <div><i className='ongoing' />Ongoing Experiments</div>
-            <div><i className='proposed' />Proposed Experiments</div>
+            <div><i className='concluded' />Concluded Experiments</div>
+            <div><i className='active' />Active Experiments</div>
           </div>
       </div>
     )
