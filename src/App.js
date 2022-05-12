@@ -26,6 +26,9 @@ import {
   STARTING_LNG,
   STARTING_LAT,
   STARTING_ZOOM,
+  MIN_ZOOM,
+  MAX_ZOOM,
+  MOBILE_MIN_ZOOM,
   MIN_WIDTH_WORLD_VIEW,
   MOBILE_BREAKPOINT,
 } from './consts'
@@ -77,15 +80,17 @@ class App extends React.Component {
       style: styleData,
       center: [STARTING_LNG, STARTING_LAT],
       zoom: STARTING_ZOOM,
-      maxZoom: 10,
-      maxBounds: [
-        [-170.99, -80], // SW coordinates
-        [189, 85] // NE coordinates
-      ]
+      minZoom: MIN_ZOOM,
+      maxZoom: MAX_ZOOM,
+      // maxBounds: [
+      //   [-170.99, -80], // SW coordinates
+      //   [189, 85] // NE coordinates
+      // ]
     });
 
     if (window.innerWidth < MIN_WIDTH_WORLD_VIEW) {
       // for smaller screens, initialize view on US
+      this.map.setMinZoom(MOBILE_MIN_ZOOM);
       this.resetUSView();
     }
 
@@ -123,12 +128,19 @@ class App extends React.Component {
     // add the click point hint
 
     // Duplin, North Carolina
-    let lng = -76.6; // places it right of intro panel but still on screen
-    let lat = 34.8;
-    if (window.innerWidth > MIN_WIDTH_WORLD_VIEW) {
-      // Barcelona, Spain
-      lng = 2.1;
-      lat = 41.2;
+    // let lng = -76.6; // places it right of intro panel but still on screen
+    // let lat = 34.8;
+    // if (window.innerWidth > MIN_WIDTH_WORLD_VIEW) {
+    //   // Barcelona, Spain
+    //   lng = 2.1;
+    //   lat = 41.2;
+    // }
+
+    let lng = -110.1;
+    let lat = 48.4;
+    if (window.innerWidth <= MIN_WIDTH_WORLD_VIEW) {
+      lng = -89;
+      lat = 15.9;
     }
 
     this.hintEl = document.createElement('div');

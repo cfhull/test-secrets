@@ -12,9 +12,18 @@ const SHEET_URL =
   // 'https://sheets.googleapis.com/v4/spreadsheets/1R2n9m-yA37LOIcUnBT5ZVu2LZyhKl5j46YTqkZMZzyM/values/Sheet1?alt=json&key=AIzaSyD1qajG1iNe_ISqbiCNY3mbrkTTo7v3j4U';
 
 const MAX_SELECTED_POINTS = 3;
-const STARTING_LNG = -30;
-const STARTING_LAT = 29;
-const STARTING_ZOOM = 1.5;
+// const STARTING_LNG = -30;
+// const STARTING_LAT = 29;
+const STARTING_LNG = -110;
+const STARTING_LAT = 43;
+const STARTING_ZOOM = 3;
+
+const MIN_ZOOM = 3;
+const MAX_ZOOM = 10;
+
+const MOBILE_STARTING_ZOOM = 2;
+const MOBILE_MIN_ZOOM = 2;
+// const MOBILE_MAX_ZOOM = 10;
 
 const MOBILE_BREAKPOINT = 600;
 const MIN_WIDTH_WORLD_VIEW = 800;
@@ -31,6 +40,11 @@ export {
   STARTING_LNG,
   STARTING_LAT,
   STARTING_ZOOM,
+  MIN_ZOOM,
+  MAX_ZOOM,
+  MOBILE_STARTING_ZOOM,
+  MOBILE_MIN_ZOOM,
+  // MOBILE_MAX_ZOOM,
   MOBILE_BREAKPOINT,
   MIN_WIDTH_WORLD_VIEW,
 };
