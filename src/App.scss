@@ -190,7 +190,7 @@ html, body, #root, .app, .map-container {
 
 /* CLICK POINT HINT */ 
 .click-point-hint {
-  transform: translateY(-100);
+  transform: translateX(-50%);
   background-color: $hint-background;
   color: $hint-content;
   padding: 15px;
@@ -202,13 +202,15 @@ html, body, #root, .app, .map-container {
   border-radius: 4px;
   box-shadow: rgba(0, 0, 0, 0.1) 3px 3px 5px;
   text-transform: uppercase;
-  // z-index: 2;
   position: absolute;
-  top: 50px; // to move the hint just below the point
-  left: 48px; // to move the hint just to the right of the point
+  left: 50%;
+  bottom: 24px;
+  // top: 50px; // to move the hint just below the point
+  // left: 48px; // to move the hint just to the right of the point
   &.dismissed {
     opacity: 0;
     transition: opacity ease 1s;
+    pointer-events: none;
   }
 }
 
@@ -1200,10 +1202,6 @@ html, body, #root, .app, .map-container {
   }
 
   /* CLICK POINT HINT */
-  .click-point-hint {
-    // keep hint on screen in initial mobile view
-    left: -40px;
-  }
 
   /* LEGEND */
   .legend {

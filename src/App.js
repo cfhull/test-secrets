@@ -5,6 +5,7 @@ import './mapbox-gl-ctrl-attrib.svg';
 import './mapbox-gl-ctrl-logo.svg';
 import './App.scss';
 import CardDock from './CardDock';
+import ClickHint from './ClickHint';
 import IntroPanel from './IntroPanel';
 import Legend from './Legend';
 import LoadingMask from './LoadingMask';
@@ -53,6 +54,7 @@ class App extends React.Component {
       loaded: false,
       isTouchScreen: false,
       introPanelOpen: false,
+      clickHintDismissed: false,
       selectionHintDismissed: false,
       maxCardHintTriggered: false,
       hovered: {},
@@ -124,6 +126,7 @@ class App extends React.Component {
   
   markMapLoaded() {
     loadState.mapLoaded = true;
+    this.finalizeLoad();
     
     // add the click point hint
 
@@ -136,22 +139,20 @@ class App extends React.Component {
     //   lat = 41.2;
     // }
 
-    let lng = -110.1;
-    let lat = 48.4;
-    if (window.innerWidth <= MIN_WIDTH_WORLD_VIEW) {
-      lng = -89;
-      lat = 15.9;
-    }
+    // let lng = -110.1;
+    // let lat = 48.4;
+    // if (window.innerWidth <= MIN_WIDTH_WORLD_VIEW) {
+    //   lng = -89;
+    //   lat = 15.9;
+    // }
 
-    this.hintEl = document.createElement('div');
-    this.hintEl.innerHTML = 'Click a point<br />to learn more';
-    this.hintEl.className = 'click-point-hint';
+    // this.hintEl = document.createElement('div');
+    // this.hintEl.innerHTML = 'Click a point<br />to learn more';
+    // this.hintEl.className = 'click-point-hint';
 
-    this.hint = new mapboxgl.Marker(this.hintEl)
-      .setLngLat([lng, lat])
-      .addTo(this.map);
-
-    this.finalizeLoad();
+    // this.hint = new mapboxgl.Marker(this.hintEl)
+    //   .setLngLat([lng, lat])
+    //   .addTo(this.map);
   }
   
   finalizeLoad() {
@@ -183,11 +184,6 @@ class App extends React.Component {
   }
   
   featuresOnClick(e) {
-    this.hintEl.classList.add('dismissed');
-    setTimeout(() => {
-      this.hint.remove();
-    }, 1000);
-    
     const { id: expId } = e.features[0];
     const selectedIds = [...this.state.selectedIds];
     const idx = selectedIds.indexOf(expId);
@@ -210,7 +206,7 @@ class App extends React.Component {
 
     // dismiss selection hint once multiple points have been selected
     const selectionHintDismissed = (selectedIds.length > 1) || this.state.selectionHintDismissed;
-    this.setState({ selectedIds, selectionHintDismissed });
+    this.setState({ selectedIds, selectionHintDismissed, clickHintDismissed: true });
     this.map.setFeatureState({
         source: 'experiments',
         id: expId
@@ -384,6 +380,7 @@ class App extends React.Component {
           {this.getResetViewButton()}
           <div ref={this.mapContainer} className='map-container' />
           <Legend />
+          <ClickHint dismissed={this.state.clickHintDismissed} />
         </div>
       </div>
     );
