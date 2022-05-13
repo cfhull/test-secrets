@@ -84,6 +84,7 @@ class App extends React.Component {
       zoom: STARTING_ZOOM,
       minZoom: MIN_ZOOM,
       maxZoom: MAX_ZOOM,
+      attributionControl: false,
       // maxBounds: [
       //   [-170.99, -80], // SW coordinates
       //   [189, 85] // NE coordinates
@@ -95,6 +96,10 @@ class App extends React.Component {
       this.map.setMinZoom(MOBILE_MIN_ZOOM);
       this.resetUSView();
     }
+
+    this.map.addControl(new mapboxgl.AttributionControl({
+      customAttribution: "This map is supported by the <a href=\"https://gicp.info/\" target=\"_blank\"><strong>Guaranteed Income Community of Practice</strong></a>"
+    })); 
 
     this.map.addControl(new mapboxgl.NavigationControl());
     // disable map rotation using right click + drag

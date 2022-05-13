@@ -170,6 +170,12 @@ html, body, #root, .app, .map-container {
 }
 
 /* MAPBOX CONTROLS (need access to sass vars) */
+.mapboxgl-ctrl-attrib-inner {
+  strong {
+    font-weight: bold;
+  }
+}
+
 .mapboxgl-ctrl-top-right {
   //top: calc(#{$SS-legend-height} + #{$FS-boundary-padding} + #{$intro-panel-icon-offset});
   top: $zoom-controls-top;
