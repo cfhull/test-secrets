@@ -316,7 +316,7 @@ class CardDock extends React.PureComponent {
     } else if (!this.getIsDifferentiated(experimentCardSet, field)) {
       // for undifferentiated fields, the cell content is the field value
       // for the first (and perhaps only) location
-      return firstValue;
+      return firstValue ? firstValue : "N/A";
     }
     // break cell into block for each location, as they have different values
     return (
