@@ -58,7 +58,8 @@ class App extends React.Component {
       selectionHintDismissed: false,
       maxCardHintTriggered: false,
       hovered: {},
-      selectedIds: []
+      selectedIds: [],
+      lastUpdate: null
     };
 
     this.mapContainer = React.createRef();
@@ -384,7 +385,7 @@ class App extends React.Component {
           {this.getTooltip()}
           {this.getResetViewButton()}
           <div ref={this.mapContainer} className='map-container' />
-          <Legend />
+          <Legend lastUpdate={this.state.lastUpdate} />
           <ClickHint dismissed={this.state.clickHintDismissed} />
         </div>
       </div>
@@ -413,6 +414,8 @@ function load() {
     const rows = JSON.parse(
       req.responseText
     ).values;
+    const lastUpdate = rows.shift()[0];
+    this.setState({ lastUpdate });
     rows.splice(0, 4);
     const properties = rows.shift();
     const items = rows.map(function (r) {

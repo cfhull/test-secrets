@@ -449,8 +449,10 @@ html, body, #root, .app, .map-container {
   padding: 8px;
   border-radius: $standard-border-radius;
   font-size: 12px;
-  text-transform: uppercase;
   box-shadow: $very-trans-black 3px 3px 5px;
+}
+.legend .content {
+  text-transform: uppercase;
 }
 .legend div {
   padding: 4px;
@@ -504,6 +506,9 @@ html, body, #root, .app, .map-container {
 }
 .legend.hidden .content {
   display: none;
+}
+.last-updated {
+  color: #757575;
 }
 
 /* TOOLTIP */

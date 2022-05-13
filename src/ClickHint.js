@@ -1,8 +1,5 @@
 import React from 'react';
 class ClickHint extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     let classes = 'click-point-hint';

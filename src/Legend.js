@@ -3,8 +3,8 @@ import { MOBILE_BREAKPOINT } from './consts';
 import TriggerIcon, { ICON_TYPE } from './TriggerIcon';
 
 class Legend extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     const startExpanded = window.innerWidth > MOBILE_BREAKPOINT;
     this.state = { expanded: startExpanded };
@@ -34,6 +34,11 @@ class Legend extends React.Component {
             <div><i className='concluded' />Concluded Experiments</div>
             <div><i className='active' />Active Experiments</div>
           </div>
+          {this.props.lastUpdate ?
+            <div className="last-updated">
+              Data current through {this.props.lastUpdate}
+            </div>
+          : null}
       </div>
     )
   }
