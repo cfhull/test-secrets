@@ -210,7 +210,7 @@ html, body, #root, .app, .map-container {
   text-transform: uppercase;
   position: absolute;
   left: 50%;
-  bottom: 24px;
+  bottom: 40px;
   // top: 50px; // to move the hint just below the point
   // left: 48px; // to move the hint just to the right of the point
   &.dismissed {
@@ -453,6 +453,9 @@ html, body, #root, .app, .map-container {
 }
 .legend .content {
   text-transform: uppercase;
+  div:first-of-type {
+    margin-top: 6px;
+  }
 }
 .legend div {
   padding: 4px;
@@ -492,12 +495,16 @@ html, body, #root, .app, .map-container {
 .legend.hidden {
   background: transparent;
   box-shadow: none;
-
+  .last-updated {
+    color: #757575;
+      color: #757575;
+      margin-right: 40px;
+      margin-top: -8px;
+  }
   .trigger-icon {
     position: fixed;
     top: $FS-boundary-padding;
     right: $FS-boundary-padding;
-
     width: 40px;
     height: 40px;
     padding: 5px;
@@ -507,9 +514,7 @@ html, body, #root, .app, .map-container {
 .legend.hidden .content {
   display: none;
 }
-.last-updated {
-  color: #757575;
-}
+
 
 /* TOOLTIP */
 .tooltip {
@@ -1231,7 +1236,7 @@ html, body, #root, .app, .map-container {
     margin-top: 16px;
   }
   .legend .content {
-    padding: 16px;
+    padding: 16px 16px 0;
     font-size: 12px;
     letter-spacing: 0.1em;
   }
@@ -1244,9 +1249,19 @@ html, body, #root, .app, .map-container {
     position: relative;
     top: 2px;
   }
+  .legend .last-updated {
+    margin-left: 16px;
+    margin-top: unset;
+    margin-right: unset;
+  }
+  .legend.hidden .last-updated {
+    margin-left: unset;
+    margin-top: 4px;
+    margin-right: unset;
+  }
   .legend .trigger-icon {
     right: 10px;
-    // top: 10px;
+    top: 8px;
 
     &.legend {
       right: $SS-boundary-padding;
