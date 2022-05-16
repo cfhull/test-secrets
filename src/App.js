@@ -424,6 +424,7 @@ function load() {
         row[p] = r[pIdx];
         if ([LATITUDE.sheetId, LONGITUDE.sheetId].indexOf(p) !== -1) {
           // mapbox wants numeric lat/long
+          // if(!row[p]) return false;
           row[p] = +row[p];
         }
         if (p === EID.sheetId) {
@@ -443,7 +444,9 @@ function load() {
           row[p] = '';
         }
       });
-      return {
+
+      //if lat or lng is missing from data
+      return row[LATITUDE.sheetId] && row[LONGITUDE.sheetId] ? {
         type: 'Feature',
         id: row[EID.sheetId],
         geometry: {
@@ -451,7 +454,10 @@ function load() {
           coordinates: [row[LATITUDE.sheetId], row[LONGITUDE.sheetId]]
         },
         properties: row
-      };
+      }
+    : null;
+    }).filter(function (r) {
+      return r !== null;
     });
     
     experimentsData.features.push(...items);
