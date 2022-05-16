@@ -49,8 +49,12 @@ const SHEET_FIELDS = {
     displayName: 'Implementation Start',
     sheetId: 'start'
   },
-  FUNDING: {
+  PARTICIPANTS: {
     displayName: 'Total Number of Participants',
+    sheetId: 'participants'
+  },
+  FUNDING: {
+    displayName: 'Type of Funding',
     sheetId: 'funding'
   },
   DETAILS: {
@@ -69,17 +73,13 @@ const SHEET_FIELDS = {
     displayName: 'Is the pilot a Randomized Control Trial (RCT)',
     sheetId: 'rct'
   },
-  RECIPIENTS: {
-    displayName: 'Number of Recipients',
-    sheetId: 'recipients'
-  },
   TARGETING: {
     displayName: 'Type of Targeting',
     sheetId: 'targeting',
     // isExpandible: true
   },
   UNIT: {
-    displayName: 'Participants receiving the transfer ',
+    displayName: 'Participants receiving the transfer',
     sheetId: 'unit'
   },
   AMOUNT: {
@@ -133,7 +133,7 @@ const ORDERED_CARD_FIELDS = [
   FEATURE_HEADERS.IMPLEMENTATION,
   SHEET_FIELDS.DATES,
   SHEET_FIELDS.STATUS,
-  SHEET_FIELDS.RECIPIENTS,
+  SHEET_FIELDS.PARTICIPANTS,
   SHEET_FIELDS.FUNDING,
   SHEET_FIELDS.UNIT,
   SHEET_FIELDS.TARGETING,
@@ -152,7 +152,7 @@ const ORDERED_CSV_FIELDS = [
   SHEET_FIELDS.AFFILIATIONS,
   SHEET_FIELDS.DATES,
   SHEET_FIELDS.STATUS,
-  SHEET_FIELDS.RECIPIENTS,
+  SHEET_FIELDS.PARTICIPANTS,
   SHEET_FIELDS.FUNDING,
   SHEET_FIELDS.UNIT,
   SHEET_FIELDS.TARGETING,
