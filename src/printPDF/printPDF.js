@@ -10,15 +10,12 @@ import bullet from './images/bullet.js';
 const { maxCharEllipsis } = require('max-char-ellipsis');
 
 const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
-  // console.log('printPDF()', cardData);
-
   /**
    * Returns array of table headers based on contents of cardData
    * @param  Object cardData
    * @return Array
    */
   const getTableHeaders = (cardData) => {
-    // console.log(cardArr);
     const hStyles = {
       font: 'helvetica',
       fillColor: '#e3e3e3',
@@ -29,13 +26,11 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
       styles: hStyles
     }];
     cardData.forEach(el => {
-      // console.log(el[0].name);
       arr.push({
         content: el[0].name,
         styles: hStyles
       });
     })
-    // console.log(arr);
     return [arr];
   }
 
@@ -51,20 +46,17 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
 
     if (item === 'location') {
       cardData.forEach(el => {
-        // console.log(el[0].name)
         let str = '';
         el.forEach(i => {
-          // console.log(i);
-          // console.log(i[item]);
           if ((i[item]).length >= 0) {
             str = str + i[item] + '\n';
           }
         })
         arr.push(str);
       })
-    } else if (item === 'recipients') {
+    } else if (item === 'participants') {
       cardData.forEach(el => {
-        // If more than one item in recipients array, fancy formatting.
+        // If more than one item in participants array, fancy formatting.
         if (el.length > 1) {
           let str = '';
           el.forEach(i => {
@@ -74,7 +66,7 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
           })
           arr.push(str);
         } else {
-          // If only one item in recipients array, no fancy formatting.
+          // If only one item in participants array, no fancy formatting.
           if (el[0][item].length > 0) {
             arr.push(el[0][item]);
           }
@@ -87,14 +79,10 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
     } else {
       // Regular, no fancy formatting.
       cardData.forEach(el => {
-        // console.log(el[0].name)
-        if (el[0][item].length > 0) {
-          arr.push(el[0][item]);
-        }
+        arr.push(el[0][item] ? el[0][item] : "N/A");
       })
     }
 
-    // console.log(arr);
     if (arr.length <= 0) {
       arr.push('N/A');
     }
@@ -115,7 +103,6 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
    * @return Array           Returns an array of objects, one for each link
    */
   const getRelatedLinksList = (index, cardData) => {
-    // console.log('getRelatedLinksList');
     let maxTitleLength = 27;
     if (cardData.length === 2) {
       maxTitleLength = 35;
@@ -221,21 +208,23 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
   const getTableContents = (cardData, doc) => {
     var body = [
       getTableRow('LOCATION', cardData, 'location'),
-      getTableRow('IMPLEMENTATION DATES', cardData, 'dates'),
-      getTableRow('NUMBER OF RECIPIENTS', cardData, 'recipients'),
+      getTableRow('NEIGHBORHOOD', cardData, 'neighborhood'),
       getHeadingRow('ORGANIZATIONAL FEATURES', cardData),
-      getTableRow('IMPLEMENTING AGENCY', cardData, 'implementer'),
-      getTableRow('RESEARCH AGENCY', cardData, 'researcher'),
-      getTableRow('FUNDING AGENCY', cardData, 'funder'),
+      getTableRow('MANAGING ORGANIZATIONS/AGENCIES', cardData, 'org'),
+      getTableRow('OTHER AFFILIATIONS', cardData, 'affiliations'),
       getHeadingRow('IMPLEMENTATION FEATURES', cardData),
+      getTableRow('IMPLEMENTATION DATES', cardData, 'dates'),
+      getTableRow('IMPLEMENTATION STATUS', cardData, 'status'),
+      getTableRow('TOTAL NUMBER OF PARTICIPANTS', cardData, 'participants'),
+      getTableRow('TYPE OF FUNDING', cardData, 'funding'),
+      getTableRow('PARTICIPANTS RECEIVING THE TRANSFER', cardData, 'unit'),
       getTableRow('TYPE OF TARGETING', cardData, 'targeting'),
-      getTableRow('UNIT OF RECIPIENT', cardData, 'unit'),
-      getTableRow('AMOUNT OF TRANSFER', cardData, 'amount'),
+      getTableRow('TARGETING DETAILS', cardData, 'details'),
+      getTableRow('TRANSFER AMOUNT', cardData, 'amount'),
       getTableRow('FREQUENCY OF PAYMENT', cardData, 'frequency'),
-      getTableRow('METHOD OF EVALUATION', cardData, 'evaluation'),
-      getTableRow('ADDITIONAL NOTES OF INTEREST', cardData, 'notes'),
-      getTableRow('LINK TO WEBSITE', cardData, 'website'),
-      getTableRow('LINKS TO RELATED RESOURCES', cardData, 'related')
+      getTableRow('DURATION OF PAYMENT', cardData, 'duration'),
+      getTableRow('OTHER INTERVENTION COMPONENTS', cardData, 'intervention'),
+      getTableRow('IS THE PILOT RANDOMIZED CONTROL TRIAL (RCT)', cardData, 'rct'),
     ]
     return body;
   }
@@ -287,7 +276,6 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
     cellWidth: 'auto',
     startY: 35,
     didDrawCell: function (data) {
-     // console.log('didDrawCell()');
      if (data.row.index === 15) {
        if (data.column.index > 0) {
          const links = getRelatedLinksList(data.column.index, cardData);
