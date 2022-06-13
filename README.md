@@ -1,6 +1,6 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-The project maps experiments via the JSON output of [this sheet](https://docs.google.com/spreadsheets/d/1dGts9mhsRIUaetl-uslgQYMrs6sC1lQg2BZp5fuCoxU/edit#gid=1291120396). The map deployed to Netlify is embedded in the [live site](https://basicincome.stanford.edu/experiments-map/).
+The project maps experiments via the JSON output of [this sheet](https://docs.google.com/spreadsheets/d/1dGts9mhsRIUaetl-uslgQYMrs6sC1lQg2BZp5fuCoxU/edit#gid=1291120396). This repo is deployed to Netlify and the map is embedded (via iframe) in the [live site](https://basicincome.stanford.edu/experiments-map/).
 
 **Note: this app currently suports node versions <= 13.x if you experience issues with node-sass try adjusting your node version (e.g. `nvm use 13`)**
 
