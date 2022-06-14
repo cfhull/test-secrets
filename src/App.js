@@ -469,6 +469,9 @@ function load() {
           }
         });
 
+        if (!row[LATITUDE.sheetId] || !row[LONGITUDE.sheetId]) {
+          console.log('Invalid latlng: ', r);
+        }
         //if lat or lng is missing from data
         return row[LATITUDE.sheetId] && row[LONGITUDE.sheetId]
           ? {
