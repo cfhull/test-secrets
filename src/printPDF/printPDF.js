@@ -21,18 +21,20 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
       fillColor: '#e3e3e3',
       textColor: '#000',
     };
-    let arr = [{
-      content: '',
-      styles: hStyles
-    }];
-    cardData.forEach(el => {
+    let arr = [
+      {
+        content: '',
+        styles: hStyles,
+      },
+    ];
+    cardData.forEach((el) => {
       arr.push({
         content: el[0].name,
-        styles: hStyles
+        styles: hStyles,
       });
-    })
+    });
     return [arr];
-  }
+  };
 
   /**
    * Fetches a table row based on row type
@@ -45,25 +47,25 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
     let arr = [label];
 
     if (item === 'location') {
-      cardData.forEach(el => {
+      cardData.forEach((el) => {
         let str = '';
-        el.forEach(i => {
-          if ((i[item]).length >= 0) {
+        el.forEach((i) => {
+          if (i[item].length >= 0) {
             str = str + i[item] + '\n';
           }
-        })
+        });
         arr.push(str);
-      })
+      });
     } else if (item === 'participants') {
-      cardData.forEach(el => {
+      cardData.forEach((el) => {
         // If more than one item in participants array, fancy formatting.
         if (el.length > 1) {
           let str = '';
-          el.forEach(i => {
-            if ((i[item]).length >= 0) {
+          el.forEach((i) => {
+            if (i[item].length >= 0) {
               str = str + String(i['location']).replace(';', '') + ': ' + i[item] + '\n\n';
             }
-          })
+          });
           arr.push(str);
         } else {
           // If only one item in participants array, no fancy formatting.
@@ -71,23 +73,23 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
             arr.push(el[0][item]);
           }
         }
-      })
+      });
     } else if (item === 'related') {
-      cardData.forEach(el => {
+      cardData.forEach((el) => {
         arr.push('');
       });
     } else {
       // Regular, no fancy formatting.
-      cardData.forEach(el => {
-        arr.push(el[0][item] ? el[0][item] : "N/A");
-      })
+      cardData.forEach((el) => {
+        arr.push(el[0][item] ? el[0][item] : 'N/A');
+      });
     }
 
     if (arr.length <= 0) {
       arr.push('N/A');
     }
     return arr;
-  }
+  };
 
   const trimString = (text, length) => {
     if (text.length > length) {
@@ -95,7 +97,7 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
     } else {
       return text;
     }
-  }
+  };
   /**
    * Builds an array of "related links" objects with title and url
    * @param  String label    Label of row
@@ -121,21 +123,21 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
             let title = trimString(item['linktitle' + i], maxTitleLength);
             arr.push({
               title: title,
-              url: item['linkurl' + i]
-            })
+              url: item['linkurl' + i],
+            });
           } else {
             // No title, use link url for display.
             let title = trimString(item['linkurl' + i], maxTitleLength);
             arr.push({
               title: title,
-              url: item['linkurl' + i]
-            })
+              url: item['linkurl' + i],
+            });
           }
         }
       }
     }
     return arr;
-  }
+  };
 
   /**
    * Fetches special row for in-table heading dividers
@@ -144,19 +146,21 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
    * @return Array          Array with one item for each cell in the row
    */
   const getHeadingRow = (label, cardData) => {
-    let arr = [{
-      content: label,
-      colSpan: 4,
-      styles: {
-        valign: 'middle',
-        halign: 'center',
-        font: 'SofiaProLight',
-        fontSize: 11,
-        fontColor: '#757575'
-      }
-    }];
+    let arr = [
+      {
+        content: label,
+        colSpan: 4,
+        styles: {
+          valign: 'middle',
+          halign: 'center',
+          font: 'SofiaProLight',
+          fontSize: 11,
+          fontColor: '#757575',
+        },
+      },
+    ];
     return arr;
-  }
+  };
 
   /**
    * Builds columns based on number of items in cardData
@@ -164,12 +168,12 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
    * @return Array          Array of columns
    */
   const getColumns = (cardData) => {
-    let arr = [{dataKey: 0}];
+    let arr = [{ dataKey: 0 }];
     cardData.forEach((i, el) => {
-      arr.push({datakey: i + 1});
-    })
+      arr.push({ datakey: i + 1 });
+    });
     return arr;
-  }
+  };
 
   /**
    * Sets column styling for all columns based on number of cards.
@@ -179,26 +183,26 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
   const getColumnStyle = (cardData) => {
     if (cardData.length === 1) {
       return {
-        0: {minCellWidth: '75'},
-        1: {minCellWidth: '150'}
+        0: { minCellWidth: '75' },
+        1: { minCellWidth: '150' },
       };
     }
     if (cardData.length === 2) {
       return {
-        0: {minCellWidth: '80'},
-        1: {minCellWidth: '80'},
-        2: {minCellWidth: '80'}
+        0: { minCellWidth: '80' },
+        1: { minCellWidth: '80' },
+        2: { minCellWidth: '80' },
       };
     }
     if (cardData.length === 3) {
       return {
-        0: {minCellWidth: '60'},
-        1: {minCellWidth: '60'},
-        2: {minCellWidth: '60'},
-        3: {minCellWidth: '60'},
+        0: { minCellWidth: '60' },
+        1: { minCellWidth: '60' },
+        2: { minCellWidth: '60' },
+        3: { minCellWidth: '60' },
       };
     }
-  }
+  };
 
   /**
    * Fetches table contents by calling row-building functions.
@@ -225,15 +229,15 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
       getTableRow('DURATION OF PAYMENT', cardData, 'duration'),
       getTableRow('OTHER INTERVENTION COMPONENTS', cardData, 'intervention'),
       getTableRow('IS THE PILOT RANDOMIZED CONTROL TRIAL (RCT)', cardData, 'rct'),
-    ]
+    ];
     return body;
-  }
+  };
 
   // Init jsPDF doc
   const doc = new jsPDF({
     orientation: 'landscape',
     format: 'letter',
-    filters: ["ASCIIHexEncode"]
+    filters: ['ASCIIHexEncode'],
   });
 
   // Add fonts
@@ -250,7 +254,7 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
     subject: printText,
     author: 'Stanford Basic Income Lab',
     keywords: 'basic income',
-    creator: 'Stanford Basic Income Lab'
+    creator: 'Stanford Basic Income Lab',
   });
 
   // Add table
@@ -271,39 +275,39 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
     headStyles: {
       fillColor: '#f9f9f9',
       textColor: '#000',
-      font: 'helvetica'
+      font: 'helvetica',
     },
     cellWidth: 'auto',
     startY: 35,
     didDrawCell: function (data) {
-     if (data.row.index === 15) {
-       if (data.column.index > 0) {
-         const links = getRelatedLinksList(data.column.index, cardData);
-         const x = data.cell.textPos.x + 1;
-         const y = data.cell.textPos.y + 2;
-         links.forEach((el, i) => {
-           // Insert image for bullet point.
-           doc.addImage(bullet, 'PNG', x + 0.5, y + (5*i), 1, 1)
-           // Insert bullet item.
-           doc.textWithLink(el.title, x + 3, y + 1.5 + (5*i), {
-             url: el.url
-           });
-         })
-       }
-     }
+      if (data.row.index === 15) {
+        if (data.column.index > 0) {
+          const links = getRelatedLinksList(data.column.index, cardData);
+          const x = data.cell.textPos.x + 1;
+          const y = data.cell.textPos.y + 2;
+          links.forEach((el, i) => {
+            // Insert image for bullet point.
+            doc.addImage(bullet, 'PNG', x + 0.5, y + 5 * i, 1, 1);
+            // Insert bullet item.
+            doc.textWithLink(el.title, x + 3, y + 1.5 + 5 * i, {
+              url: el.url,
+            });
+          });
+        }
+      }
     },
     didDrawPage: function (data) {
       // Header
       if (doc.internal.getNumberOfPages() === 1) {
         // Heading
         doc.setFont('SofiaProBold');
-        doc.setFontSize(20)
-        doc.text(printHeading, data.settings.margin.left, 22)
+        doc.setFontSize(20);
+        doc.text(printHeading, data.settings.margin.left, 22);
         // Intro text
         doc.setFont('SofiaProLight');
-        doc.setFontSize(12)
-        doc.setFontStyle('normal')
-        doc.text(printText, data.settings.margin.left, 29)
+        doc.setFontSize(12);
+        doc.setFontStyle('normal');
+        doc.text(printText, data.settings.margin.left, 29);
       }
 
       // Footer page number and source info
@@ -316,17 +320,22 @@ const printPDF = (cardData, printHeading, printText, footerText, siteUrl) => {
       //   console.log('total pages obj ', doc.putTotalPages(totalPagesExp));
       // }
       doc.setFont('SofiaProLight');
-      doc.setFontSize(9)
+      doc.setFontSize(9);
 
       // jsPDF 1.4+ uses getWidth, <1.4 uses .width
-      var pageSize = doc.internal.pageSize
-      var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight()
-      var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth()
-      doc.text(pageNum, data.settings.margin.left, pageHeight - 10)
-      doc.text(footerText + ' ' + siteUrl, pageWidth - data.settings.margin.right, pageHeight - 10, 'right');
-    }
-  })
+      var pageSize = doc.internal.pageSize;
+      var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+      var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+      doc.text(pageNum, data.settings.margin.left, pageHeight - 10);
+      doc.text(
+        footerText + ' ' + siteUrl,
+        pageWidth - data.settings.margin.right,
+        pageHeight - 10,
+        'right',
+      );
+    },
+  });
   doc.save('Basic-Income__Experiments-and-Related-Projects.pdf');
-}
+};
 
 export default printPDF;

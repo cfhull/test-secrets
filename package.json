@@ -27,7 +27,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "prepare": "husky install",
-    "format": "prettier --write \"src/**/*.{js,css,md}\""
+    "format": "prettier --write \"src/**/*.{js,css,scss,json,md}\""
   },
   "eslintConfig": {
     "extends": "react-app"

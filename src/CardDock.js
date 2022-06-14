@@ -3,7 +3,13 @@ import * as smoothscroll from 'smoothscroll-polyfill';
 import _ from 'lodash';
 import TriggerIcon, { ICON_TYPE } from './TriggerIcon';
 import ExportFooter from './ExportFooter.js';
-import { SHEET_FIELDS, ORDERED_CARD_FIELDS, ORDERED_CSV_FIELDS, COMPOSITE_FIELDS, LINK_FIELD_PAIRS } from './fields';
+import {
+  SHEET_FIELDS,
+  ORDERED_CARD_FIELDS,
+  ORDERED_CSV_FIELDS,
+  COMPOSITE_FIELDS,
+  LINK_FIELD_PAIRS,
+} from './fields';
 import UserHint from './UserHint';
 import { MOBILE_BREAKPOINT } from './consts';
 
@@ -15,14 +21,14 @@ const { LOCATION, NAME, EID, STATUS, WEBSITE } = SHEET_FIELDS;
 const SIDE_BUTTONS_SCROLL_OFFSET = 200;
 // time (in seconds) before the max card user hint auto-dismisses
 const MAX_CARD_HINT_TIMEOUT = 30;
-// delay (in ms) between fires of the scroll handler. 
+// delay (in ms) between fires of the scroll handler.
 const SCROLL_THROTTLE_DELAY = 200;
 // delay (in ms) between fires of a back-up updateScroll handler for mobile.
 const IOS_SCROLL_FIX_INTERVAL = 600;
 
 // this will catch many other cases (including Chrome Android...), really only necessary for iPad
-const SCROLL_GAP_FIX = navigator.userAgent.indexOf('AppleWebKit') > 0
-  && navigator.userAgent.indexOf('Safari') > 0;
+const SCROLL_GAP_FIX =
+  navigator.userAgent.indexOf('AppleWebKit') > 0 && navigator.userAgent.indexOf('Safari') > 0;
 
 // pure component? (shallow compare map features?) (perf)
 class CardDock extends React.PureComponent {
@@ -36,14 +42,14 @@ class CardDock extends React.PureComponent {
       // duplicates isTouchScreen prop, but if app loads with active experiment and user scrolls
       // before touching map, we wouldn't know to disable mask without this
       isMobile: false,
-      scrollHintDismissed: false,  
+      scrollHintDismissed: false,
       maxPointHintDismissed: false,
       mapMaskActive: false,
       bottomMaskActive: false,
       sideButtonsActive: false,
       printHeading: `Basic Income Experiments Report`,
       printText: `Data compiled by the Stanford Basic Income Lab`,
-      footerText: `Generated from`
+      footerText: `Generated from`,
     };
 
     this.cardDockContainerRef = React.createRef();
@@ -58,11 +64,10 @@ class CardDock extends React.PureComponent {
     this.scrollUp = this.scrollUp.bind(this);
     this.scrollDown = this.scrollDown.bind(this);
     this.exportCSV = this.exportCSV.bind(this);
-    this.throttledUpdateScroll = _.throttle(
-      this.throttledUpdateScroll,
-      SCROLL_THROTTLE_DELAY,
-      { leading: true, trailing: true }
-    ).bind(this);
+    this.throttledUpdateScroll = _.throttle(this.throttledUpdateScroll, SCROLL_THROTTLE_DELAY, {
+      leading: true,
+      trailing: true,
+    }).bind(this);
 
     this.scrollInterval = null;
   }
@@ -114,7 +119,7 @@ class CardDock extends React.PureComponent {
   updateScroll(e) {
     this.throttledUpdateScroll(e.deltaY);
   }
-  
+
   updateScrollMobile(e) {
     this.setMobile();
     this.updateScroll(e);
@@ -132,25 +137,31 @@ class CardDock extends React.PureComponent {
 
     const SCROLL_BUFFER = 850;
     let bottomMaskActive = false;
-    if (SCROLL_GAP_FIX && // ensure we want to use fix
-        this.cardDockContainerHeight && // ensure we want to use fix
-        scrollTop > window.innerHeight + SCROLL_BUFFER && // we've scrolled down a safe amount (won't mask map above)
-        (scrollTop + SCROLL_BUFFER) > this.cardDockContainerHeight // approaching bottom of CardDock
+    if (
+      SCROLL_GAP_FIX && // ensure we want to use fix
+      this.cardDockContainerHeight && // ensure we want to use fix
+      scrollTop > window.innerHeight + SCROLL_BUFFER && // we've scrolled down a safe amount (won't mask map above)
+      scrollTop + SCROLL_BUFFER > this.cardDockContainerHeight // approaching bottom of CardDock
     ) {
       bottomMaskActive = true; // all true, so show mask to cover space below CardDock
 
-      if ((scrollTop > this.cardDockContainerHeight) && (window.innerWidth > MOBILE_BREAKPOINT)) {
+      if (scrollTop > this.cardDockContainerHeight && window.innerWidth > MOBILE_BREAKPOINT) {
         // we've *passed* CardDock bottom - gently pull it back down
         this.props.appRef.current.scroll({
           top: this.cardDockContainerHeight,
-          behavior: 'smooth'
+          behavior: 'smooth',
         });
       }
     }
 
     const sideButtonsActive = scrollTop > SIDE_BUTTONS_SCROLL_OFFSET;
 
-    this.setState({ scrollHintDismissed: true, sideButtonsActive, mapMaskActive, bottomMaskActive });
+    this.setState({
+      scrollHintDismissed: true,
+      sideButtonsActive,
+      mapMaskActive,
+      bottomMaskActive,
+    });
   }
 
   // toggleProperty(property, expanded) {
@@ -194,24 +205,25 @@ class CardDock extends React.PureComponent {
       const {
         [EID.sheetId]: eid,
         [NAME.sheetId]: name,
-        [STATUS.sheetId]: status
+        [STATUS.sheetId]: status,
       } = experimentCardSet[0];
       // add status to class so we can color-code
       const classes = `card card-${idx} ${status}`;
       return (
-        <div className={classes} key={'header'+eid} >
-          <div className='cell'>
-            {name||'(none)'}
+        <div className={classes} key={'header' + eid}>
+          <div className="cell">
+            {name || '(none)'}
             <TriggerIcon iconType={ICON_TYPE.XCLOSE} onClick={this.removeCard.bind(this, eid)} />
           </div>
         </div>
-    )});
-    return <div className='row header'>{names}</div>;
+      );
+    });
+    return <div className="row header">{names}</div>;
   }
 
   getRows() {
     // form a row for each field
-    return ORDERED_CARD_FIELDS.map(field => {
+    return ORDERED_CARD_FIELDS.map((field) => {
       const { displayName, sheetId, isFeatureHeader } = field;
 
       // const expandible = this.getIsExpandible(field);
@@ -243,18 +255,25 @@ class CardDock extends React.PureComponent {
 
       // form a cell for each experiment for that field
       const cells = this.props.cardData.map((experimentCardSet, idx) => {
-
         const { [EID.sheetId]: eid } = experimentCardSet[0];
         return (
-          <div className={`card card-${idx}`} key={displayName+eid}>
+          <div className={`card card-${idx}`} key={displayName + eid}>
             <div className={cellClass}>
-              <div className='property-name'>{displayName}{expandIcon}</div>
-              <div className='value'>{this.getCellContent(experimentCardSet, field)}</div>
+              <div className="property-name">
+                {displayName}
+                {expandIcon}
+              </div>
+              <div className="value">{this.getCellContent(experimentCardSet, field)}</div>
             </div>
           </div>
-      )});
-      
-      return <div className='row' key={displayName}>{cells}</div>;
+        );
+      });
+
+      return (
+        <div className="row" key={displayName}>
+          {cells}
+        </div>
+      );
     });
   }
 
@@ -293,7 +312,7 @@ class CardDock extends React.PureComponent {
     const { sheetId } = field;
     const [locationOneData, ...otherLocationsData] = experimentCardSet;
     const firstValue = locationOneData[sheetId];
-    return _.some(otherLocationsData, l => l[sheetId] !== firstValue);
+    return _.some(otherLocationsData, (l) => l[sheetId] !== firstValue);
   }
 
   getCellContent(experimentCardSet, field) {
@@ -310,60 +329,56 @@ class CardDock extends React.PureComponent {
     if (field === WEBSITE && firstValue && firstValue.includes('.')) {
       // make sure website is linkified if it's a link. otherwise it'll be caught
       // by the next condition, for all undifferentiated fields
-      return <a href={firstValue} target='_blank' rel='noopener noreferrer'>{firstValue}</a>;
+      return (
+        <a href={firstValue} target="_blank" rel="noopener noreferrer">
+          {firstValue}
+        </a>
+      );
     } else if (sheetId === STATUS.sheetId) {
       return firstValue[0].toUpperCase() + firstValue.slice(1).toLowerCase();
     } else if (!this.getIsDifferentiated(experimentCardSet, field)) {
       // for undifferentiated fields, the cell content is the field value
       // for the first (and perhaps only) location
-      return firstValue ? firstValue : "N/A";
+      return firstValue ? firstValue : 'N/A';
     }
     // break cell into block for each location, as they have different values
     return (
       <>
-        {experimentCardSet.map(locationData => {
-          const {
-            [EID.sheetId]: eid,
-            [LOCATION.sheetId]: location,
-          } = locationData;
+        {experimentCardSet.map((locationData) => {
+          const { [EID.sheetId]: eid, [LOCATION.sheetId]: location } = locationData;
           return (
             <div key={`cell-content-${sheetId}-${eid}-${location}`}>
-              <div
-                title={location}
-                className='location-title'
-              >
+              <div title={location} className="location-title">
                 {location}
               </div>
               {locationData[sheetId]}
             </div>
-          )
+          );
         })}
       </>
     );
   }
 
   getLocationCellContent(experimentCardSet) {
-    const cellContent = experimentCardSet.map(locationData => {
-      const {
-        [EID.sheetId]: eid,
-        [LOCATION.sheetId]: location,
-      } = locationData;
+    const cellContent = experimentCardSet.map((locationData) => {
+      const { [EID.sheetId]: eid, [LOCATION.sheetId]: location } = locationData;
       return (
         <div
           title={location}
-          className='location-cell-content'
+          className="location-cell-content"
           key={`cell-content-location-${eid}-${location}`}
         >
           {location}
         </div>
-    )});
+      );
+    });
     return <>{cellContent}</>;
   }
 
   getLinksContent(experimentCardSet) {
     const linkMap = {};
     const orderedLinks = [];
-    experimentCardSet.forEach(locationData => {
+    experimentCardSet.forEach((locationData) => {
       LINK_FIELD_PAIRS.forEach(({ urlField, titleField }) => {
         const urlValue = locationData[urlField.sheetId];
         if (urlValue && !linkMap[urlValue]) {
@@ -371,22 +386,22 @@ class CardDock extends React.PureComponent {
           const titleValue = locationData[titleField.sheetId] || urlValue;
           orderedLinks.push({ urlValue, titleValue });
         }
-      })
+      });
     });
 
     return (
-      <div
-        key={`cell-content-links-${experimentCardSet[0][EID.sheetId]}`}
-      >
+      <div key={`cell-content-links-${experimentCardSet[0][EID.sheetId]}`}>
         {orderedLinks.map(({ urlValue, titleValue }) => (
-          <a key={urlValue} href={urlValue} target='_blank' rel='noopener noreferrer'>{titleValue}</a>
+          <a key={urlValue} href={urlValue} target="_blank" rel="noopener noreferrer">
+            {titleValue}
+          </a>
         ))}
       </div>
     );
   }
 
   getScrollHint() {
-    const content = <>scroll for more {<TriggerIcon iconType={ICON_TYPE.D_ARROW} />}</>
+    const content = <>scroll for more {<TriggerIcon iconType={ICON_TYPE.D_ARROW} />}</>;
     return (
       <UserHint
         content={content}
@@ -395,7 +410,7 @@ class CardDock extends React.PureComponent {
       />
     );
   }
-  
+
   getPrintIntro() {
     const heading = this.state.printHeading;
     const text = this.state.printText;
@@ -410,7 +425,7 @@ class CardDock extends React.PureComponent {
   getSelectionHint() {
     const content = (
       <>
-        click more map points to compare experiments<p className='maximum'>(max. 3)</p>
+        click more map points to compare experiments<p className="maximum">(max. 3)</p>
         <TriggerIcon iconType={ICON_TYPE.R_ARROW} />
       </>
     );
@@ -419,22 +434,20 @@ class CardDock extends React.PureComponent {
     if (this.state.scrollHintDismissed) {
       classes += ' scroll-initiated';
     }
-    
+
     return (
-      <UserHint
-        content={content}
-        classes={classes}
-        dismissed={this.props.selectionHintDismissed}
-      />
+      <UserHint content={content} classes={classes} dismissed={this.props.selectionHintDismissed} />
     );
   }
-  
+
   getMaxPointHint() {
-    const content = <>Only 3 experiments may be viewed at once. Remove a card to add another experiment.</>
+    const content = (
+      <>Only 3 experiments may be viewed at once. Remove a card to add another experiment.</>
+    );
 
     let classes = 'max-point-hint';
     if (this.props.maxCardHintTriggered) {
-      classes += ' triggered'
+      classes += ' triggered';
     }
 
     return (
@@ -459,10 +472,10 @@ class CardDock extends React.PureComponent {
 
     return (
       <div className={classes}>
-        <div className='scroll-up-button' onClick={this.scrollUp} title='Scroll to top' />
-        <div className='share-export' onClick={this.scrollDown} title='Scroll to export options' />  
+        <div className="scroll-up-button" onClick={this.scrollUp} title="Scroll to top" />
+        <div className="share-export" onClick={this.scrollDown} title="Scroll to export options" />
       </div>
-    )
+    );
   }
 
   getExportFooter() {
@@ -480,9 +493,9 @@ class CardDock extends React.PureComponent {
         siteUrl={this.props.siteUrl}
         classes={classes}
       />
-    )
+    );
   }
-  
+
   scrollUp() {
     // if there's a scrollInterval, let that deal with hint dismissing sidebuttons so it doesn't oscillate off/on
     const sideButtonsActive = this.scrollInterval;
@@ -490,44 +503,46 @@ class CardDock extends React.PureComponent {
     this.setState({ mapMaskActive: false, bottomMaskActive: false, sideButtonsActive });
     this.props.appRef.current.scroll({
       top: 0,
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
-  };
-  
+  }
+
   scrollDown() {
     this.setState({ bottomMaskActive: true });
     this.props.appRef.current.scroll({
       top: this.cardDockContainerHeight || 10000, // height if we have it, else big number (scroll all the way down)
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
-  };
+  }
 
   exportCSV() {
     try {
-      const { cardData } = this.props;
+      const { cardData } = this.props;
       const headers = _.map(ORDERED_CSV_FIELDS, 'displayName');
 
       const valueArrays = [headers];
-      _.each(cardData, experimentCardSet => {
-        _.each(experimentCardSet, locationData => {
-          valueArrays.push(_.map(ORDERED_CSV_FIELDS, f => {
-            let v = locationData[f.sheetId];
-            // new API returns undefined rather than "" for empty cells
-            if (!v) return '';
-            // seems new lines are fine
-            // v = v.replace(/\n/gm, '');
-            v = v.replace(/"/gm, "'");
-            return v ? `"${v}"` : '';
-          }));
+      _.each(cardData, (experimentCardSet) => {
+        _.each(experimentCardSet, (locationData) => {
+          valueArrays.push(
+            _.map(ORDERED_CSV_FIELDS, (f) => {
+              let v = locationData[f.sheetId];
+              // new API returns undefined rather than "" for empty cells
+              if (!v) return '';
+              // seems new lines are fine
+              // v = v.replace(/\n/gm, '');
+              v = v.replace(/"/gm, "'");
+              return v ? `"${v}"` : '';
+            }),
+          );
         });
       });
 
       let csv = '';
-      _.each(valueArrays, row => {
+      _.each(valueArrays, (row) => {
         csv += row.join(',');
         csv += '\n';
-      })
-      
+      });
+
       const hiddenElement = document.createElement('a');
       // encodeURI broke on #:
       // https://stackoverflow.com/questions/55267116/how-to-download-csv-using-a-href-with-a-number-sign-in-chrome
@@ -547,7 +562,7 @@ class CardDock extends React.PureComponent {
     // if (!this.props.cardData.length) {
     //   return null;
     // }
-    
+
     const classes = `card-dock card-count-${this.props.cardData.length}`;
 
     let maskClass = 'card-dock-mask';
@@ -556,13 +571,13 @@ class CardDock extends React.PureComponent {
     }
     return (
       <div>
-        {this.state.bottomMaskActive && <div className='bottom-mask'/>}
+        {this.state.bottomMaskActive && <div className="bottom-mask" />}
         <div
           className={maskClass}
           onWheel={this.updateScroll}
           onTouchMove={this.updateScrollMobile}
           // onScroll={this.updateScroll}
-          >
+        >
           <div
             onWheel={this.updateScroll}
             onTouchMove={this.updateScrollMobile}
@@ -571,7 +586,7 @@ class CardDock extends React.PureComponent {
             ref={this.cardDockContainerRef}
           >
             <div className={classes}>
-              <div className='card-table' id='card_table'>
+              <div className="card-table" id="card_table">
                 {this.getTableContent()}
               </div>
             </div>
@@ -579,7 +594,7 @@ class CardDock extends React.PureComponent {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 

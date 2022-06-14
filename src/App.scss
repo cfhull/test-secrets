@@ -1,31 +1,31 @@
 // COLORS
-$color-concluded: rgb(25,96,107);
-$color-active: rgb(182,119,35);
+$color-concluded: rgb(25, 96, 107);
+$color-active: rgb(182, 119, 35);
 // $color-proposed: rgb(225,87,90);
 // mapbox values (equivalent in hue to above, but semi-transparent to reveal ovelrap etc)
 // $color-concluded: rgba(0,80,92,.9);
 // $color-active: rgba(175,105,12,.9);
 // $color-proposed: rgba(223,70,73,.9);
 $light-gray: #f7f7f7;
-$semi-trans-light-gray: transparentize($light-gray, .2);
-$trans-light-gray: transparentize($light-gray, .4);
+$semi-trans-light-gray: transparentize($light-gray, 0.2);
+$trans-light-gray: transparentize($light-gray, 0.4);
 $middle-gray: #eee;
-$trans-middle-gray: transparentize($middle-gray, .5);
+$trans-middle-gray: transparentize($middle-gray, 0.5);
 $dark-gray: #ccc;
 $property-color: #757575;
 
 // BASE BIL COLORS
 
 // $slate-gray: #7E8085;
-$slate-gray: #74757B;
+$slate-gray: #74757b;
 $med-gray: #6d6d6d;
 //$med-gray: #74757B;
-$coldblack: #282F36;
-$green: #00505C;
-$tealgreen: #6EC9D7;
-$button-bronze: #B26F16;
+$coldblack: #282f36;
+$green: #00505c;
+$tealgreen: #6ec9d7;
+$button-bronze: #b26f16;
 $button-bronze-active: #9a6013;
-$dkbronze: #A36514;
+$dkbronze: #a36514;
 $white: #ffffff;
 $black: #373737;
 $links: #04143c;
@@ -34,8 +34,8 @@ $linkshover: #9a6013;
 // BOX-SHADOW
 
 $box-shadow: rgba(0, 0, 0, 0.1) 0 1px 3px;
-$very-trans-black: rgba(0,0,0,.1);
-$trans-black: rgba(0,0,0,.3);
+$very-trans-black: rgba(0, 0, 0, 0.1);
+$trans-black: rgba(0, 0, 0, 0.3);
 
 $hint-background: rgb(244, 253, 255);
 $hint-content: rgb(59, 123, 138);
@@ -43,7 +43,7 @@ $hint-content: rgb(59, 123, 138);
 // SIZES
 // NOTE: FS = full-screen, SS = small-screen (to be used inside the mobile-breakpoint)
 $FS-card-width: 300px;
-$mobile-breakpoint: $FS-card-width * 2; 
+$mobile-breakpoint: $FS-card-width * 2;
 $FS-dock-width: $FS-card-width * 3;
 $FS-boundary-padding: 24px;
 $SS-boundary-padding: 16px;
@@ -78,7 +78,11 @@ $left-caret-padding: 4px 8px 8px 8px;
   -webkit-box-sizing: border-box;
 }
 
-html, body, #root, .app, .map-container {
+html,
+body,
+#root,
+.app,
+.map-container {
   height: 100%;
   width: 100%;
 }
@@ -87,7 +91,11 @@ html, body, #root, .app, .map-container {
   stroke: black;
   stroke-width: 3;
   //fill: none;
-  &.remove-icon, &.expand-icon, &.collapse-icon, &.stemless, &.legend {
+  &.remove-icon,
+  &.expand-icon,
+  &.collapse-icon,
+  &.stemless,
+  &.legend {
     cursor: pointer;
     * {
       cursor: pointer;
@@ -134,7 +142,7 @@ html, body, #root, .app, .map-container {
     background-color: transparent;
     opacity: 0;
     transform: translate(100%, 100%);
-    transition: background-color ease 2s, opacity ease .5s .5s, transform ease 0s 2s;
+    transition: background-color ease 2s, opacity ease 0.5s 0.5s, transform ease 0s 2s;
   }
   .content {
     margin: auto;
@@ -153,12 +161,12 @@ html, body, #root, .app, .map-container {
         animation: ball-pulse 1s ease infinite;
         // &:nth-child(1) {
         &:nth-child(odd) {
-          animation-delay: -.2s;
+          animation-delay: -0.2s;
           background-color: $color-concluded;
         }
         // &:nth-child(2) {
         &:nth-child(even) {
-          animation-delay: -.1s;
+          animation-delay: -0.1s;
           background-color: $color-active;
         }
         // &:nth-child(3) {
@@ -185,16 +193,16 @@ html, body, #root, .app, .map-container {
 .mapboxgl-ctrl-group.custom {
   position: fixed;
   right: $FS-boundary-padding;
-  top: calc(#{$zoom-controls-top} + 65px); 
+  top: calc(#{$zoom-controls-top} + 65px);
   z-index: 2;
 
   button.mapboxgl-ctrl-reset-view .mapboxgl-ctrl-icon {
     background-image: url(svg/mapboxgl-ctrl-reset-view.svg);
-    background-size: 100%;  
+    background-size: 100%;
   }
 }
 
-/* CLICK POINT HINT */ 
+/* CLICK POINT HINT */
 .click-point-hint {
   transform: translateX(-50%);
   background-color: $hint-background;
@@ -261,14 +269,13 @@ html, body, #root, .app, .map-container {
       width: 32px;
       padding: $left-caret-padding;
       height: 32px;
-      stroke-width: .5;
+      stroke-width: 0.5;
     }
   }
   .mobile-trigger {
     // for use on small screens
     display: none;
   }
-
 
   &.closed {
     left: -$intro-panel-width;
@@ -305,14 +312,14 @@ html, body, #root, .app, .map-container {
       }
     }
     .nav {
-      border-bottom: 1px solid $dark-gray; 
+      border-bottom: 1px solid $dark-gray;
       padding-bottom: 8px;
-     // margin-bottom: 20px; 
+      // margin-bottom: 20px;
     }
     .header {
       display: flex;
       padding-bottom: 0px;
-      margin-bottom: 20px; 
+      margin-bottom: 20px;
       .info {
         flex: 27px 0;
         flex-shrink: 0;
@@ -331,7 +338,7 @@ html, body, #root, .app, .map-container {
         line-height: 1.3;
       }
     }
-    
+
     .section-text {
       p {
         font-size: 14px;
@@ -340,7 +347,7 @@ html, body, #root, .app, .map-container {
         display: inline;
         color: $slate-gray;
         &.advance-button {
-         // padding-left: 7px;
+          // padding-left: 7px;
           font-weight: 700;
           white-space: nowrap;
           cursor: pointer;
@@ -355,7 +362,7 @@ html, body, #root, .app, .map-container {
     font-weight: 400;
     font-size: 14px;
     line-height: 1.6;
-    color: #74757B;
+    color: #74757b;
     .section-text {
       p {
         margin-bottom: 16px;
@@ -382,7 +389,7 @@ html, body, #root, .app, .map-container {
       }
     }
   }
-  @media screen and (min-width:0\0) and (min-resolution: +72dpi) {
+  @media screen and (min-width: 0\0) and (min-resolution: +72dpi) {
     // IE9+, hide the button as navigator.clipboard is not available.
     p.citation-button {
       display: none;
@@ -396,7 +403,7 @@ html, body, #root, .app, .map-container {
     height: $intro-next-prev-height;
     background: white;
     border-top: #d4d4d4 1px solid;
-      margin: 0 24px;
+    margin: 0 24px;
     .next-prev {
       display: flex;
       justify-content: space-between;
@@ -429,7 +436,6 @@ html, body, #root, .app, .map-container {
     }
   }
 }
-
 
 /* MAP */
 .map-container {
@@ -497,9 +503,9 @@ html, body, #root, .app, .map-container {
   box-shadow: none;
   .last-updated {
     color: #757575;
-      color: #757575;
-      margin-right: 40px;
-      margin-top: -8px;
+    color: #757575;
+    margin-right: 40px;
+    margin-top: -8px;
   }
   .trigger-icon {
     position: fixed;
@@ -514,7 +520,6 @@ html, body, #root, .app, .map-container {
 .legend.hidden .content {
   display: none;
 }
-
 
 /* TOOLTIP */
 .tooltip {
@@ -582,7 +587,9 @@ html, body, #root, .app, .map-container {
   z-index: 5;
 }
 
-.card-dock-mask { transition: background-color ease .8s; }
+.card-dock-mask {
+  transition: background-color ease 0.8s;
+}
 .card-dock-mask.active {
   position: absolute;
   left: 0;
@@ -607,7 +614,7 @@ html, body, #root, .app, .map-container {
 }
 
 .card-dock-container {
- // background-color: $middle-gray;
+  // background-color: $middle-gray;
   background-color: #fff;
   flex: 1 0 auto;
   z-index: 5;
@@ -621,7 +628,7 @@ html, body, #root, .app, .map-container {
     position: fixed;
     right: $SS-boundary-padding;
     bottom: -200px;
-    transition: bottom ease .8s;
+    transition: bottom ease 0.8s;
     //box-shadow: $box-shadow;
     z-index: 5;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
@@ -636,13 +643,14 @@ html, body, #root, .app, .map-container {
       background-color: white;
       background-position: center;
       cursor: pointer;
-      
+
       &:not(:first-of-type) {
-        border-top: 1px solid $middle-gray
+        border-top: 1px solid $middle-gray;
       }
     }
-    .scroll-up-button, .share-export {
-      transition: background-color .3s ease, color .3s ease;
+    .scroll-up-button,
+    .share-export {
+      transition: background-color 0.3s ease, color 0.3s ease;
       background-color: $button-bronze;
       &:hover {
         background-color: $button-bronze-active;
@@ -666,8 +674,8 @@ html, body, #root, .app, .map-container {
     font-size: 14px;
     .trigger-icon {
       stroke: $hint-content;
-     // stroke-width: 8; //FS
-     width: 12px; //FS
+      // stroke-width: 8; //FS
+      width: 12px; //FS
     }
 
     &.scroll-hint {
@@ -714,8 +722,8 @@ html, body, #root, .app, .map-container {
         }
         svg {
           position: relative;
-         // top: 44%;
-         // right: 20px;
+          // top: 44%;
+          // right: 20px;
           margin-left: 8px;
           position: relative;
           top: 2px;
@@ -736,13 +744,13 @@ html, body, #root, .app, .map-container {
         transform: scale(0);
       }
       &.triggered {
-        transition: top ease .8s;
+        transition: top ease 0.8s;
         top: -$max-point-hint-height;
 
         &.dismissed {
           top: 0;
           transform: scale(0);
-          transition: top ease .8s, transform 0s .8s;
+          transition: top ease 0.8s, transform 0s 0.8s;
         }
       }
       .content {
@@ -817,7 +825,7 @@ html, body, #root, .app, .map-container {
         display: inline-block;
         // vertical-align: top;
 
-        animation: slide-up .8s forwards;
+        animation: slide-up 0.8s forwards;
       }
 
       .cell {
@@ -909,7 +917,6 @@ html, body, #root, .app, .map-container {
         //     // appropriate color given with alternating row colors
         //   }
         // }
-
       }
 
       // HEADER (NAME) STYLES
@@ -965,8 +972,6 @@ html, body, #root, .app, .map-container {
           }
         }
       }
-
-
     }
 
     /* alternating row colors */
@@ -986,7 +991,7 @@ html, body, #root, .app, .map-container {
       // }
     }
     .row .card .cell {
-    //  border: solid $trans-middle-gray .5px;
+      //  border: solid $trans-middle-gray .5px;
     }
   }
 }
@@ -998,7 +1003,6 @@ html, body, #root, .app, .map-container {
   padding-right: 90px; // make room for side-buttons
   padding-top: 15px;
   padding-bottom: 100px;
-  
 
   .section {
     display: flex;
@@ -1006,11 +1010,11 @@ html, body, #root, .app, .map-container {
     align-items: center;
     padding-bottom: 25px;
     max-width: 190px;
-    
+
     .title {
       font-size: 23px;
     }
-    
+
     .description {
       text-align: center;
       font-size: 15px;
@@ -1088,39 +1092,40 @@ html, body, #root, .app, .map-container {
         a {
           cursor: pointer;
         }
-        .twitter, .fb {
+        .twitter,
+        .fb {
           cursor: pointer;
           width: 27px;
           height: 30px;
           background-repeat: no-repeat;
           background-size: contain;
-          svg { 
+          svg {
             cursor: pointer;
             path {
               cursor: pointer;
-              fill: #74757B;
+              fill: #74757b;
             }
             &:hover {
               path {
-                fill: #B26F16;
+                fill: #b26f16;
               }
             }
           }
         }
         .fb {
-         // background-image: url(svg/fb-icon.svg);
+          // background-image: url(svg/fb-icon.svg);
           height: 22px;
           &:hover {
             //background-image: url(svg/fb-icon-active.svg);
-            transition: .3s ease;
+            transition: 0.3s ease;
           }
         }
         .twitter {
-         // background-image: url(svg/tw-icon.svg);
+          // background-image: url(svg/tw-icon.svg);
           height: 23px;
           &:hover {
             //background-image: url(svg/tw-icon-active.svg);
-            transition: .3s ease;
+            transition: 0.3s ease;
           }
         }
       }
@@ -1132,7 +1137,8 @@ html, body, #root, .app, .map-container {
 
 @media (max-width: $mobile-breakpoint) {
   /* MAPBOX CONTROLS */
-  .mapboxgl-ctrl-top-right, .mapboxgl-ctrl-group.custom {
+  .mapboxgl-ctrl-top-right,
+  .mapboxgl-ctrl-group.custom {
     right: $SS-boundary-padding;
   }
 
@@ -1153,7 +1159,7 @@ html, body, #root, .app, .map-container {
       background-color: white;
       z-index: 4;
     }
-      
+
     .trigger {
       right: 0px;
       top: 4px;
@@ -1199,7 +1205,7 @@ html, body, #root, .app, .map-container {
       // so text isn't obscured by controls
       padding-bottom: $intro-next-prev-height;
     }
-    
+
     .content-nav .bottom-controls {
       border-top: #d4d4d4 1px solid;
       margin: 0 24px;
@@ -1214,7 +1220,7 @@ html, body, #root, .app, .map-container {
         white-space: break-spaces;
         display: inline-block;
       }
-    } 
+    }
   }
 
   /* CLICK POINT HINT */
@@ -1277,7 +1283,7 @@ html, body, #root, .app, .map-container {
     .side-buttons.active {
       bottom: 152px;
     }
-    .user-hint{
+    .user-hint {
       &.scroll-hint {
         left: calc(50vw - (#{$scroll-hint-width} / 2));
         .content {
@@ -1299,7 +1305,7 @@ html, body, #root, .app, .map-container {
             top: 0;
             width: 0;
             height: 0;
-            transition: top ease .8s, width ease 0s .8s, height ease 0s .8s;
+            transition: top ease 0.8s, width ease 0s 0.8s, height ease 0s 0.8s;
           }
         }
       }
@@ -1307,7 +1313,7 @@ html, body, #root, .app, .map-container {
 
     .card-dock {
       width: 100%;
-      .card-table { 
+      .card-table {
         top: -240px;
       }
       &.card-count-1 .card-table .card {
@@ -1338,15 +1344,17 @@ html, body, #root, .app, .map-container {
 }
 
 @keyframes ball-pulse {
-  0%, 100%, 60% {
+  0%,
+  100%,
+  60% {
     opacity: 1;
     -webkit-transform: scale(1);
     transform: scale(1);
   }
   30% {
-      opacity: .1;
-      -webkit-transform: scale(.01);
-      transform: scale(.01);
+    opacity: 0.1;
+    -webkit-transform: scale(0.01);
+    transform: scale(0.01);
   }
 }
 @keyframes slide-right {
@@ -1384,22 +1392,28 @@ html, body, #root, .app, .map-container {
   }
 }
 
-
 @media print {
-  body{ overflow:visible; }
- #root {
-  
-    .intro-panel-wrapper, .mapboxgl-ctrl, .map-container.mapboxgl-map, 
-    .legend, .export-footer, .side-buttons, .user-hint, svg.x-close {
+  body {
+    overflow: visible;
+  }
+  #root {
+    .intro-panel-wrapper,
+    .mapboxgl-ctrl,
+    .map-container.mapboxgl-map,
+    .legend,
+    .export-footer,
+    .side-buttons,
+    .user-hint,
+    svg.x-close {
       display: none;
     }
-    width: 100%; 
+    width: 100%;
     height: auto;
-    margin: 0; 
-    float: none; 
+    margin: 0;
+    float: none;
     * {
       -webkit-print-color-adjust: exact !important; /*Chrome, Safari */
-      color-adjust: exact !important;  /*Firefox*/
+      color-adjust: exact !important; /*Firefox*/
     }
     .app {
       position: relative;
@@ -1428,7 +1442,9 @@ html, body, #root, .app, .map-container {
         @-moz-document url-prefix() {
           top: 120px !important; // Firefox
         }
-        _::-webkit-full-page-media, _:future, :root .safari_only {
+        _::-webkit-full-page-media,
+        _:future,
+        :root .safari_only {
           top: 120px !important; // Safari
         }
         display: inline;

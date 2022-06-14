@@ -32,7 +32,7 @@ import {
   MOBILE_MIN_ZOOM,
   MIN_WIDTH_WORLD_VIEW,
   MOBILE_BREAKPOINT,
-} from './consts'
+} from './consts';
 // const data = require("./experiments.json")
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -59,7 +59,7 @@ class App extends React.Component {
       maxCardHintTriggered: false,
       hovered: {},
       selectedIds: [],
-      lastUpdate: null
+      lastUpdate: null,
     };
 
     this.mapContainer = React.createRef();
@@ -98,9 +98,12 @@ class App extends React.Component {
       this.resetUSView();
     }
 
-    this.map.addControl(new mapboxgl.AttributionControl({
-      customAttribution: "This map is supported by the <a href=\"https://gicp.info/\" target=\"_blank\"><strong>Guaranteed Income Community of Practice</strong></a>"
-    })); 
+    this.map.addControl(
+      new mapboxgl.AttributionControl({
+        customAttribution:
+          'This map is supported by the <a href="https://gicp.info/" target="_blank"><strong>Guaranteed Income Community of Practice</strong></a>',
+      }),
+    );
 
     this.map.addControl(new mapboxgl.NavigationControl());
     // disable map rotation using right click + drag
@@ -110,30 +113,36 @@ class App extends React.Component {
 
     this.map.on('load', this.markMapLoaded.bind(this));
 
-    this.map.on('move', _.debounce(() => {
-      this.featuresOnUnhover();
-      // console.log('lat: ', this.map.getCenter().lat.toFixed(4));
-      // console.log('lng: ', this.map.getCenter().lng.toFixed(4));
-      // console.log('zoom: ', this.map.getZoom().toFixed(2));
-    }, 800, { leading: true, trailing: false }));  
-    
+    this.map.on(
+      'move',
+      _.debounce(
+        () => {
+          this.featuresOnUnhover();
+          // console.log('lat: ', this.map.getCenter().lat.toFixed(4));
+          // console.log('lng: ', this.map.getCenter().lng.toFixed(4));
+          // console.log('zoom: ', this.map.getZoom().toFixed(2));
+        },
+        800,
+        { leading: true, trailing: false },
+      ),
+    );
+
     this.map.on('click', 'experimentSites', this.featuresOnClick.bind(this));
     this.map.on('mouseenter', 'experimentSites', this.featuresOnHover.bind(this));
     this.map.on('mouseleave', 'experimentSites', this.featuresOnUnhover.bind(this));
 
-    this.map.on('touchstart', _.debounce(
-      this.registerTouchScreen.bind(this),
-      3000,
-      { leading: true, trailing: false }
-    ));
-    
-    load.call(this); 
+    this.map.on(
+      'touchstart',
+      _.debounce(this.registerTouchScreen.bind(this), 3000, { leading: true, trailing: false }),
+    );
+
+    load.call(this);
   }
-  
+
   markMapLoaded() {
     loadState.mapLoaded = true;
     this.finalizeLoad();
-    
+
     // add the click point hint
 
     // Duplin, North Carolina
@@ -160,11 +169,11 @@ class App extends React.Component {
     //   .setLngLat([lng, lat])
     //   .addTo(this.map);
   }
-  
+
   finalizeLoad() {
     const { dataLoaded, mapLoaded, mapConfigured } = loadState;
     const loaded = dataLoaded && mapLoaded && mapConfigured;
-    
+
     // trigger the state change that will tell loading mask to disappear
     this.setState({ loaded });
     if (loaded && window.innerWidth > MOBILE_BREAKPOINT) {
@@ -180,15 +189,15 @@ class App extends React.Component {
       return;
     }
     // make points more clickable on mobile
-    this.map.setPaintProperty('experimentSites','circle-stroke-width', 8);
+    this.map.setPaintProperty('experimentSites', 'circle-stroke-width', 8);
     this.setState({ isTouchScreen: true });
   }
 
   getFeaturesByExperimentId(expId) {
     const { features } = this.map.getSource('experiments')._data;
-    return features.filter(f => f.id === expId).map(f => f.properties);
+    return features.filter((f) => f.id === expId).map((f) => f.properties);
   }
-  
+
   featuresOnClick(e) {
     const { id: expId } = e.features[0];
     const selectedIds = [...this.state.selectedIds];
@@ -211,12 +220,14 @@ class App extends React.Component {
     }
 
     // dismiss selection hint once multiple points have been selected
-    const selectionHintDismissed = (selectedIds.length > 1) || this.state.selectionHintDismissed;
+    const selectionHintDismissed = selectedIds.length > 1 || this.state.selectionHintDismissed;
     this.setState({ selectedIds, selectionHintDismissed, clickHintDismissed: true });
-    this.map.setFeatureState({
+    this.map.setFeatureState(
+      {
         source: 'experiments',
-        id: expId
-      }, { selected: !alreadySelected }
+        id: expId,
+      },
+      { selected: !alreadySelected },
     );
   }
 
@@ -225,25 +236,27 @@ class App extends React.Component {
       // devices with touch screens shouldn't have tooltips
       return;
     }
-    
+
     this.map.getCanvas().style.cursor = 'pointer';
-    const { id: expId, properties } = e.features[0];    
+    const { id: expId, properties } = e.features[0];
     const { x, y } = e.point;
 
-    this.setState({ 
+    this.setState({
       hovered: {
         name: properties[NAME.sheetId],
         location: properties[LOCATION.sheetId],
         status: properties[STATUS.sheetId],
         expId,
         x,
-        y 
-      }
+        y,
+      },
     });
-    this.map.setFeatureState({
+    this.map.setFeatureState(
+      {
         source: 'experiments',
-        id: expId
-      }, { hover: true }
+        id: expId,
+      },
+      { hover: true },
     );
   }
 
@@ -252,17 +265,19 @@ class App extends React.Component {
       return;
     }
     this.map.getCanvas().style.cursor = '';
-    this.map.setFeatureState({
+    this.map.setFeatureState(
+      {
         source: 'experiments',
-        id: this.state.hovered.expId
-      }, { hover: false }
+        id: this.state.hovered.expId,
+      },
+      { hover: false },
     );
 
     this.setState({ hovered: {} });
   }
 
   toggleIntroPanelOpen() {
-    this.setState(state => ({ introPanelOpen: !state.introPanelOpen }));
+    this.setState((state) => ({ introPanelOpen: !state.introPanelOpen }));
   }
 
   removeCard(expId) {
@@ -275,10 +290,12 @@ class App extends React.Component {
     }
 
     this.setState({ selectedIds });
-    this.map.setFeatureState({
+    this.map.setFeatureState(
+      {
         source: 'experiments',
-        id: expId
-      }, { selected: false }
+        id: expId,
+      },
+      { selected: false },
     );
   }
 
@@ -290,13 +307,21 @@ class App extends React.Component {
     let otherLocations = [];
     if (expId) {
       const features = this.getFeaturesByExperimentId(expId);
-      otherLocations = features
-        .map(f => f.location)
-        .filter(l => l !== location);
+      otherLocations = features.map((f) => f.location).filter((l) => l !== location);
     }
-    return <Tooltip expId={expId} name={name} location={location} otherLocations={otherLocations} status={status} x={x} y={y}/>;
+    return (
+      <Tooltip
+        expId={expId}
+        name={name}
+        location={location}
+        otherLocations={otherLocations}
+        status={status}
+        x={x}
+        y={y}
+      />
+    );
   }
-  
+
   getCardDock() {
     if (!this.map) {
       return null;
@@ -326,14 +351,14 @@ class App extends React.Component {
     this.map.flyTo({
       center: [STARTING_LNG, STARTING_LAT],
       zoom: STARTING_ZOOM,
-      essential: true
+      essential: true,
     });
   }
 
   resetUSView() {
     this.map.fitBounds([
       [-128, 24],
-      [-65, 50]
+      [-65, 50],
     ]);
   }
 
@@ -343,15 +368,15 @@ class App extends React.Component {
 
   getResetViewButton() {
     return (
-      <div className='mapboxgl-ctrl mapboxgl-ctrl-group custom'>
+      <div className="mapboxgl-ctrl mapboxgl-ctrl-group custom">
         <button
           onClick={this.resetView}
-          className='mapboxgl-ctrl-reset-view'
-          type='button'
-          title='Reset view'
-          aria-label='Reset view'
+          className="mapboxgl-ctrl-reset-view"
+          type="button"
+          title="Reset view"
+          aria-label="Reset view"
         >
-          <span className='mapboxgl-ctrl-icon' aria-hidden='true' />
+          <span className="mapboxgl-ctrl-icon" aria-hidden="true" />
         </button>
       </div>
     );
@@ -361,21 +386,21 @@ class App extends React.Component {
     if (!ids.length) {
       return '.'; // functions to clear query param
     }
-    return QUERY_STRING_BASE + ids.map(numId => numericToStringEidMap[numId]).join(',');
+    return QUERY_STRING_BASE + ids.map((numId) => numericToStringEidMap[numId]).join(',');
   }
 
   updatePageUrl(selectedIds) {
     const queryString = this.getQueryString(selectedIds);
     window.parent.postMessage({ queryString }, this.siteOrigin || DEFAULT_SITE_ORIGIN);
   }
-  
+
   render() {
     const { loaded, introPanelOpen } = this.state;
     let classes = 'app';
     if (!loaded) {
       classes += ' loading';
     }
-    
+
     return (
       <div>
         <LoadingMask loaded={loaded} />
@@ -384,7 +409,7 @@ class App extends React.Component {
           {this.getCardDock()}
           {this.getTooltip()}
           {this.getResetViewButton()}
-          <div ref={this.mapContainer} className='map-container' />
+          <div ref={this.mapContainer} className="map-container" />
           <Legend lastUpdate={this.state.lastUpdate} />
           <ClickHint dismissed={this.state.clickHintDismissed} />
         </div>
@@ -401,65 +426,66 @@ function load() {
   // startsWith polyfill
   if (!String.prototype.startsWith) {
     Object.defineProperty(String.prototype, 'startsWith', {
-        value: function(search, rawPos) {
-            const pos = rawPos > 0 ? rawPos|0 : 0;
-            return this.substring(pos, pos + search.length) === search;
-        }
+      value: function (search, rawPos) {
+        const pos = rawPos > 0 ? rawPos | 0 : 0;
+        return this.substring(pos, pos + search.length) === search;
+      },
     });
   }
 
   const experimentsData = { type: 'FeatureCollection', features: [] };
 
   const reqHandler = (source, req) => {
-    const rows = JSON.parse(
-      req.responseText
-    ).values;
+    const rows = JSON.parse(req.responseText).values;
     const lastUpdate = rows.shift()[0];
     this.setState({ lastUpdate });
     rows.splice(0, 4);
     const properties = rows.shift();
-    const items = rows.map(function (r) {
-      const row = {};
-      properties.forEach(function (p, pIdx) {
-        row[p] = r[pIdx];
-        if ([LATITUDE.sheetId, LONGITUDE.sheetId].indexOf(p) !== -1) {
-          // mapbox wants numeric lat/long
-          // if(!row[p]) return false;
-          row[p] = +row[p];
-        }
-        if (p === EID.sheetId) {
-          // convert the string eids from the sheet into numeric ids (which mapbox expects)
-          const stringEid = row[p];
-          const numericEid = stringToNumericEidMap[stringEid] || nextEidNumber++;
-          stringToNumericEidMap[stringEid] = numericEid;
-          // populate to use for sending query params
-          numericToStringEidMap[numericEid] = stringEid;
-          row[p] = numericEid;
-        }
-        if (p === STATUS.sheetId) {
-          // force lower case to simplify equality comparisons
-          row[p] = row[p].toLowerCase();
-        }
-        if (row[p] === null) {
-          row[p] = '';
-        }
+    const items = rows
+      .map(function (r) {
+        const row = {};
+        properties.forEach(function (p, pIdx) {
+          row[p] = r[pIdx];
+          if ([LATITUDE.sheetId, LONGITUDE.sheetId].indexOf(p) !== -1) {
+            // mapbox wants numeric lat/long
+            // if(!row[p]) return false;
+            row[p] = +row[p];
+          }
+          if (p === EID.sheetId) {
+            // convert the string eids from the sheet into numeric ids (which mapbox expects)
+            const stringEid = row[p];
+            const numericEid = stringToNumericEidMap[stringEid] || nextEidNumber++;
+            stringToNumericEidMap[stringEid] = numericEid;
+            // populate to use for sending query params
+            numericToStringEidMap[numericEid] = stringEid;
+            row[p] = numericEid;
+          }
+          if (p === STATUS.sheetId) {
+            // force lower case to simplify equality comparisons
+            row[p] = row[p].toLowerCase();
+          }
+          if (row[p] === null) {
+            row[p] = '';
+          }
+        });
+
+        //if lat or lng is missing from data
+        return row[LATITUDE.sheetId] && row[LONGITUDE.sheetId]
+          ? {
+              type: 'Feature',
+              id: row[EID.sheetId],
+              geometry: {
+                type: 'Point',
+                coordinates: [row[LATITUDE.sheetId], row[LONGITUDE.sheetId]],
+              },
+              properties: row,
+            }
+          : null;
+      })
+      .filter(function (r) {
+        return r !== null;
       });
 
-      //if lat or lng is missing from data
-      return row[LATITUDE.sheetId] && row[LONGITUDE.sheetId] ? {
-        type: 'Feature',
-        id: row[EID.sheetId],
-        geometry: {
-          type: 'Point',
-          coordinates: [row[LATITUDE.sheetId], row[LONGITUDE.sheetId]]
-        },
-        properties: row
-      }
-    : null;
-    }).filter(function (r) {
-      return r !== null;
-    });
-    
     experimentsData.features.push(...items);
     this.map.getSource('experiments').setData(experimentsData);
     loadState.mapConfigured = true;
@@ -487,7 +513,7 @@ function load() {
             // console.error('Map did not receive a sitePath');
           } else {
             this.siteOrigin = queryString.slice(originValueStartIdx, pathParamStartIdx);
-            
+
             const pathValueStartIdx = pathParamStartIdx + PATH_PARAM_MARKER.length;
             this.sitePath = queryString.slice(pathValueStartIdx);
             // console.log('idString:',idString,' | siteOrigin:',this.siteOrigin,' | sitePath:',this.sitePath);
@@ -497,7 +523,7 @@ function load() {
         if (!idString.length) {
           return;
         }
-        let selectedIds = idString.split(',').map(s => {
+        let selectedIds = idString.split(',').map((s) => {
           const numericEid = stringToNumericEidMap[s];
           if (!numericEid) {
             // console.error(`${s} does not correspond to an experiment id - ignoring.`)
@@ -516,17 +542,20 @@ function load() {
 
         const selectionHintDismissed = selectedIds.length > 1;
         this.setState({ selectedIds, selectionHintDismissed });
-        _.each(selectedIds, id => {
-          this.map.setFeatureState({
-            source: 'experiments',
-            id,
-          }, { selected: true });
+        _.each(selectedIds, (id) => {
+          this.map.setFeatureState(
+            {
+              source: 'experiments',
+              id,
+            },
+            { selected: true },
+          );
         });
       } catch (error) {
         console.error('Unable to load experiments.');
       }
     }
-  }
+  };
 
   // Fetch Local Article Data
   const experimentsReq = new XMLHttpRequest();
