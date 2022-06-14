@@ -3,7 +3,6 @@ import './mapbox-gl-ctrl-zoom-in.svg';
 import './mapbox-gl-ctrl-zoom-out.svg';
 import './mapbox-gl-ctrl-attrib.svg';
 import './mapbox-gl-ctrl-logo.svg';
-import './App.scss';
 import CardDock from './CardDock';
 import ClickHint from './ClickHint';
 import IntroPanel from './IntroPanel';
@@ -33,6 +32,7 @@ import {
   MIN_WIDTH_WORLD_VIEW,
   MOBILE_BREAKPOINT,
 } from './consts';
+import './App.scss';
 // const data = require("./experiments.json")
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -60,6 +60,7 @@ class App extends React.Component {
       hovered: {},
       selectedIds: [],
       lastUpdate: null,
+      itemsCount: 0,
     };
 
     this.mapContainer = React.createRef();
@@ -410,7 +411,7 @@ class App extends React.Component {
           {this.getTooltip()}
           {this.getResetViewButton()}
           <div ref={this.mapContainer} className="map-container" />
-          <Legend lastUpdate={this.state.lastUpdate} />
+          <Legend lastUpdate={this.state.lastUpdate} itemsCount={this.state.itemsCount} />
           <ClickHint dismissed={this.state.clickHintDismissed} />
         </div>
       </div>
@@ -438,7 +439,6 @@ function load() {
   const reqHandler = (source, req) => {
     const rows = JSON.parse(req.responseText).values;
     const lastUpdate = rows.shift()[0];
-    this.setState({ lastUpdate });
     rows.splice(0, 4);
     const properties = rows.shift();
     const items = rows
@@ -485,6 +485,7 @@ function load() {
       .filter(function (r) {
         return r !== null;
       });
+    this.setState({ lastUpdate, itemsCount: items.length });
 
     experimentsData.features.push(...items);
     this.map.getSource('experiments').setData(experimentsData);

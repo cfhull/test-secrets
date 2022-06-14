@@ -43,6 +43,11 @@ class Legend extends React.Component {
         {this.props.lastUpdate ? (
           <div className="last-updated">Data current through {this.props.lastUpdate}</div>
         ) : null}
+        {this.props.itemsCount ? (
+          <div className="items-count">
+            Displaying <strong>{this.props.itemsCount} experiment sites</strong>
+          </div>
+        ) : null}
       </div>
     );
   }

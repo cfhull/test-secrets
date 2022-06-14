@@ -503,9 +503,13 @@ body,
   box-shadow: none;
   .last-updated {
     color: #757575;
-    color: #757575;
     margin-right: 40px;
     margin-top: -8px;
+  }
+  .items-count {
+    color: #757575;
+    margin-right: 40px;
+    margin-top: -4px;
   }
   .trigger-icon {
     position: fixed;
@@ -1232,7 +1236,7 @@ body,
     right: 0;
     width: 100%;
     //height: $SS-legend-height;
-    height: 112px;
+    height: 136px;
     padding: 0;
     background: white;
     width: 248px;
@@ -1260,7 +1264,17 @@ body,
     margin-top: unset;
     margin-right: unset;
   }
+  .legend .items-count {
+    margin-left: 16px;
+    margin-top: unset;
+    margin-right: unset;
+  }
   .legend.hidden .last-updated {
+    margin-left: unset;
+    margin-top: 4px;
+    margin-right: unset;
+  }
+  .legend.hidden .items-count {
     margin-left: unset;
     margin-top: 4px;
     margin-right: unset;
