@@ -1,19 +1,17 @@
 import React from 'react';
 class ClickHint extends React.Component {
-
   render() {
     let classes = 'click-point-hint';
     if (this.props.dismissed) {
-      classes += " dismissed";
+      classes += ' dismissed';
     }
     return (
-      <div
-        className={classes}
-        aria-hidden={this.props.dismissed}>
-        Click a point<br />
+      <div className={classes} aria-hidden={this.props.dismissed}>
+        Click a point
+        <br />
         to learn more
       </div>
-    )
+    );
   }
 }
 

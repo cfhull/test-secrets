@@ -4,21 +4,21 @@ class LoadingMask extends React.Component {
   render() {
     let classes = 'mask';
     if (this.props.loaded) {
-      classes += ' loaded'
+      classes += ' loaded';
     }
-    
+
     return (
       <div className={classes}>
-        <div className='content'>
+        <div className="content">
           <p>Loading...</p>
-          <div className='loading-dots'>
+          <div className="loading-dots">
             <div></div>
             <div></div>
             <div></div>
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 

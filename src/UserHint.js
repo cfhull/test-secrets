@@ -15,13 +15,13 @@ class UserHint extends React.Component {
     if (this.props.onDismiss) {
       dismissTrigger = <TriggerIcon iconType={ICON_TYPE.XCLOSE} onClick={this.props.onDismiss} />;
     }
-    
+
     return (
       <div className={classes}>
         {dismissTrigger}
-        <div className='content'>{this.props.content}</div>
+        <div className="content">{this.props.content}</div>
       </div>
-    )
+    );
   }
 }
 

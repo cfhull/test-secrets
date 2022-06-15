@@ -1,21 +1,21 @@
 const SHEET_FIELDS = {
   LONGITUDE: {
     displayName: 'Longitude', // how the field will appear on the card
-    sheetId: 'longitude' // corresponds to the column header on the google sheet
+    sheetId: 'longitude', // corresponds to the column header on the google sheet
   },
   LATITUDE: {
     displayName: 'Latitude',
-    sheetId: 'latitude'
+    sheetId: 'latitude',
   },
   // NOTE: Used to bind the different locations of a given experiment together.
   // We use it as the mapbox ID for the feature to simplify unified hover/selection styling.
   EID: {
     displayName: 'Experiment ID',
-    sheetId: 'eid'
+    sheetId: 'eid',
   },
   NAME: {
     displayName: 'Name of Experiment',
-    sheetId: 'name'
+    sheetId: 'name',
   },
   // TYPE: {
   //   displayName: 'Past, Ongoing, Proposed',
@@ -23,55 +23,55 @@ const SHEET_FIELDS = {
   // },
   LOCATION: {
     displayName: 'Location',
-    sheetId: 'location'
+    sheetId: 'location',
   },
   DATES: {
     displayName: 'Implementation Dates',
-    sheetId: 'dates'
+    sheetId: 'dates',
   },
   STATUS: {
     displayName: 'Implementation Status',
-    sheetId: 'status'
+    sheetId: 'status',
   },
   ORG: {
     displayName: 'Managing Organizations/Agencies',
-    sheetId: 'org'
+    sheetId: 'org',
   },
   AFFILIATIONS: {
     displayName: 'Other Affiliations',
-    sheetId: 'affiliations'
+    sheetId: 'affiliations',
   },
   NEIGHBORHOOD: {
     displayName: 'Neighborhood',
-    sheetId: 'neighborhood'
+    sheetId: 'neighborhood',
   },
   START: {
     displayName: 'Implementation Start',
-    sheetId: 'start'
+    sheetId: 'start',
   },
   PARTICIPANTS: {
     displayName: 'Total Number of Participants',
-    sheetId: 'participants'
+    sheetId: 'participants',
   },
   FUNDING: {
     displayName: 'Type of Funding',
-    sheetId: 'funding'
+    sheetId: 'funding',
   },
   DETAILS: {
     displayName: 'Targeting Details',
-    sheetId: 'details'
+    sheetId: 'details',
   },
   DURATION: {
     displayName: 'Duration of Payment',
-    sheetId: 'duration'
+    sheetId: 'duration',
   },
   INTERVENTION: {
     displayName: 'Other Intervention Components',
-    sheetId: 'intervention'
+    sheetId: 'intervention',
   },
   RCT: {
     displayName: 'Is the pilot a Randomized Control Trial (RCT)',
-    sheetId: 'rct'
+    sheetId: 'rct',
   },
   TARGETING: {
     displayName: 'Type of Targeting',
@@ -80,7 +80,7 @@ const SHEET_FIELDS = {
   },
   UNIT: {
     displayName: 'Participants receiving the transfer',
-    sheetId: 'unit'
+    sheetId: 'unit',
   },
   AMOUNT: {
     displayName: 'Transfer amount',
@@ -89,7 +89,7 @@ const SHEET_FIELDS = {
   },
   FREQUENCY: {
     displayName: 'Frequency of Payment',
-    sheetId: 'frequency'
+    sheetId: 'frequency',
   },
 };
 
@@ -106,12 +106,12 @@ const FEATURE_HEADERS = {
   ORGANIZATIONAL: {
     displayName: 'ORGANIZATIONAL FEATURES',
     sheetId: null,
-    isFeatureHeader: true
+    isFeatureHeader: true,
   },
   IMPLEMENTATION: {
     displayName: 'IMPLEMENTATION FEATURES',
     sheetId: null,
-    isFeatureHeader: true
+    isFeatureHeader: true,
   },
 };
 
@@ -120,8 +120,8 @@ const COMPOSITE_FIELDS = {
     displayName: 'Links to Related Resources',
     sheetId: null,
     // isExpandible: true,
-    isComposite: true
-  }
+    isComposite: true,
+  },
 };
 
 const ORDERED_CARD_FIELDS = [

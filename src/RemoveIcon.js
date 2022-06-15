@@ -2,7 +2,7 @@ import React from 'react';
 
 class TriggerIcon extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   onClick() {
@@ -12,19 +12,19 @@ class TriggerIcon extends React.Component {
   getX() {
     return (
       <>
-        <line x1='0' x2='100' y1='0' y2='100'/>
-        <line x1='0' x2='100' y1='100' y2='0'/>
+        <line x1="0" x2="100" y1="0" y2="100" />
+        <line x1="0" x2="100" y1="100" y2="0" />
       </>
-    )    
+    );
   }
 
   getPlus() {
     return (
       <>
-        <line x1='0' x2='100' y1='50' y2='50'/>
-        <line x1='50' x2='50' y1='0' y2='100'/>
+        <line x1="0" x2="100" y1="50" y2="50" />
+        <line x1="50" x2="50" y1="0" y2="100" />
       </>
-    )    
+    );
   }
 
   render() {
@@ -42,10 +42,10 @@ class TriggerIcon extends React.Component {
         classes += 'collapse-icon';
     }
     return (
-      <svg onClick={this.props.onClick} viewBox='0 0 100 100' className={classes}>
+      <svg onClick={this.props.onClick} viewBox="0 0 100 100" className={classes}>
         {icon}
       </svg>
-    )
+    );
   }
 }
 

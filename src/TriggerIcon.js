@@ -14,7 +14,7 @@ const ICON_TYPE = {
   L_ARROW_STEMLESS: 'left-arrow-stemless',
   INFO_ICON: 'info-icon',
   LEGEND: 'legend',
-  XCLOSE: 'x-close'
+  XCLOSE: 'x-close',
 };
 
 class TriggerIcon extends React.Component {
@@ -25,78 +25,90 @@ class TriggerIcon extends React.Component {
   getRemove() {
     return (
       <>
-        <line x1='15' x2='85' y1='15' y2='85'/>
-        <line x1='15' x2='85' y1='85' y2='15'/>
+        <line x1="15" x2="85" y1="15" y2="85" />
+        <line x1="15" x2="85" y1="85" y2="15" />
       </>
-    )    
+    );
   }
-  
+
   getExpand() {
     return (
       <>
-        <line x1='15' x2='85' y1='50' y2='50'/>
-        <line x1='50' x2='50' y1='15' y2='85'/>
+        <line x1="15" x2="85" y1="50" y2="50" />
+        <line x1="50" x2="50" y1="15" y2="85" />
       </>
-    )    
+    );
   }
 
   getCollapse() {
     return (
       <>
-        <line x1='20' x2='80' y1='50' y2='50'/>
+        <line x1="20" x2="80" y1="50" y2="50" />
       </>
-    )    
+    );
   }
 
   // right arrow is our "base" arrow. all arrows are right arrows, then get rotated by CSS transform
   getRightArrow(stemless) {
     return (
       <>
-        {!stemless && <path d="M1 5.5H10" strokeLinecap="round" strokeLinejoin="round"/>}
-        <path fill="none" d="M5.5 1L10 5.5L5.5 10" strokeLinecap="round" strokeLinejoin="round"/>
+        {!stemless && <path d="M1 5.5H10" strokeLinecap="round" strokeLinejoin="round" />}
+        <path fill="none" d="M5.5 1L10 5.5L5.5 10" strokeLinecap="round" strokeLinejoin="round" />
       </>
-    )
+    );
   }
 
   getXClose() {
     return (
       <>
-        <line x1="5.30326" y1="5.30318" x2="15.9099" y2="15.9098"/>
-        <line x1="15.9097" y1="5.30326" x2="5.30311" y2="15.9099"/>
-      </>  
-    )
+        <line x1="5.30326" y1="5.30318" x2="15.9099" y2="15.9098" />
+        <line x1="15.9097" y1="5.30326" x2="5.30311" y2="15.9099" />
+      </>
+    );
   }
 
   getInfoIcon() {
     return (
       <>
-        <circle cx="13.5" cy="13.5" r="13.5" fill="#DBEDF2"/>
-        <circle cx="13.5" cy="7.5" r="1.5" fill="#709FAC"/>
-        <rect x="12" y="11" width="3" height="10" rx="1.5" fill="#709FAC"/>
+        <circle cx="13.5" cy="13.5" r="13.5" fill="#DBEDF2" />
+        <circle cx="13.5" cy="7.5" r="1.5" fill="#709FAC" />
+        <rect x="12" y="11" width="3" height="10" rx="1.5" fill="#709FAC" />
       </>
-    )
+    );
   }
 
   getLegend() {
     return (
       <>
-        <path d="M1 1L4.33334 2.01389V9.11111L1 8.09722V1Z" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M7.66602 1L10.9994 2.01389V9.11111L7.66602 8.09722V1Z" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M4.33398 2.01389L7.66733 1V8.09722L4.33398 9.11111V2.01389Z" strokeLinecap="round" strokeLinejoin="round"/>
+        <path
+          d="M1 1L4.33334 2.01389V9.11111L1 8.09722V1Z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M7.66602 1L10.9994 2.01389V9.11111L7.66602 8.09722V1Z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M4.33398 2.01389L7.66733 1V8.09722L4.33398 9.11111V2.01389Z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </>
-    )
+    );
   }
-  
+
   getBracketWrap(icon) {
     return (
       <>
-        <polyline points='15,0 0,0 0,100 15,100' />
-          {icon}
-        <polyline points='85,0 100,0 100,100 85,100' />
+        <polyline points="15,0 0,0 0,100 15,100" />
+        {icon}
+        <polyline points="85,0 100,0 100,100 85,100" />
       </>
-    )    
+    );
   }
-  
+
   render() {
     let icon;
     let classes = 'trigger-icon ';
@@ -142,7 +154,7 @@ class TriggerIcon extends React.Component {
       case ICON_TYPE.R_ARROW_STEMLESS:
         icon = this.getRightArrow(true);
         classes += 'right arrow stemless';
-        viewBox = '0 0 11 11'
+        viewBox = '0 0 11 11';
         break;
       case ICON_TYPE.L_ARROW:
         icon = this.getRightArrow();
@@ -152,12 +164,12 @@ class TriggerIcon extends React.Component {
       case ICON_TYPE.L_ARROW_STEMLESS:
         icon = this.getRightArrow(true);
         classes += 'left arrow stemless';
-        viewBox = '0 0 11 11'
+        viewBox = '0 0 11 11';
         break;
       case ICON_TYPE.INFO_ICON:
         icon = this.getInfoIcon();
         classes += 'info-icon';
-        viewBox = '0 0 27 27'
+        viewBox = '0 0 27 27';
         break;
       case ICON_TYPE.LEGEND:
         icon = this.getLegend();
@@ -167,8 +179,8 @@ class TriggerIcon extends React.Component {
       case ICON_TYPE.XCLOSE:
         icon = this.getXClose(true);
         classes += 'x-close remove-icon';
-        viewBox = "0 0 22 22"
-        break;  
+        viewBox = '0 0 22 22';
+        break;
       default:
         console.error('incorrect type: ', this.props.iconType);
     }
@@ -179,15 +191,11 @@ class TriggerIcon extends React.Component {
     }
 
     return (
-        <svg
-          onClick={this.props.onClick}
-          viewBox={viewBox}
-          className={classes}
-        >
-          {this.props.title && <title>{this.props.title}</title>}
-          {icon}
-        </svg>
-    )
+      <svg onClick={this.props.onClick} viewBox={viewBox} className={classes}>
+        {this.props.title && <title>{this.props.title}</title>}
+        {icon}
+      </svg>
+    );
   }
 }
 

@@ -13,7 +13,7 @@ class Legend extends React.Component {
   }
 
   toggleExpand() {
-    this.setState(state => ({ expanded: !state.expanded }));
+    this.setState((state) => ({ expanded: !state.expanded }));
   }
 
   render() {
@@ -29,18 +29,27 @@ class Legend extends React.Component {
     const iconType = expanded ? ICON_TYPE.XCLOSE : ICON_TYPE.LEGEND;
     return (
       <div className={classes}>
-          <TriggerIcon title={title} onClick={this.toggleExpand} iconType={iconType} />
-          <div className='content'>
-            <div><i className='concluded' />Concluded Experiments</div>
-            <div><i className='active' />Active Experiments</div>
+        <TriggerIcon title={title} onClick={this.toggleExpand} iconType={iconType} />
+        <div className="content">
+          <div>
+            <i className="concluded" />
+            Concluded Experiments
           </div>
-          {this.props.lastUpdate ?
-            <div className="last-updated">
-              Data current through {this.props.lastUpdate}
-            </div>
-          : null}
+          <div>
+            <i className="active" />
+            Active Experiments
+          </div>
+        </div>
+        {this.props.lastUpdate ? (
+          <div className="last-updated">Data current through {this.props.lastUpdate}</div>
+        ) : null}
+        {this.props.itemsCount ? (
+          <div className="items-count">
+            Displaying <strong>{this.props.itemsCount} experiment sites</strong>
+          </div>
+        ) : null}
       </div>
-    )
+    );
   }
 }
 
