@@ -10,7 +10,7 @@ const SECTIONS = [
   },
   {
     name: 'Inclusion Criteria',
-    text: 'The map contains pilots and experiments that have design and implementation features that crossover with the basic principles of a universal basic income: unconditional, universal, regular, individual, and paid in cash. All included experiments are unconditional and share at least one of the other core features.',
+    text: 'The map contains programs that have design and implementation features spanning the principles of universal basic income: unconditional, universal, regular, individual, and paid in cash. All experiments included in the Map are (1) active or have concluded, (2) unconditional and (3) cash, and (4) contain at least one of the following additional features: universal, regular and individual.',
     //text2: 'As described in the review of the State of the Evidence on Universal Basic Income-type programs: An Umbrella Review (Hasdell, forthcoming), experiments used to draw conclusions about UBI include the following categories of cash transfers: unconditional and universal cash to supplemental income schemes to resource dividends and minimum income guarantees (through a negative income tax).',
     //text3: 'The experiments, pilots, policies and programs we have included in this geospatial map all share multiple of the aforementioned features of a universal basic income policy and are frequently cited in the basic income literature used to infer potential impacts of a basic income policy (see Hoynes and Rothstein, 2019; Gentilini et. al, 2019, and Banerjee et. al, 2019; and Gibson et. al, 2018).',
     //text4: 'The Basic Income Lab included these experiments for this current version. Over time, we hope to add more experiments as they come to light.'
