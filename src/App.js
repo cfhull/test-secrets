@@ -119,9 +119,6 @@ class App extends React.Component {
       _.debounce(
         () => {
           this.featuresOnUnhover();
-          // console.log('lat: ', this.map.getCenter().lat.toFixed(4));
-          // console.log('lng: ', this.map.getCenter().lng.toFixed(4));
-          // console.log('zoom: ', this.map.getZoom().toFixed(2));
         },
         800,
         { leading: true, trailing: false },
@@ -387,12 +384,14 @@ class App extends React.Component {
     if (!ids.length) {
       return '.'; // functions to clear query param
     }
-    return QUERY_STRING_BASE + ids.map((numId) => numericToStringEidMap[numId]).join(',');
+    return QUERY_STRING_BASE + ids.map((numId) => numericToStringEidMap[numId]).join('-');
   }
 
   updatePageUrl(selectedIds) {
     const queryString = this.getQueryString(selectedIds);
-    window.parent.postMessage({ queryString }, this.siteOrigin || DEFAULT_SITE_ORIGIN);
+    const newURL = `${window?.location?.pathname}${queryString}`;
+    // eslint-disable-next-line no-unused-expressions
+    window?.history?.replaceState({}, '', newURL);
   }
 
   render() {
@@ -424,16 +423,6 @@ const stringToNumericEidMap = {};
 const numericToStringEidMap = {};
 
 function load() {
-  // startsWith polyfill
-  if (!String.prototype.startsWith) {
-    Object.defineProperty(String.prototype, 'startsWith', {
-      value: function (search, rawPos) {
-        const pos = rawPos > 0 ? rawPos | 0 : 0;
-        return this.substring(pos, pos + search.length) === search;
-      },
-    });
-  }
-
   const experimentsData = { type: 'FeatureCollection', features: [] };
 
   const reqHandler = (source, req) => {
@@ -470,7 +459,7 @@ function load() {
         });
 
         if (!row[LATITUDE.sheetId] || !row[LONGITUDE.sheetId]) {
-          console.log('Invalid latlng: ', r);
+          // console.log('Invalid latlng: ', r);
         }
         //if lat or lng is missing from data
         return row[LATITUDE.sheetId] && row[LONGITUDE.sheetId]
@@ -523,11 +512,10 @@ function load() {
             // console.log('idString:',idString,' | siteOrigin:',this.siteOrigin,' | sitePath:',this.sitePath);
           }
         }
-
         if (!idString.length) {
           return;
         }
-        let selectedIds = idString.split(',').map((s) => {
+        let selectedIds = idString.split('-').map((s) => {
           const numericEid = stringToNumericEidMap[s];
           if (!numericEid) {
             // console.error(`${s} does not correspond to an experiment id - ignoring.`)
@@ -538,7 +526,6 @@ function load() {
         selectedIds = _.compact(selectedIds);
         selectedIds = _.uniq(selectedIds);
         selectedIds = selectedIds.slice(0, MAX_SELECTED_POINTS);
-
         this.updatePageUrl(selectedIds);
         if (!selectedIds.length) {
           return;

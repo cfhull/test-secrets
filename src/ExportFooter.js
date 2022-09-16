@@ -19,7 +19,7 @@ class ExportFooter extends React.Component {
   }
 
   export() {
-    console.log('export');
+    // console.log('export');
   }
 
   copy() {
@@ -99,7 +99,7 @@ class ExportFooter extends React.Component {
             </div>
           </div>
           <div className="socialshare">
-            <a className="twitter-share-button twittershare" onClick={this.tweet} href="#">
+            <a className="twitter-share-button twittershare" onClick={this.tweet} href="/#">
               <div className="twitter">
                 <svg
                   width="30"
@@ -112,7 +112,7 @@ class ExportFooter extends React.Component {
                 </svg>
               </div>
             </a>
-            <a onClick={this.post} href="#">
+            <a onClick={this.post} href="/#">
               <div className="fb">
                 <svg
                   width="27"
