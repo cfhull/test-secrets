@@ -16,8 +16,8 @@ This repo is deployed to Netlify and the map is embedded (via iframe) in the
    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
    ```
 
-**Note:** This app currently suports node versions <= 13.x if you experience issues with node-sass,
-try adjusting your node version (e.g. `nvm use 13`).
+**Note:** This app currently suports Node versions <= 13. nvm should pick this up automatically due
+to the `.nvmrc` file, but if not, try `nvm use 13`.
 
 ## Available Scripts
 
